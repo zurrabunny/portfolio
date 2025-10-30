@@ -5,7 +5,8 @@ const { class: extraClass } = Astro.props;
 <aside class={`sidebar ${extraClass ?? ''}`}>
   <div class="profile">
     <img src="zurras.png" alt="zurras" class="profile-pic" />
-    <h2 class="name">ZurraBunny</h2>
+    <img src="bunnys.png" alt="zurras" class="title-pic" />
+	<hr class="line-separator">
     <p class="info">Animator - Illustrator - Storyboard Artist</p>
   </div>
 
@@ -39,6 +40,13 @@ const { class: extraClass } = Astro.props;
   z-index: 2;
 }
 
+.line-separator {
+  border: none;          /* Remove default border */
+  height: 2px;           /* Thickness of the line */
+  background-color: var(--text-main);
+  margin: 5px 0;        /* Space above and below */
+}
+
 .profile {
   text-align: center;
   margin-bottom: 40px;
@@ -55,16 +63,16 @@ const { class: extraClass } = Astro.props;
   transition: transform 0.2s ease;
 }
 
-.name {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text-main);
-  margin-top: 8px;
+.title-pic {
+  width: 190px;
+  height: 85px;
+  filter: brightness(var(--invert));
 }
 
 .info {
   font-size: 16px;
   color: var(--text-main);
+  margin: 5px 0;        /* Space above and below */
 }
 
 .tabs {
@@ -120,6 +128,7 @@ const { class: extraClass } = Astro.props;
     width: 80px;
     height: 80px;
   }
+  
 
   .info {
     display: none;
