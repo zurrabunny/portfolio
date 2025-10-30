@@ -60,7 +60,7 @@ html, body {
   --text-dark: #2b0004;
 
   /* Background Grid */
-  --bg-grid-color-a: rgba(255, 161, 165,0.2);
+  --bg-grid-color-a: rgba(255, 201, 198,0.2);
   --bg-grid-color-b: rgba(254, 211, 206,0.2);
   
   --invert: 0.1;
