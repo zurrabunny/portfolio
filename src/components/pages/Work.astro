@@ -1,69 +1,362 @@
 ---
 import Container from "/src/components/Container.astro";
 
-const galleryItems = [
-  "1 (1).png",
-  "1.png",
-  "3.png",
-  "astrowo.png",
-  "dress.png",
-  "emmarefs.png",
-  "fluttrerbee.png",
-  "high ra and zur ha.png",
-  "lumi nun.png",
-  "luuust.png",
-  "pebbles empty.png",
-  "rf.png",
-  "shame on you.png",
-  "sigma wolf.png",
-  "TITLE CARD.png",
-  "uh.png",
-  "walk.png",
-  "zurra miles graduat.png",
-  "zuref.png",
-  "bearoth.png"
+const storyboardItems = [
+  {
+    src: "terrorinthecity.mp4",
+    title: "Terror in the City",
+    description: "A past inhabitant wanders the husk of her former home"
+  },
+  {
+    src: "azurewasteland.mp4",
+    title: "Azure Wasteland",
+    description: "An evil figure takes her leftover sandwich, idk"
+  }
 ];
+
+const musicItems = [
+  {
+    src: "=3-ified.mp3",
+    cover: "=3-ified.jpg",
+    title: ":3-ified",
+    artist: "ZurraBunny"
+  },
+  {
+    src: "Halcyon.ogg",
+    cover: "Halcyon.jpg",
+    title: "Halcyon",
+    artist: "ZurraBunny & OnlineBlanks"
+  },
+  {
+    src: "Unholy Seranata.ogg",
+    cover: "Unholy Seranata.png",
+    title: "Unholy Seranata",
+    artist: "ZurraBunny & OnlineBlanks"
+  },
+  {
+    src: "Overwhelmed.wav",
+    cover: "Overwhelmed.jpeg",
+    title: "Overwhelmed",
+    artist: "ZurraBunny"
+  },
+  {
+    src: "Shorts and Shores.mp3",
+    cover: "honeymoon.png",
+    title: "Shorts and Shores",
+    artist: "ZurraBunny & OnlineBlanks"
+  },
+  {
+    src: "Starstruck.mp3",
+    cover: "honeymoon.png",
+    title: "Starstruck",
+    artist: "ZurraBunny"
+  },
+  {
+    src: "Libel.mp3",
+    cover: "Libel.png",
+    title: "Libel",
+    artist: "ZurraBunny"
+  },
+  {
+    src: "microArp.ogg",
+    cover: "microArp.png",
+    title: "microArp",
+    artist: "ZurraBunny"
+  },
+  {
+    src: "Sifted.wav",
+    cover: "Sifted.png",
+    title: "Sifted",
+    artist: "ZurraBunny"
+  }
+];
+
+const galleryItems = {
+  Illustrations: [
+    "1 (1).png","1.png","3.png","astrowo.png","dress.png","emmarefs.png",
+    "fluttrerbee.png","high ra and zur ha.png","lumi nun.png","luuust.png",
+    "pebbles empty.png","rf.png","shame on you.png","sigma wolf.png",
+    "TITLE CARD.png","uh.png","walk.png","zurra miles graduat.png",
+    "zuref.png","bearoth.png"
+  ],
+   Animation: [
+    "3RD EXAM_FINAL.mp4",
+    "ball.webp",
+    "disney hopefully.webp",
+    "duckass.webp",
+    "music video parts.mp4",
+    "pookiedeer.webp",
+    "RUNNINGMAN.webp",
+    "SACK ANIM_maulawin.webp",
+    "shake ma hand.mp4",
+    "slowinslowout.webp",
+    "so-much-scavs.webp",
+    "thebigfight.webp",
+    "walkin.webp"
+  ],
+  "3D": [
+    "ewwie.webp","AI.png","karmaGate_Open.webp","scavscared.webp","metropolis3.png",
+	"shelter.webp","sofanthiel3d.webp","SPOILER_drillcrabortho.webp","white-squidcada.webp",
+	"livingrender.png","worm.png","token.webp","snail.webp"
+  ]
+};
 ---
 
 <main class="content">
   <Container variant="static">
-    <h1>Illustrations</h1>
-    <section class="bento-gallery">
-      {galleryItems.map(src => (
+    <div class="tabs">
+      <button data-tab="Illustrations" class="active">Illustrations</button>
+      <button data-tab="Animation">Animation</button>
+      <button data-tab="3D">3D</button>
+      <button data-tab="Storyboard">Storyboard</button>
+      <button data-tab="Music">Music</button>
+    </div>
+
+    <h1 id="tab-title">Illustrations</h1>
+
+    <section class="bento-gallery" id="illustrations">
+      {galleryItems.Illustrations.map(src => (
         <div class="bento-item">
-          <img src={`illustrations/${src}`} alt="Project" />
+          <img src={`illustrations/${src}`} alt="Illustration" />
         </div>
       ))}
     </section>
+
+		<section class="bento-gallery" id="animation" style="display:none">
+	  {/* Videos */}
+	  {galleryItems.Animation.filter(src => src.endsWith(".mp4")).map(src => (
+		<div class="bento-item">
+		  <video src={`animations/${src}`} controls preload="metadata" style="width:100%; height:auto;" />
+		</div>
+	  ))}
+
+	  {/* webps */}
+	  {galleryItems.Animation.filter(src => src.endsWith(".webp")).map(src => (
+		<div class="bento-item">
+		  <img src={`animations/${src}`} alt="Animation webp" />
+		</div>
+	  ))}
+	</section>
+
+	<section class="bento-gallery" id="3d" style="display:none">
+	  {/* WebP files */}
+	  {galleryItems["3D"].filter(src => src.endsWith(".webp")).map(src => (
+		<div class="bento-item">
+		  <img src={`3d/${src}`} alt="3D WebP" />
+		</div>
+	  ))}
+
+	  {/* PNG files */}
+	  {galleryItems["3D"].filter(src => src.endsWith(".png")).map(src => (
+		<div class="bento-item">
+		  <img src={`3d/${src}`} alt="3D PNG" />
+		</div>
+	  ))}
+	</section>
+
+<section class="bento-gallery" id="storyboard" style="display:none">
+  {storyboardItems.map(item => (
+    <div class="bento-item storyboard-item">
+      <video src={`storyboard/${item.src}`} controls preload="metadata" style="width:100%; height:auto;" />
+      <div class="item-text">
+        <h3>{item.title}</h3>
+        <hr />
+        <p>{item.description}</p>
+      </div>
+    </div>
+  ))}
+</section>
+
+<div class="music-row" id="music" style="display:none">
+  {musicItems.map((item, index) => (
+    <div class="music-item music-player" data-index={index}>
+      <div class="music-cover">
+        <img src={`music/${item.cover}`} alt={item.title} />
+      </div>
+      <div class="music-info">
+        <h3>{item.title}</h3>
+        <p>{item.artist}</p>
+      </div>
+      <div class="player-controls">
+        <button class="play-btn" aria-label="Play/Pause">
+          <svg class="icon play-icon" viewBox="0 0 24 24" width="24" height="24">
+            <polygon points="5,3 19,12 5,21" fill="currentColor"/>
+          </svg>
+          <svg class="icon pause-icon" viewBox="0 0 24 24" width="24" height="24" style="display:none">
+            <rect x="5" y="3" width="5" height="18" fill="currentColor"/>
+            <rect x="14" y="3" width="5" height="18" fill="currentColor"/>
+          </svg>
+        </button>
+        <div class="progress-container">
+          <div class="progress-bar"></div>
+        </div>
+      </div>
+      <audio src={`music/${item.src}`}></audio>
+    </div>
+  ))}
+</div>
+
   </Container>
 </main>
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const tabs = document.querySelectorAll(".tabs button");
+  const sections = {
+    Illustrations: document.getElementById("illustrations"),
+    Animation: document.getElementById("animation"),
+    "3D": document.getElementById("3d"),
+    Storyboard: document.getElementById("storyboard"),
+    Music: document.getElementById("music")
+  };
+  const title = document.getElementById("tab-title");
+
+  tabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    const selected = tab.dataset.tab;
+
+    // Update active tab
+    tabs.forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+
+    // Update title
+    title.textContent = selected;
+
+    // Show/hide sections with fade-up
+    Object.keys(sections).forEach(key => {
+      const section = sections[key];
+      if (key === selected) {
+        section.style.display = key === "Music" ? "flex" : "block";
+        // Trigger fade-up
+        requestAnimationFrame(() => {
+          section.classList.add("active");
+        });
+      } else {
+        section.classList.remove("active");
+        section.style.display = "none";
+      }
+    });
+  });
+});
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const players = document.querySelectorAll(".music-player");
+
+  players.forEach(player => {
+    const audio = player.querySelector("audio");
+    const playBtn = player.querySelector(".play-btn");
+    const playIcon = playBtn.querySelector(".play-icon");
+    const pauseIcon = playBtn.querySelector(".pause-icon");
+    const progressContainer = player.querySelector(".progress-container");
+    const progressBar = player.querySelector(".progress-bar");
+
+    // Play/pause toggle
+    playBtn.addEventListener("click", () => {
+      if (audio.paused) {
+        document.querySelectorAll("audio").forEach(a => { if(a !== audio) a.pause(); });
+        audio.play();
+        playIcon.style.display = "none";
+        pauseIcon.style.display = "block";
+      } else {
+        audio.pause();
+        playIcon.style.display = "block";
+        pauseIcon.style.display = "none";
+      }
+    });
+
+    // Update progress bar as audio plays
+    audio.addEventListener("timeupdate", () => {
+      const percent = (audio.currentTime / audio.duration) * 100;
+      progressBar.style.width = `${percent}%`;
+    });
+
+    // Reset icons when audio ends
+    audio.addEventListener("ended", () => {
+      playIcon.style.display = "block";
+      pauseIcon.style.display = "none";
+      progressBar.style.width = "0%";
+    });
+
+    // Click to skip
+    progressContainer.addEventListener("click", (e) => {
+      const rect = progressContainer.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const newTime = (clickX / rect.width) * audio.duration;
+      audio.currentTime = newTime;
+    });
+
+    // Drag to skip
+    let isDragging = false;
+
+    progressContainer.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      updateProgress(e);
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      if (isDragging) updateProgress(e);
+    });
+
+    window.addEventListener("mouseup", () => {
+      isDragging = false;
+    });
+
+    function updateProgress(e) {
+      const rect = progressContainer.getBoundingClientRect();
+      let offsetX = e.clientX - rect.left;
+      offsetX = Math.max(0, Math.min(offsetX, rect.width));
+      const newTime = (offsetX / rect.width) * audio.duration;
+      audio.currentTime = newTime;
+    }
+  });
+});
+</script>
+
 <style>
-main.content {
-  flex: 1;
-  margin-left: 260px;
-  padding: 2rem;
-  background: none;
-  color: var(--text-dark);
-  position: relative;
-  z-index: 1;
-}
+  main.content {
+    flex: 1;
+    margin-left: 260px;
+    padding: 2rem;
+    background: none;
+    position: relative;
+    z-index: 1;
+    color: var(--text-dark);
+  }
 
-h1 {
-  font-size: 1.8rem;
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 1rem;
   margin-bottom: 1rem;
-  color: var(--color-1);
 }
 
-/* Masonry-like Bento Gallery */
+.tabs button {
+  background: var(--container);
+  color: var(--text-dark);
+  border: 2px solid var(--border-container);
+  border-radius: 0.75rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tabs button.active {
+  background: var(--color-4);
+  color: var(--text-main);
+  border-color: var(--color-1);
+}
+
+/* Bento Gallery */
 .bento-gallery {
-  column-count: 4; /* Number of columns */
+  column-count: 4;
   column-gap: 0.5rem;
 }
 
 .bento-item {
-  display: inline-block; /* Required for masonry effect */
-  width: 100%; /* Make item fill column width */
+  display: inline-block;
+  width: 100%;
   margin-bottom: 0.1rem;
   border-radius: 0.5rem;
   overflow: hidden;
@@ -78,19 +371,161 @@ h1 {
 
 .bento-item img {
   width: 100%;
-  height: auto; /* maintain aspect ratio */
+  height: auto;
   display: block;
   object-fit: cover;
 }
 
+.storyboard-item {
+  display: flex;
+  flex-direction: column;
+  break-inside: avoid; /* prevent splitting in column */
+  margin-bottom: 1.5rem;
+  width: 100%; /* take full column width */
+  max-width: 500px; /* optional: limit max size */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.bento-gallery#storyboard {
+  column-count: 2; /* fewer columns = bigger items */
+  column-gap: 1rem;
+}
+
 /* Responsive */
-@media (max-width: 1200px) {
-  .bento-gallery { column-count: 3; }
-}
 @media (max-width: 900px) {
-  .bento-gallery { column-count: 2; }
+  .bento-gallery#storyboard {
+    column-count: 1;
+  }
 }
-@media (max-width: 600px) {
-  .bento-gallery { column-count: 1; }
+
+.bento-item .item-text {
+  padding: 0.5rem 0;
 }
+
+.bento-item .item-text h3 {
+  margin: 0.3rem 0;
+  font-size: 1.2rem; /* bigger title */
+  font-weight: 600;
+}
+
+.bento-item .item-text hr {
+  border: none;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  margin: 0.3rem 0;
+}
+
+.bento-item .item-text p {
+  margin: 0;
+  font-size: 1rem; /* bigger description */
+  color: var(--text-dark);
+}
+
+/* Music Row */
+.music-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.music-player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--container);
+  border: 2px solid var(--border-container);
+  border-radius: 1rem;
+  padding: 1rem;
+  width: 220px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.music-player:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.music-cover img {
+  width: 100%;
+  border-radius: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.music-info h3 {
+  font-size: 1rem;
+  margin: 0.3rem 0;
+  font-weight: 600;
+  text-align: center;
+}
+
+.music-info p {
+  font-size: 0.85rem;
+  color: var(--text-dark);
+  margin: 0;
+  text-align: center;
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.play-btn {
+  background: var(--color-4);
+  color: var(--text-main);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.play-btn .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.progress-container {
+  flex: 1;
+  height: 6px;
+  background: rgba(0,0,0,0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--color-1);
+  border-radius: 3px;
+  transition: width 0.05s linear;
+}
+
+.bento-gallery,
+.music-row {
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.bento-gallery.active,
+.music-row.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 1200px) { .bento-gallery { column-count: 3; } }
+@media (max-width: 900px)  { .bento-gallery { column-count: 2; } }
+@media (max-width: 600px)  { .bento-gallery { column-count: 1; } }
 </style>
