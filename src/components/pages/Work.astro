@@ -1,44 +1,95 @@
 ---
 import Container from "/src/components/Container.astro";
+
+const galleryItems = [
+  "1 (1).png",
+  "1.png",
+  "3.png",
+  "astrowo.png",
+  "dress.png",
+  "emmarefs.png",
+  "fluttrerbee.png",
+  "high ra and zur ha.png",
+  "lumi nun.png",
+  "luuust.png",
+  "pebbles empty.png",
+  "rf.png",
+  "shame on you.png",
+  "sigma wolf.png",
+  "TITLE CARD.png",
+  "uh.png",
+  "walk.png",
+  "zurra miles graduat.png",
+  "zuref.png"
+];
 ---
 
 <main class="content">
   <Container variant="static">
-    <h1>Current Projects</h1>
-    <section class="card">
-      <h2>WIP :3<br>put art, animation, 3d stuff, music here</h2>
+    <h1>Illustrations</h1>
+    <section class="bento-gallery">
+      {galleryItems.map(src => (
+        <div class="bento-item">
+          <img src={`illustrations/${src}`} alt="Project" />
+        </div>
+      ))}
     </section>
   </Container>
 </main>
 
 <style>
-  main.content {
-    flex: 1;
-    margin-left: 260px;
-    padding: 2rem;
-    background: none;
-    color: var(--text-dark);
-    position: relative;
-    z-index: 1;
-  }
+main.content {
+  flex: 1;
+  margin-left: 260px;
+  padding: 2rem;
+  background: none;
+  color: var(--text-dark);
+  position: relative;
+  z-index: 1;
+}
 
-  h1 {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-    color: var(--color-1);
-  }
+h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: var(--color-1);
+}
 
-  h2 {
-    font-size: 1.3rem;
-    margin-bottom: 0.5rem;
-    color: var(--color-2);
-  }
+/* Masonry-like Bento Gallery */
+.bento-gallery {
+  column-count: 4; /* Number of columns */
+  column-gap: 0.5rem;
+}
 
-  .card {
-    margin-top: 1.5rem;
-    padding: 1.25rem;
-    border-radius: 1rem;
-    background: var(--color-6);
-    border: 2px solid var(--color-5);
-  }
+.bento-item {
+  display: inline-block; /* Required for masonry effect */
+  width: 100%; /* Make item fill column width */
+  margin-bottom: 0.1rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bento-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.bento-item img {
+  width: 100%;
+  height: auto; /* maintain aspect ratio */
+  display: block;
+  object-fit: cover;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .bento-gallery { column-count: 3; }
+}
+@media (max-width: 900px) {
+  .bento-gallery { column-count: 2; }
+}
+@media (max-width: 600px) {
+  .bento-gallery { column-count: 1; }
+}
 </style>

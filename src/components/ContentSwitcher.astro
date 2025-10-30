@@ -1,7 +1,7 @@
 ---
 import About from './pages/About.astro';
 import Work from './pages/Work.astro';
-import Gay from './pages/Gay.astro';
+import Blog from './pages/Blog.astro';
 import Contact from './pages/Contact.astro';
 ---
 
@@ -13,8 +13,8 @@ import Contact from './pages/Contact.astro';
   <Work />
 </div>
 
-<div id="gay-container" class="fade-section">
-  <Gay />
+<div id="blog-container" class="fade-section">
+  <Blog />
 </div>
 
 <div id="contact-container" class="fade-section">
@@ -28,26 +28,33 @@ import Contact from './pages/Contact.astro';
   transition: opacity 0.4s ease, transform 0.4s ease;
   position: absolute;
   width: 100%;
+  pointer-events: none; /* prevent interaction when hidden */
+  user-select: none;    /* prevent text selection when hidden */
 }
 
 .fade-section.show {
   opacity: 1;
   transform: translateY(0);
   z-index: 1;
+  pointer-events: auto; /* enable interaction when visible */
+  user-select: auto;
 }
 
 .fade-section.hide {
   opacity: 0;
   transform: translateY(5px);
   z-index: 0;
+  pointer-events: none; /* make sure hidden sections are non-interactable */
+  user-select: none;
 }
+
 </style>
 
 <script type="module" client:load>
 const sections = {
   about: document.getElementById('about-container'),
   work: document.getElementById('work-container'),
-  gay: document.getElementById('gay-container'),
+  blog: document.getElementById('blog-container'),
   contact: document.getElementById('contact-container')
 };
 
