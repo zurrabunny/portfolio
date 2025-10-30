@@ -1,0 +1,102 @@
+---
+/**
+ * Responsive, flicker-free checkerboard background
+ * Works for dark and light modes
+ * Uses CSS variables from global.css
+ */
+---
+
+<div class="bg-grid-root">
+  <canvas id="bg-grid-canvas" aria-hidden="true"></canvas>
+</div>
+
+<style>
+.bg-grid-root {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  pointer-events: none;
+}
+
+#bg-grid-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+</style>
+
+<script type="module">
+(() => {
+  const canvas = document.getElementById("bg-grid-canvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  ctx.imageSmoothingEnabled = false;
+
+  let width, height, dpr;
+  const cellSize = 64;
+  const scrollSpeed = 0.2;
+  const diagonal = true;
+
+  // Fetch colors from CSS variables
+  let rootStyles = getComputedStyle(document.documentElement);
+  let colorA = rootStyles.getPropertyValue('--bg-grid-color-a').trim();
+  let colorB = rootStyles.getPropertyValue('--bg-grid-color-b').trim();
+
+  let offsetX = 0;
+  let offsetY = 0;
+
+  function resize() {
+    dpr = Math.max(1, window.devicePixelRatio || 1);
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+    const cols = Math.ceil(width / cellSize) + 2;
+    const rows = Math.ceil(height / cellSize) + 2;
+
+    const isDarkMode = document.documentElement.classList.contains('dark-mode');
+
+    for (let y = -1; y < rows; y++) {
+      for (let x = -1; x < cols; x++) {
+        const isDark = (x + y) % 2 === 0;
+        ctx.fillStyle = isDark ? colorA : colorB;
+
+        const px = Math.round(x * cellSize + offsetX);
+        const py = Math.round(y * cellSize + offsetY);
+        const size = isDarkMode ? cellSize + 1 : cellSize; // +1 only in dark mode
+
+        ctx.fillRect(px, py, size, size);
+      }
+    }
+
+    if (diagonal) {
+      offsetX -= scrollSpeed;
+      offsetY -= scrollSpeed;
+    } else {
+      offsetX -= scrollSpeed;
+    }
+
+    if (offsetX <= -cellSize) offsetX += cellSize;
+    if (offsetY <= -cellSize) offsetY += cellSize;
+
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  draw();
+  window.addEventListener("resize", resize, { passive: true });
+
+  // Update grid colors on dark mode toggle
+  const observer = new MutationObserver(() => {
+    rootStyles = getComputedStyle(document.documentElement);
+    colorA = rootStyles.getPropertyValue('--bg-grid-color-a').trim();
+    colorB = rootStyles.getPropertyValue('--bg-grid-color-b').trim();
+  });
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+})();
+</script>

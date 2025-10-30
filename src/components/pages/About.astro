@@ -1,0 +1,304 @@
+---
+import Container from "/src/components/Container.astro";
+---
+
+<main class="content">
+  <div class="content-wrapper">
+    <Container variant="static">
+      <h1>Introduction</h1>
+
+      <section class="card">
+        <h2>About Me</h2>
+        <p>
+          Hello! I'm Rohn Maulawin, my preferred name is Zurra / Azzurra.<br />
+          I work as an Animator, Illustrator, Music Composer, 3D Designer,
+          Sound Editor, and Front-End Web Developer.
+        </p>
+		<div class="tabs">
+          <div class="tab-item">
+            <button class="tab" id="academic">
+              Programs im familiar with
+              <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </button>
+            <div class="tab-dropdown hidden">
+              <div class="dropdown-container"> 
+				<ul>
+				<h2>Animation / Illustration Programs</h2> 
+				<li>Clip Studio Paint
+				<li>Adobe Animate
+				<li>Toon Boom Harmony
+				<li>Moho (Currently Learning)
+				<h2>3D Modelling Programs</h2> 
+				<li>Blender
+				<li>Blockbench
+				<h2>Digital Audio Workspaces</h2> 
+				<li>FL Studio
+				<h2>Video Editing</h2> 
+				<li>Davinci Resolve
+				<h2>Website Framework</h2> 
+				<li>Astro
+				</ul>
+              </div>
+            </div>
+          </div>
+		  
+		  <div class="tab-item">
+            <button class="tab" id="academic">
+              My Mission
+              <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </button>
+            <div class="tab-dropdown hidden">
+              <div class="dropdown-container"> 
+				<p> penits uwu
+				</p>
+              </div>
+            </div>
+          </div>
+		  
+		  <div class="tab-item">
+            <button class="tab" id="academic">
+              My Philosophy
+              <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </button>
+            <div class="tab-dropdown hidden">
+              <div class="dropdown-container"> 
+				<p> penits uwu
+				</p>
+              </div>
+            </div>
+          </div>
+      </section>
+
+      <section class="card">
+        <h2>Background</h2>
+
+        <div class="tabs">
+          <div class="tab-item">
+            <button class="tab" id="academic">
+              Academic Background
+              <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </button>
+            <div class="tab-dropdown hidden">
+              <div class="dropdown-container">
+                <p>
+                  I am currently taking Multimedia courses in CIIT College of
+                  Arts and Technology.
+                </p>
+				<h2>CIIT Senior Highschool</h2>
+				<ul>
+					<li>Selected for excellent artworks on CIIT Mural Art 2023
+					<li>Quarterly Honors, Top 8 - First Quarter Grade 11, 2023
+					<li>Quarterly Honors, Top 9 - Fourth Quarter Grade 11, 2024
+					<li>Quarterly Honors, Top 7 - First Quarter Grade 12, 2024
+					<li>Quarterly Honors, Top 4 - Second Quarter Grade 12, 2025
+					<li>Quarterly Honors, Top 5 - Third Quarter Grade 12, 2025
+					<li>Subject Proficiency in Animation, Grade 12
+					<li>Published Research: "Do I Really Like Him?" : An Analysis on Queer Representation in the Portrayal of Romantic Relationships Among Selected Japanese Boys' Love Animated Series
+				</ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-item">
+            <button class="tab" id="experience">
+              Experience
+              <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </button>
+            <div class="tab-dropdown hidden">
+              <div class="dropdown-container">
+			  <h2>Freelance Animator & Illustrator</h2>
+                <ul>
+                  <li>Freelance Animator & Illustrator since 2022.</li>
+                  <li>Composed music for projects.</li>
+                  <li>Made 2D animations and concept art using Adobe Animate, Clip Studio Paint, and Toon Boom.</li>
+                  <li>Produced digital illustrations and graphic designs for various clients.</li>
+                </ul>
+				
+				<h2>3D Designer</h2>
+                <ul>
+                  <li>3D Designer since 2023.</li>
+                  <li>Created  and animated various Minecraft creature and machine models for RainworldMC.</li>
+                  <li>Created 3D environment sets for various works (storyboards, references).</li>
+                  <li>Produced digital illustrations and graphic designs for various clients.</li>
+                </ul>
+				
+				<h2>YouTube Content Creator</h2>
+                <ul>
+                  <li>Grew a YouTube channel to 16,000 subscribers and 3.7 million views.</li>
+                  <li>Created and edited animated videos, music compositions, and visual storytelling projects</li>
+                </ul>
+				
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Strengths and Weaknesses</h2>
+        <ul>
+          <li> Organized reflection obtained from your GCC Test results, Learning Style Inventory, and VIA Strengths (how these results helped you understand yourself).</li>
+        </ul>
+      </section>
+    </Container>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll(".tab");
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const dropdown = tab.nextElementSibling;
+        const isHidden = dropdown.classList.contains("hidden");
+
+        document.querySelectorAll(".tab-dropdown").forEach((d) => {
+          d.classList.add("hidden");
+          d.style.maxHeight = "0";
+        });
+        document.querySelectorAll(".tab").forEach((t) =>
+          t.classList.remove("active")
+        );
+
+        if (isHidden) {
+          dropdown.classList.remove("hidden");
+          dropdown.style.maxHeight = dropdown.scrollHeight + "px";
+          tab.classList.add("active");
+        }
+      });
+    });
+  </script>
+</main>
+
+<style>
+  main.content {
+    flex: 1;
+    margin-left: 260px;
+    padding: 2rem;
+    background: none;
+    position: relative;
+    z-index: 1;
+    color: var(--text-dark);
+  }
+
+  .content-wrapper {
+    background: none;
+  }
+
+  :global(.container-wrapper) {
+    background: var(--bg-main);
+    border-radius: 1.25rem;
+    padding: 2rem;
+    border: 2px solid var(--color-4);
+    color: var(--text-dark);
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--color-1);
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-2);
+  }
+
+  .card {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    border-radius: 1rem;
+    background: var(--color-6);
+    border: 2px solid var(--color-5);
+  }
+
+  .tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .tab {
+    width: 100%;
+    background: var(--color-5);
+    border: 2px solid var(--color-5);
+    padding: 0.6rem 1rem;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    color: var(--text-dark);
+    font-weight: 600;
+    text-align: left;
+    transition: all 0.25s ease;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .tab:hover {
+    background: var(--color-4);
+  }
+
+  .tab.active {
+    background: var(--color-3);
+    color: var(--text-main);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .arrow {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease;
+  }
+
+  .tab.active .arrow {
+    transform: rotate(180deg);
+  }
+
+  .tab-dropdown {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.35s ease;
+  }
+
+  .tab-dropdown.hidden {
+    max-height: 0;
+  }
+
+  .dropdown-container {
+    background: var(--color-6);
+    border: 2px solid var(--color-5);
+    border-top: none;
+    border-bottom-left-radius: 0.75rem;
+    border-bottom-right-radius: 0.75rem;
+    padding: 1rem;
+    margin-top: -2px;
+    position: relative;
+    z-index: 1;
+  }
+
+  ul {
+    list-style-type: disc;
+    padding-left: 1.25rem;
+  }
+
+  @media (max-width: 768px) {
+    main.content {
+      margin-left: 0;
+      padding: 1rem;
+    }
+  }
+</style>

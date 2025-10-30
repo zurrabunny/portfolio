@@ -1,0 +1,202 @@
+/*==========================
+  Fonts
+==========================*/
+@font-face {
+  font-family: 'Fredoka';
+  src: url('/fonts/Fredoka.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Fredoka', sans-serif;
+  letter-spacing: 1.3px;
+  line-height: 1.6;
+  background-color: transparent; /* let BackgroundGrid show */
+  color: var(--text-main);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/*==========================
+  Color Palette & Dark Mode
+==========================*/
+:root {
+  /* Pink-Red Palette */
+  --color-1: #c62e3f;
+  --color-2: #cf3c4d;
+  --color-3: #d85868;
+  --color-4: #df7c8a;
+  --color-5: #e8a4af;
+  --color-6: #edd0d7;
+
+  /* Backgrounds */
+  --bg-main: var(--color-6);
+  --bg-sidebar: var(--color-4);
+  --container: rgba(255,255,255,0.85);
+  --container-fixed: var(--bg-sidebar);
+  
+  --border-container: rgba(0,0,0,0.05);
+  --border-sidebar: rgba(0,0,0,0.05);
+
+  /* Text */
+  --text-main: #2b0004;
+  --text-light: #fff;
+  --text-dark: #2b0004;
+
+  /* Background Grid */
+  --bg-grid-color-a: rgba(198,46,63,0.2);
+  --bg-grid-color-b: rgba(223,124,138,0.2);
+}
+
+:root.dark-mode {
+  /* Deep, moody accent colors */
+  --color-1: #4d1f2a;
+  --color-2: #602733;
+  --color-3: #773544;
+  --color-4: #8f4255;
+  --color-5: #a05066;
+  --color-6: #b85d77;
+
+  /* Backgrounds */
+  --bg-main: #0d0d0d;        /* almost black main background */
+  --bg-sidebar: #1a0f14;     /* dark sidebar */
+  --container: rgba(20,20,20,0.9);
+  --container-fixed: var(--bg-sidebar);
+  
+  /* Borders */
+  --border-container: rgba(255,255,255,0.03);
+  --border-sidebar: rgba(255,255,255,0.03);
+
+  /* Text */
+  --text-main: #FFE0EC;
+  --text-light: #fff;
+  --text-dark: #FFADCD;
+
+  /* Grid overlay */
+  --bg-grid-color-a: #2a2a2a;
+  --bg-grid-color-b: #1e1e1e;
+}
+
+/*==========================
+  Containers
+==========================*/
+.container--static {
+  background-color: var(--container);
+  color: var(--text-main);
+  border: 2px solid rgba(0,0,0,0.05);
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 900px;
+  margin: 0 auto;
+  display: block;
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+
+.container--fixed {
+  background-color: var(--container-fixed);
+  color: var(--text-light);
+  border-right: 2px solid rgba(255,255,255,0.05);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100vh;
+  padding: 40px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  z-index: 1000;
+  border-radius: 0;
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+
+/*==========================
+  Sidebar
+==========================*/
+.sidebar {
+  background-color: var(--bg-sidebar);
+  color: var(--text-dark);
+  padding: 2rem 1rem;
+  border-radius: 1.25rem;
+  box-sizing: border-box;
+  height: 100vh;
+  width: 260px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-pic {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-4);
+  margin-bottom: 1rem;
+}
+
+.tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.tab {
+  color: var(--text-dark);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+  border-radius: 0.75rem;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.tab:hover {
+  background: var(--color-4);
+  color: var(--text-main);
+}
+
+/* Responsive Sidebar */
+@media (max-width: 768px) {
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem;
+  }
+
+  .tabs {
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .profile-pic {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/*==========================
+  Scrollbar
+==========================*/
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+* {
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+}
+body {
+  -ms-overflow-style: none;
+}

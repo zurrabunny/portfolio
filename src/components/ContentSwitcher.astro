@@ -1,0 +1,79 @@
+---
+import About from './pages/About.astro';
+import Work from './pages/Work.astro';
+import Gay from './pages/Gay.astro';
+import Contact from './pages/Contact.astro';
+---
+
+<div id="about-container" class="fade-section show">
+  <About />
+</div>
+
+<div id="work-container" class="fade-section">
+  <Work />
+</div>
+
+<div id="gay-container" class="fade-section">
+  <Gay />
+</div>
+
+<div id="contact-container" class="fade-section">
+  <Contact />
+</div>
+
+<style>
+.fade-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  position: absolute;
+  width: 100%;
+}
+
+.fade-section.show {
+  opacity: 1;
+  transform: translateY(0);
+  z-index: 1;
+}
+
+.fade-section.hide {
+  opacity: 0;
+  transform: translateY(5px);
+  z-index: 0;
+}
+</style>
+
+<script type="module" client:load>
+const sections = {
+  about: document.getElementById('about-container'),
+  work: document.getElementById('work-container'),
+  gay: document.getElementById('gay-container'),
+  contact: document.getElementById('contact-container')
+};
+
+// Select tabs inside the sidebar
+const navTabs = document.querySelectorAll('.sidebar .tab');
+const duration = 200; // match CSS transition duration in ms
+
+navTabs.forEach(tab => {
+  tab.addEventListener('click', e => {
+    e.preventDefault();
+    const target = tab.dataset.target;
+
+    Object.keys(sections).forEach(key => {
+      const section = sections[key];
+      if (key === target) {
+        if (!section.classList.contains('show')) {
+          section.classList.remove('hide');
+          section.classList.add('show');
+        }
+      } else {
+        if (section.classList.contains('show')) {
+          section.classList.remove('show');
+          section.classList.add('hide');
+        }
+      }
+    });
+  });
+});
+</script>

@@ -1,0 +1,28 @@
+---
+const { variant = "fixed", class: extraClass } = Astro.props;
+const classes = `container ${variant === "static" ? "container--static" : "container--fixed"} ${extraClass ?? ""}`.trim();
+import "../styles/global.css";
+---
+
+<div class={classes}>
+  <slot />
+</div>
+
+<style>
+.container {
+  box-sizing: border-box;
+}
+
+/* Fade transitions for static container */
+.fade-enter {
+  opacity: 0;
+}
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+</style>
