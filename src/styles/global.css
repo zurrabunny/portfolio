@@ -44,6 +44,7 @@ html, body {
   --color-4: #df7c8a;
   --color-5: #e8a4af;
   --color-6: #edd0d7;
+  --color-7: #dea2b0;
 
   /* Backgrounds */
   --bg-main: var(--color-6);
@@ -74,6 +75,7 @@ html, body {
   --color-4: #8f4255;
   --color-5: #a05066;
   --color-6: #47212C;
+  --color-7: #452530;
 
   /* Backgrounds */
   --bg-main: #0d0d0d;        /* almost black main background */
