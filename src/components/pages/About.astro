@@ -3,175 +3,168 @@ import Container from "/src/components/Container.astro";
 ---
 
 <main class="content">
-  <div class="content-wrapper">
-    <Container variant="static">
-      <h1>Introduction</h1>
+  <Container variant="static">
+    <h1>Introduction</h1>
 
-      <section class="card">
-        <h2>About Me</h2>
-        <p>
-          Hello! I'm Rohn Maulawin, my preferred name is Zurra / Azzurra.<br />
-          I work as an Animator and Digital Illustrator. I also enjoy composing music, designing in 3D, editing sound, and building websites as a hobby.
-        </p>
-		<div class="tabs">
-          <div class="tab-item">
-            <button class="tab" id="academic">
-              Programs im familiar with
-              <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6"/>
-              </svg>
-            </button>
-            <div class="tab-dropdown hidden">
-              <div class="dropdown-container"> 
-				<ul>
-				<h2>Animation / Illustration Programs</h2> 
-				<li>Clip Studio Paint
-				<li>Adobe Animate
-				<li>Toon Boom Harmony
-				<li>Moho (Currently Learning)
-				<h2>3D Modelling Programs</h2> 
-				<li>Blender
-				<li>Blockbench
-				<h2>Digital Audio Workspaces</h2> 
-				<li>FL Studio
-				<h2>Video Editing</h2> 
-				<li>Davinci Resolve
-				<h2>Website Framework</h2> 
-				<li>Astro
-				</ul>
-              </div>
-            </div>
-          </div>
-		  
-		  <div class="tab-item">
-            <button class="tab" id="academic">
-              My Mission
-              <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6"/>
-              </svg>
-            </button>
-            <div class="tab-dropdown hidden">
-              <div class="dropdown-container"> 
-				<p> penits uwu
-				</p>
-              </div>
-            </div>
-          </div>
-		  
-		  <div class="tab-item">
-            <button class="tab" id="academic">
-              My Philosophy
-              <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6"/>
-              </svg>
-            </button>
-            <div class="tab-dropdown hidden">
-              <div class="dropdown-container"> 
-				<p> penits uwu
-				</p>
-              </div>
-            </div>
-          </div>
-      </section>
+    <!-- About Me Section -->
+    <section class="card">
+      <h2>About Me</h2>
+      <p>
+        Hello! I'm Rohn Maulawin, my preferred name is Zurra / Azzurra.<br />
+        I work as an Animator and Digital Illustrator. I also enjoy composing music, designing in 3D, editing sound, and building websites as a hobby.
+      </p>
 
-      <section class="card">
-        <h2>Background</h2>
-
-        <div class="tabs">
-          <div class="tab-item">
-            <button class="tab" id="academic">
-              Academic Background
-              <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6"/>
+      <div class="accordion">
+        <div class="accordion-item">
+          <button class="accordion-header">
+            Programs I'm Familiar With
+            <span class="arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M7 10l5 5 5-5H7z"/>
               </svg>
-            </button>
-            <div class="tab-dropdown hidden">
-              <div class="dropdown-container">
-                <p>
-                  I am currently taking Multimedia courses in CIIT College of
-                  Arts and Technology.
-                </p>
-				<h2>CIIT Senior Highschool</h2>
-				<ul>
-					<li>Selected for excellent artworks on CIIT Mural Art 2023
-					<li>Quarterly Honors, Top 8 - First Quarter Grade 11, 2023
-					<li>Quarterly Honors, Top 9 - Fourth Quarter Grade 11, 2024
-					<li>Quarterly Honors, Top 7 - First Quarter Grade 12, 2024
-					<li>Quarterly Honors, Top 4 - Second Quarter Grade 12, 2025
-					<li>Quarterly Honors, Top 5 - Third Quarter Grade 12, 2025
-					<li>Subject Proficiency in Animation, Grade 12
-					<li>Published Research: "Do I Really Like Him?" : An Analysis on Queer Representation in the Portrayal of Romantic Relationships Among Selected Japanese Boys' Love Animated Series
-				</ul>
-              </div>
-            </div>
-          </div>
-
-          <div class="tab-item">
-            <button class="tab" id="experience">
-              Experience
-              <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6"/>
-              </svg>
-            </button>
-            <div class="tab-dropdown hidden">
-              <div class="dropdown-container">
-			  <h2>Freelance Animator & Illustrator</h2>
-                <ul>
-                  <li>Freelance Animator & Illustrator since 2022.</li>
-                  <li>Composed music for projects.</li>
-                  <li>Made 2D animations and concept art using Adobe Animate, Clip Studio Paint, and Toon Boom.</li>
-                  <li>Produced digital illustrations and graphic designs for various clients.</li>
-                </ul>
-				
-				<h2>3D Designer</h2>
-                <ul>
-                  <li>3D Designer since 2023.</li>
-                  <li>Created  and animated various Minecraft creature and machine models for RainworldMC.</li>
-                  <li>Created 3D environment sets for various works (storyboards, references).</li>
-                  <li>Produced digital illustrations and graphic designs for various clients.</li>
-                </ul>
-				
-				<h2>YouTube Content Creator</h2>
-                <ul>
-                  <li>Grew a YouTube channel to 16,000 subscribers and 3.7 million views.</li>
-                  <li>Created and edited animated videos, music compositions, and visual storytelling projects</li>
-                </ul>
-				
-              </div>
-            </div>
+            </span>
+          </button>
+          <div class="accordion-body">
+            <h3>Animation / Illustration</h3>
+            <ul>
+              <li>Clip Studio Paint</li>
+              <li>Adobe Animate</li>
+              <li>Toon Boom Harmony</li>
+              <li>Moho (Currently Learning)</li>
+            </ul>
+            <h3>3D Modelling</h3>
+            <ul>
+              <li>Blender</li>
+              <li>Blockbench</li>
+            </ul>
+            <h3>Digital Audio Workspaces</h3>
+            <ul>
+              <li>FL Studio</li>
+            </ul>
+            <h3>Video Editing</h3>
+            <ul>
+              <li>Davinci Resolve</li>
+            </ul>
+            <h3>Website Framework</h3>
+            <ul>
+              <li>Astro</li>
+            </ul>
           </div>
         </div>
-      </section>
 
-      <section class="card">
-        <h2>Strengths and Weaknesses</h2>
-        <ul>
-          <li> Organized reflection obtained from your GCC Test results, Learning Style Inventory, and VIA Strengths (how these results helped you understand yourself).</li>
-        </ul>
-      </section>
-    </Container>
-  </div>
+        <div class="accordion-item">
+          <button class="accordion-header">
+            Life Values
+            <span class="arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M7 10l5 5 5-5H7z"/>
+              </svg>
+            </span>
+          </button>
+          <div class="accordion-body">
+            <p>Penits uwu</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            My Philosophy
+            <span class="arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M7 10l5 5 5-5H7z"/>
+              </svg>
+            </span>
+          </button>
+          <div class="accordion-body">
+            <p>Penits uwu</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Background Section -->
+    <section class="card">
+      <h2>Background</h2>
+      <div class="accordion">
+        <div class="accordion-item">
+          <button class="accordion-header">
+            Academic Background
+            <span class="arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M7 10l5 5 5-5H7z"/>
+              </svg>
+            </span>
+          </button>
+          <div class="accordion-body">
+            <p>I am currently taking Multimedia courses in CIIT College of Arts and Technology.</p>
+            <h3>CIIT Senior Highschool</h3>
+            <ul>
+              <li>Selected for excellent artworks on CIIT Mural Art 2023</li>
+              <li>Quarterly Honors, Top 8 - First Quarter Grade 11, 2023</li>
+              <li>Quarterly Honors, Top 9 - Fourth Quarter Grade 11, 2024</li>
+              <li>Quarterly Honors, Top 7 - First Quarter Grade 12, 2024</li>
+              <li>Quarterly Honors, Top 4 - Second Quarter Grade 12, 2025</li>
+              <li>Quarterly Honors, Top 5 - Third Quarter Grade 12, 2025</li>
+              <li>Subject Proficiency in Animation, Grade 12</li>
+              <li>Published Research: "Do I Really Like Him?"</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            Experience
+            <span class="arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M7 10l5 5 5-5H7z"/>
+              </svg>
+            </span>
+          </button>
+          <div class="accordion-body">
+            <h3>Freelance Animator & Illustrator</h3>
+            <ul>
+              <li>Freelance Animator & Illustrator since 2022</li>
+              <li>Composed music for projects</li>
+              <li>2D animations & concept art using Adobe Animate, Clip Studio Paint, and Toon Boom</li>
+              <li>Produced digital illustrations & graphic designs for clients</li>
+            </ul>
+            <h3>3D Designer</h3>
+            <ul>
+              <li>3D Designer since 2023</li>
+              <li>Created & animated Minecraft creatures/machines for RainworldMC</li>
+              <li>3D environment sets for storyboards & references</li>
+            </ul>
+            <h3>YouTube Content Creator</h3>
+            <ul>
+              <li>16,000 subscribers, 3.7M views</li>
+              <li>Animated videos, music compositions, visual storytelling</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Strengths Section -->
+    <section class="card">
+      <h2>Strengths and Weaknesses</h2>
+      <ul>
+        <li>Organized reflection obtained from GCC Test results, Learning Style Inventory, and VIA Strengths</li>
+      </ul>
+    </section>
+  </Container>
 
   <script>
-    const tabs = document.querySelectorAll(".tab");
+    document.querySelectorAll(".accordion-header").forEach(header => {
+      header.addEventListener("click", () => {
+        const body = header.nextElementSibling;
+        const isOpen = header.classList.contains("active");
 
-    tabs.forEach((tab) => {
-      tab.addEventListener("click", () => {
-        const dropdown = tab.nextElementSibling;
-        const isHidden = dropdown.classList.contains("hidden");
+        document.querySelectorAll(".accordion-header").forEach(h => h.classList.remove("active"));
+        document.querySelectorAll(".accordion-body").forEach(b => b.style.height = 0);
 
-        document.querySelectorAll(".tab-dropdown").forEach((d) => {
-          d.classList.add("hidden");
-          d.style.maxHeight = "0";
-        });
-        document.querySelectorAll(".tab").forEach((t) =>
-          t.classList.remove("active")
-        );
-
-        if (isHidden) {
-          dropdown.classList.remove("hidden");
-          dropdown.style.maxHeight = dropdown.scrollHeight + "px";
-          tab.classList.add("active");
+        if (!isOpen) {
+          header.classList.add("active");
+          body.style.height = body.scrollHeight + "px";
         }
       });
     });
@@ -183,35 +176,11 @@ import Container from "/src/components/Container.astro";
     flex: 1;
     margin-left: 260px;
     padding: 2rem;
-    background: none;
-    position: relative;
-    z-index: 1;
     color: var(--text-dark);
   }
 
-  .content-wrapper {
-    background: none;
-  }
-
-  :global(.container-wrapper) {
-    background: var(--bg-main);
-    border-radius: 1.25rem;
-    padding: 2rem;
-    border: 2px solid var(--color-4);
-    color: var(--text-dark);
-  }
-
-  h1 {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-    color: var(--color-1);
-  }
-
-  h2 {
-    font-size: 1.3rem;
-    margin-bottom: 0.5rem;
-    color: var(--color-2);
-  }
+  h1 { font-size: 1.8rem; color: var(--color-1); margin-bottom: 1rem; }
+  h2 { font-size: 1.3rem; color: var(--color-2); margin-bottom: 0.5rem; }
 
   .card {
     margin-top: 1.5rem;
@@ -221,83 +190,66 @@ import Container from "/src/components/Container.astro";
     border: 2px solid var(--color-5);
   }
 
-  .tabs {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin-top: 1rem;
-  }
+  .accordion { display: flex; flex-direction: column; gap: 0.5rem; }
 
-  .tab {
+  .accordion-header {
     width: 100%;
-    background: var(--color-5);
-    border: 2px solid var(--color-5);
-    padding: 0.6rem 1rem;
-    border-radius: 0.75rem;
-    cursor: pointer;
-    color: var(--text-dark);
-    font-weight: 600;
-    text-align: left;
-    transition: all 0.25s ease;
-    position: relative;
-    z-index: 2;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: var(--color-5);
+    border: 2px solid var(--color-5);
+    border-radius: 0.75rem;
+    padding: 0.6rem 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border-bottom: none; /* hide bottom line when closed */
   }
 
-  .tab:hover {
-    background: var(--color-4);
-  }
-
-  .tab.active {
+  .accordion-header.active {
     background: var(--color-3);
     color: var(--text-main);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+    border-bottom: 2px solid var(--color-5); /* show line when open */
   }
 
   .arrow {
-    width: 18px;
-    height: 18px;
-    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center; /* vertical center */
+    transition: transform 0.25s ease;
   }
 
-  .tab.active .arrow {
+  .arrow svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .accordion-header.active .arrow {
     transform: rotate(180deg);
   }
 
-  .tab-dropdown {
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.35s ease;
-  }
+	.accordion-body {
+	  overflow: hidden;
+	  height: 0;
+	  transition: height 0.35s ease, border 0.25s ease;
+	  border: none; /* hide border when closed */
+	  border-top: none;
+	  border-bottom-left-radius: 0.75rem;
+	  border-bottom-right-radius: 0.75rem;
+	  background: var(--color-6);
+	  padding: 0 1rem;
+	}
 
-  .tab-dropdown.hidden {
-    max-height: 0;
-  }
+	.accordion-header.active + .accordion-body {
+	  border: 2px solid var(--color-5); /* show border when open */
+	  border-top: none;
+	}
 
-  .dropdown-container {
-    background: var(--color-6);
-    border: 2px solid var(--color-5);
-    border-top: none;
-    border-bottom-left-radius: 0.75rem;
-    border-bottom-right-radius: 0.75rem;
-    padding: 1rem;
-    margin-top: -2px;
-    position: relative;
-    z-index: 1;
-  }
-
-  ul {
-    list-style-type: disc;
-    padding-left: 1.25rem;
-  }
+  .accordion-body ul { padding-left: 1.25rem; list-style-type: disc; margin: 0.5rem 0; }
 
   @media (max-width: 768px) {
-    main.content {
-      margin-left: 0;
-      padding: 1rem;
-    }
+    main.content { margin-left: 0; padding: 1rem; }
   }
 </style>
