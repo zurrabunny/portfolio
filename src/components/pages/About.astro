@@ -106,7 +106,7 @@ import Container from "/src/components/Container.astro";
               <li>Quarterly Honors, Top 4 - Second Quarter Grade 12, 2025</li>
               <li>Quarterly Honors, Top 5 - Third Quarter Grade 12, 2025</li>
               <li>Subject Proficiency in Animation, Grade 12</li>
-              <li>Published Research: "Do I Really Like Him?"</li>
+              <li>Published Research: "Do I Really Like Him?" : An Analysis on Queer Representation in the Portrayal of Romantic Relationships Among Selected Japanese Boys' Love Animated Series</li>
             </ul>
           </div>
         </div>
@@ -124,7 +124,6 @@ import Container from "/src/components/Container.astro";
             <h3>Freelance Animator & Illustrator</h3>
             <ul>
               <li>Freelance Animator & Illustrator since 2022</li>
-              <li>Composed music for projects</li>
               <li>2D animations & concept art using Adobe Animate, Clip Studio Paint, and Toon Boom</li>
               <li>Produced digital illustrations & graphic designs for clients</li>
             </ul>
@@ -134,10 +133,15 @@ import Container from "/src/components/Container.astro";
               <li>Created & animated Minecraft creatures/machines for RainworldMC</li>
               <li>3D environment sets for storyboards & references</li>
             </ul>
+			<h3>Sound Editor / Composer</h3>
+            <ul>
+              <li>Music Composer since 2023</li>
+              <li>Created original music for a Rhythm Game ( Personal Project )</li>
+              <li>Handled Sound Design and voiced characters for multiple Radio Dramas and Videos</li>
+            </ul>
             <h3>YouTube Content Creator</h3>
             <ul>
-              <li>16,000 subscribers, 3.7M views</li>
-              <li>Animated videos, music compositions, visual storytelling</li>
+              <li>Grew a Former YouTube channel (16 thousand subscribers, 3.7 million views, 155k pesos in revenue)</li>
             </ul>
           </div>
         </div>
@@ -181,6 +185,7 @@ import Container from "/src/components/Container.astro";
 
   h1 { font-size: 1.8rem; color: var(--color-1); margin-bottom: 1rem; }
   h2 { font-size: 1.3rem; color: var(--color-2); margin-bottom: 0.5rem; }
+  h3 { font-size: 1.3rem; color: var(--color-2); margin-bottom: 0.5rem; }
 
   .card {
     margin-top: 1.5rem;
@@ -212,7 +217,7 @@ import Container from "/src/components/Container.astro";
     color: var(--text-main);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    border-bottom: 2px solid var(--color-5); /* show line when open */
+    border-bottom: none; /* hide bottom line when closed */
   }
 
   .arrow {
@@ -233,18 +238,20 @@ import Container from "/src/components/Container.astro";
 	.accordion-body {
 	  overflow: hidden;
 	  height: 0;
-	  transition: height 0.35s ease, border 0.25s ease;
-	  border: none; /* hide border when closed */
-	  border-top: none;
+	  transition: height 0.35s ease, border 0.25s ease, opacity 0.3s ease;
+	  border: 2px solid var(--color-5); /* show border when open */
+	  border-bottom: none;
 	  border-bottom-left-radius: 0.75rem;
 	  border-bottom-right-radius: 0.75rem;
 	  background: var(--color-6);
 	  padding: 0 1rem;
+	  opacity: 0;
 	}
 
 	.accordion-header.active + .accordion-body {
 	  border: 2px solid var(--color-5); /* show border when open */
 	  border-top: none;
+	  opacity: 1;
 	}
 
   .accordion-body ul { padding-left: 1.25rem; list-style-type: disc; margin: 0.5rem 0; }
