@@ -5,15 +5,13 @@ import Container from "/src/components/Container.astro";
 <main class="content">
   <Container variant="static">
     <h1>Introduction</h1>
-
-    <!-- About Me Section -->
-    <section class="card">
-      <h2>About Me</h2>
-      <p>
+	<p>
         Hello! I'm Rohn Maulawin, my preferred name is Zurra / Azzurra.<br />
         I work as an Animator and Digital Illustrator. I also enjoy composing music, designing in 3D, editing sound, and building websites as a hobby.
       </p>
-
+    <!-- About Me Section -->
+    <section class="card">
+      <h2>About Me</h2>
       <div class="accordion">
         <div class="accordion-item">
           <button class="accordion-header">
@@ -183,10 +181,33 @@ import Container from "/src/components/Container.astro";
     color: var(--text-dark);
   }
 
+.accordion-header {
+  font-family: "Fredoka", sans-serif;
+  font-size: 1.2rem;
+  color: var(--color-3);
+}
+
   h1 { font-size: 1.8rem; color: var(--color-1); margin-bottom: 1rem; }
   h2 { font-size: 1.3rem; color: var(--color-2); margin-bottom: 0.5rem; }
+  h2 { font-size: 1.3rem; color: var(--color-2); margin-top: -0.5rem; }
   h3 { font-size: 1.3rem; color: var(--color-2); margin-bottom: 0.5rem; }
-
+	
+	h3 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+}
+	
+	h3::after {
+  content: "";
+  flex-grow: 1;
+  height: 2px;
+  background-color: var(--color-5); /* or any color you want */
+  opacity: 0.5; /* optional, for a softer look */
+}
+	
   .card {
     margin-top: 1.5rem;
     padding: 1.25rem;
