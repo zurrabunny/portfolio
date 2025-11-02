@@ -153,7 +153,23 @@ document.addEventListener("DOMContentLoaded", () => {
       // Active tab styling
       tabs.forEach(t => t.classList.remove("active"));
       tab.classList.add("active");
-      title.textContent = selected;
+      title.innerHTML = ""; // clear old text
+[...selected].forEach((letter, i) => {
+  const span = document.createElement("span");
+  span.textContent = letter;
+  span.style.opacity = "0";
+  span.style.display = "inline-block";
+  span.style.transition = `opacity 0.3s ease ${i * 0.05}s, transform 0.3s ease ${i * 0.05}s`;
+  span.style.transform = "translateY(5px)";
+  title.appendChild(span);
+});
+
+requestAnimationFrame(() => {
+  title.querySelectorAll("span").forEach(span => {
+    span.style.opacity = "1";
+    span.style.transform = "translateY(0)";
+  });
+});
 
       // Show/hide sections with repeated fade-up animation
       Object.keys(sections).forEach(key => {
@@ -287,6 +303,16 @@ main.content { flex:1; margin-left:260px; padding:2rem; color:var(--text-dark); 
 .progress-bar { height:100%; width:0%; background:var(--color-1); border-radius:3px; transition:width .05s linear; }
 
 .bento-item, .music-player { opacity:0; transform:translateY(20px); transition:opacity .5s ease, transform .5s ease; }
+
+#tab-title {
+  display: flex;
+  justify-content: center;
+  gap: 0.05em;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
 
 .video-wrapper {
   position: relative; /* important! overlay centers relative to this */
