@@ -4,9 +4,11 @@ import Container from "/src/components/Container.astro";
 
 <main class="content">
   <Container variant="static">
-    <h1>Current Projects</h1>
+    <h1>theres nothing here :^</h1>
     <section class="card">
-      <h2>WIP :3</h2>
+      <div class="wip-wrapper">
+        <img src="wip.gif" alt="Work in progress" class="wip-gif" />
+      </div>
     </section>
   </Container>
 </main>
@@ -40,5 +42,18 @@ import Container from "/src/components/Container.astro";
     border-radius: 1rem;
     background: var(--color-6);
     border: 2px solid var(--color-5);
+    text-align: center;
+  }
+
+  .wip-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+  }
+
+  .wip-gif {
+    max-width: 400px;
+    height: auto;
   }
 </style>
