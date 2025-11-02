@@ -1,5 +1,6 @@
 ---
 import Container from "/src/components/Container.astro";
+import ImageModal from "./ImageModal.astro"; // ✅ import
 
 const storyboardItems = [
   { src: "terrorinthecity.mp4", title: "Terror in the City", description: "A past inhabitant wanders the husk of her former home" },
@@ -41,48 +42,77 @@ const galleryItems = {
 
     <h1 id="tab-title">Illustrations</h1>
 
-    <section class="bento-gallery" id="illustrations">
-      {galleryItems.Illustrations.map(src => (
-        <div class="bento-item">
-          <img src={`illustrations/${src}`} alt="Illustration" />
-        </div>
-      ))}
-    </section>
+	<section class="bento-gallery" id="illustrations">
+	  {galleryItems.Illustrations.map(src => (
+		<div class="bento-item">
+		  <img class="previewable" src={`illustrations/${src}`} alt="Illustration" />
+		</div>
+	  ))}
+	</section>
 
-    <section class="bento-gallery" id="animation" style="display:none">
-      {galleryItems.Animation.filter(src => src.endsWith(".mp4")).map(src => (
-        <div class="bento-item">
-          <video src={`animations/${src}`} controls preload="metadata" style="width:100%; height:auto;" />
-        </div>
-      ))}
-      {galleryItems.Animation.filter(src => src.endsWith(".webp")).map(src => (
-        <div class="bento-item">
-          <img src={`animations/${src}`} alt="Animation webp" />
-        </div>
-      ))}
-    </section>
-
-    <section class="bento-gallery" id="3d" style="display:none">
-      {galleryItems["3D"].filter(src => src.endsWith(".webp")).map(src => (
-        <div class="bento-item"><img src={`3d/${src}`} alt="3D WebP" /></div>
-      ))}
-      {galleryItems["3D"].filter(src => src.endsWith(".png")).map(src => (
-        <div class="bento-item"><img src={`3d/${src}`} alt="3D PNG" /></div>
-      ))}
-    </section>
-
-    <section class="bento-gallery" id="storyboard" style="display:none">
-      {storyboardItems.map(item => (
-        <div class="bento-item storyboard-item">
-          <video src={`storyboard/${item.src}`} controls preload="metadata" style="width:100%; height:auto;" />
-          <div class="item-text">
-            <h3>{item.title}</h3>
-            <hr />
-            <p>{item.description}</p>
+<section class="bento-gallery" id="animation" style="display:none">
+  {galleryItems.Animation.map(src => {
+    const isVideo = src.endsWith(".mp4") || src.endsWith(".mov") || src.endsWith(".webm");
+    return (
+      <div class="bento-item video-item">
+        {isVideo ? (
+          <div class="video-wrapper">
+            <video
+              class="previewable"
+              src={`animations/${src}`}
+              preload="metadata"
+              muted
+              playsinline
+            ></video>
+            <div class="play-overlay">
+          <svg viewBox="0 0 64 64" width="40" height="40">
+			  <path d="M16,12 L52,32 L16,52 Z" fill="white" stroke="white" stroke-width="10" stroke-linejoin="round"/>
+			</svg>
+            </div>
           </div>
+        ) : (
+          <img class="previewable" src={`animations/${src}`} alt="Animation preview" />
+        )}
+      </div>
+    );
+  })}
+</section>
+
+
+	<section class="bento-gallery" id="3d" style="display:none">
+	  {galleryItems["3D"].filter(src => src.endsWith(".webp")).map(src => (
+		<div class="bento-item"><img class="previewable" src={`3d/${src}`} alt="3D WebP" /></div>
+	  ))}
+	  {galleryItems["3D"].filter(src => src.endsWith(".png")).map(src => (
+		<div class="bento-item"><img class="previewable" src={`3d/${src}`} alt="3D PNG" /></div>
+	  ))}
+	</section>
+
+<section class="bento-gallery" id="storyboard" style="display:none">
+  {storyboardItems.map(item => (
+    <div class="bento-item storyboard-item">
+      <div class="video-wrapper">
+        <video
+          class="previewable"
+          src={`storyboard/${item.src}`}
+          preload="metadata"
+          muted
+          playsinline
+        />
+        <div class="play-overlay">
+          <svg viewBox="0 0 64 64" width="40" height="40">
+			  <path d="M16,12 L52,32 L16,52 Z" fill="white" stroke="white" stroke-width="10" stroke-linejoin="round"/>
+			</svg>
         </div>
-      ))}
-    </section>
+      </div>
+      <div class="item-text">
+        <h3>{item.title}</h3>
+        <hr />
+        <p>{item.description}</p>
+      </div>
+    </div>
+  ))}
+</section>
 
     <div class="music-row" id="music" style="display:none">
       {musicItems.map((item, index) => (
@@ -101,6 +131,7 @@ const galleryItems = {
       ))}
     </div>
   </Container>
+   <ImageModal />
 </main>
 
 <script>
@@ -116,50 +147,52 @@ document.addEventListener("DOMContentLoaded", () => {
   const title = document.getElementById("tab-title");
 
   tabs.forEach(tab => {
-  tab.addEventListener("click", () => {
-    const selected = tab.dataset.tab;
+    tab.addEventListener("click", () => {
+      const selected = tab.dataset.tab;
 
-    // Active tab styling
-    tabs.forEach(t => t.classList.remove("active"));
-    tab.classList.add("active");
-    title.textContent = selected;
+      // Active tab styling
+      tabs.forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+      title.textContent = selected;
 
-    // Show/hide sections with repeated fade-up animation
-    Object.keys(sections).forEach(key => {
-      const section = sections[key];
-      const children = Array.from(section.children);
+      // Show/hide sections with repeated fade-up animation
+      Object.keys(sections).forEach(key => {
+        const section = sections[key];
+        const children = Array.from(section.children);
 
-      if (key === selected) {
-        section.style.display = key === "Music" ? "flex" : "block";
-        
-        // Reset children for animation
-        children.forEach(child => {
-          child.style.opacity = "0";
-          child.style.transform = "translateY(5px)";
-          child.style.transition = "none";
-        });
-
-        // Trigger fade-up with stagger
-        requestAnimationFrame(() => {
-          children.forEach((child, i) => {
-            child.style.transition = `opacity 0.5s ease ${i*0.02}s, transform 0.5s ease ${i*0.02}s`;
-            child.style.opacity = "1";
-            child.style.transform = "translateY(0)";
+        if (key === selected) {
+          section.style.display = key === "Music" ? "flex" : "block";
+          
+          // Reset children for animation
+          children.forEach(child => {
+            child.style.opacity = "0";
+            child.style.transform = "translateY(5px)";
+            child.style.transition = "none";
           });
-        });
 
-      } else {
-        section.style.display = "none";
-        children.forEach(child => {
-          child.style.opacity = "0";
-          child.style.transform = "translateY(5px)";
-          child.style.transition = "none";
-        });
-      }
+          // Trigger fade-up with stagger
+          requestAnimationFrame(() => {
+            children.forEach((child, i) => {
+              child.style.transition = `opacity 0.5s ease ${i*0.02}s, transform 0.5s ease ${i*0.02}s`;
+              child.style.opacity = "1";
+              child.style.transform = "translateY(0)";
+            });
+          });
+        } else {
+          section.style.display = "none";
+          children.forEach(child => {
+            child.style.opacity = "0";
+            child.style.transform = "translateY(5px)";
+            child.style.transition = "none";
+          });
+        }
+      });
     });
   });
-});
 
+  // ✅ Trigger Illustrations tab on page load
+  const defaultTab = document.querySelector('.tabs button[data-tab="Illustrations"]');
+  if (defaultTab) defaultTab.click();
 });
 
 // Music player functionality
@@ -229,7 +262,6 @@ main.content { flex:1; margin-left:260px; padding:2rem; color:var(--text-dark); 
 
 .bento-gallery { column-count:4; column-gap:.5rem; }
 .bento-item { display:inline-block; width:100%; margin-bottom:.1rem; border-radius:.5rem; overflow:hidden; cursor:pointer; transition:transform .2s ease, box-shadow .2s ease; }
-.bento-item:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,.1); }
 .bento-item img, .bento-item video { width:100%; height:auto; display:block; object-fit:cover; }
 
 .storyboard-item { display:flex; flex-direction:column; break-inside:avoid; margin:0 auto 1.5rem; max-width:500px; }
@@ -238,7 +270,7 @@ main.content { flex:1; margin-left:260px; padding:2rem; color:var(--text-dark); 
 
 .item-text { padding:.5rem 0; }
 .item-text h3 { margin:.3rem 0; font-size:1.2rem; font-weight:600; }
-.item-text hr { border:none; border-top:1px solid rgba(0,0,0,.1); margin:.3rem 0; }
+.item-text hr { border:none; border-top:3px solid rgba(0,0,0,.2); margin:.3rem 0; }
 .item-text p { margin:0; font-size:1rem; color:var(--text-dark); }
 
 .music-row { display:flex; flex-wrap:wrap; gap:1.5rem; }
@@ -255,6 +287,39 @@ main.content { flex:1; margin-left:260px; padding:2rem; color:var(--text-dark); 
 .progress-bar { height:100%; width:0%; background:var(--color-1); border-radius:3px; transition:width .05s linear; }
 
 .bento-item, .music-player { opacity:0; transform:translateY(20px); transition:opacity .5s ease, transform .5s ease; }
+
+.video-wrapper {
+  position: relative; /* important! overlay centers relative to this */
+  display: inline-block;
+  width: 100%;
+}
+
+.video-wrapper video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.video-wrapper .play-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.video-wrapper:hover .play-overlay {
+  opacity: 1;
+}
+
+.video-wrapper .play-overlay svg {
+  width: 40px;
+  height: 40px;
+  fill: white;
+  filter: drop-shadow(0 0 4px rgba(0,0,0,0.5));
+}
 
 @media(max-width:1200px){.bento-gallery{column-count:3;}}
 @media(max-width:900px){.bento-gallery{column-count:2;}}
