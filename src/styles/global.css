@@ -8,14 +8,11 @@
   font-style: normal;
 }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Fredoka', sans-serif;
+/* Apply Fredoka to everything */
+html, body, * {
+  font-family: 'Fredoka', sans-serif !important;
   letter-spacing: 1.3px;
   line-height: 1.6;
-  background-color: transparent; /* let BackgroundGrid show */
-  color: var(--text-main);
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
