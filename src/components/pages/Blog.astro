@@ -38,14 +38,17 @@ import Container from "../Container.astro";
       <div class="node" id="node12" style="top: 710px;">Open a Patreon<br>or KoFi account</div>
       <div class="node" id="node13" style="top: 815px;">Collaborate with<br>other Indie Animators</div>
       <div class="node" id="node14" style="top: 605px;">Most likely work there for<br>a couple years</div>
+      <div class="node" id="node20" style="top: 605px;">Become a<br>Book Cover Illustrator</div>
       <div class="node" id="node15" style="top: 920px;">Join an Indie Animation Studio</div>
+      <div class="node" id="node21" style="top: 1025px;">Become a Concept Artist</div>
+      <div class="node" id="node22" style="top: 1025px;">Become a Composer or<br>Sound Editor</div>
       <div class="node" id="node16" style="top: 1235px;">Become an part time<br>Animation / Storyboard Instructor</div>
       <div class="node" id="node17" style="top: 296px;">Learn more about<br>Color Scripting</div>
       <div class="node" id="node18" style="top: 1130px;">Move on to<br>Animation Studios<br>abroad</div>
       <div class="node" id="node19" style="top: 1130px;">Pitch my story<br>idea maybe (?????)</div>
 
       <!-- Lines -->
-      {Array.from({ length: 23 }, (_, i) => <div class="line" id={`line${i+1}`}></div>)}
+      {Array.from({ length: 25 }, (_, i) => <div class="line" id={`line${i+1}`}></div>)}
     </div>
 	
 	    <section class="card">
@@ -127,8 +130,11 @@ const lines = [
   { line: line17, from: 'node11', to: 'node9' },
   { line: line18, from: 'node14', to: 'node18' },
   { line: line19, from: 'node18', to: 'node16' },
-  { line: line20, from: 'node15', to: 'node19' },
+  { line: line20, from: 'node22', to: 'node19' },
+  { line: line25, from: 'node21', to: 'node19' },
   { line: line21, from: 'node19', to: 'node16' },
+  { line: line23, from: 'node15', to: 'node21' },
+  { line: line24, from: 'node15', to: 'node22' },
 ];
 
 // Build parent & child maps
