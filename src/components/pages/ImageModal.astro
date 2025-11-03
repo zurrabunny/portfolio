@@ -1,6 +1,11 @@
 <!-- ImageModal.astro -->
 <div id="media-modal" class="media-modal" aria-hidden="true">
   <div class="media-overlay"></div>
+
+  <!-- Fixed arrows outside image box -->
+  <button class="nav-arrow left" id="prev-btn">❮</button>
+  <button class="nav-arrow right" id="next-btn">❯</button>
+
   <div class="media-box">
     <img id="modal-img" class="media-content" />
     <video id="modal-video" class="media-content" controls></video>
@@ -13,42 +18,71 @@ document.addEventListener("DOMContentLoaded", () => {
   const overlay = modal.querySelector(".media-overlay");
   const imgEl = document.getElementById("modal-img");
   const vidEl = document.getElementById("modal-video");
-  const closeBtn = modal.querySelector(".close-btn");
+  const prevBtn = document.getElementById("prev-btn");
+  const nextBtn = document.getElementById("next-btn");
+
+  let currentIndex = -1;
+  let currentGallery = [];
+  let animating = false;
 
   document.body.appendChild(modal);
 
-  function openModal(el) {
+  function openModal(el, direction = null) {
+    // get gallery items from the same tab section
+    const section = el.closest(".bento-gallery");
+    currentGallery = Array.from(section.querySelectorAll(".previewable"));
+
+    const index = currentGallery.indexOf(el);
+    if (index === -1) return;
+    currentIndex = index;
+
     const isVideo = el.tagName.toLowerCase() === "video";
 
-    if (isVideo) {
-      imgEl.style.display = "none";
-      vidEl.style.display = "block";
-      vidEl.src = el.src;
-      vidEl.play();
-    } else {
-      vidEl.style.display = "none";
-      imgEl.style.display = "block";
-      imgEl.src = el.dataset.full || el.src;
+    // fade-out animation
+    const currentEl = modal.querySelector(".media-content.show");
+    if (currentEl) {
+      currentEl.classList.remove("show");
+      currentEl.classList.add(direction === "next" ? "fade-left" : "fade-right");
     }
 
-    modal.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
+    setTimeout(() => {
+      // stop any playing video
+      vidEl.pause();
+      vidEl.src = "";
 
-    // Trigger fade-in
-    modal.classList.add("show");
-    requestAnimationFrame(() => {
-      modal.classList.add("visible");
-    });
+      imgEl.style.display = "none";
+      vidEl.style.display = "none";
+
+      if (isVideo) {
+        vidEl.src = el.src;
+        vidEl.style.display = "block";
+        vidEl.className = "media-content show";
+      } else {
+        imgEl.src = el.dataset.full || el.src;
+        imgEl.style.display = "block";
+        imgEl.className = "media-content show";
+      }
+
+      // fade-in direction
+      const activeEl = modal.querySelector(".show");
+      if (direction === "next") activeEl.classList.add("fade-in-right");
+      if (direction === "prev") activeEl.classList.add("fade-in-left");
+
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      modal.classList.add("show");
+      requestAnimationFrame(() => modal.classList.add("visible"));
+      animating = false;
+    }, 150);
   }
 
   function closeModal() {
-    modal.classList.remove("visible"); // trigger fade-out
+    modal.classList.remove("visible");
     vidEl.pause();
     vidEl.src = "";
     imgEl.src = "";
-    document.body.style.overflow = ""; // restore scroll
+    document.body.style.overflow = "";
 
-    // Remove from DOM visually after transition
     modal.addEventListener(
       "transitionend",
       () => {
@@ -59,6 +93,22 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
+  function showNext() {
+    if (animating || !currentGallery.length) return;
+    if (currentIndex < currentGallery.length - 1) {
+      animating = true;
+      openModal(currentGallery[currentIndex + 1], "next");
+    }
+  }
+
+  function showPrev() {
+    if (animating || !currentGallery.length) return;
+    if (currentIndex > 0) {
+      animating = true;
+      openModal(currentGallery[currentIndex - 1], "prev");
+    }
+  }
+
   document.body.addEventListener("click", (e) => {
     const el = e.target.closest(".previewable");
     if (!el) return;
@@ -66,7 +116,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   overlay.addEventListener("click", closeModal);
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+  prevBtn.addEventListener("click", showPrev);
+  nextBtn.addEventListener("click", showNext);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+    if (e.key === "ArrowRight") showNext();
+    if (e.key === "ArrowLeft") showPrev();
+  });
 });
 </script>
 
@@ -104,10 +161,9 @@ document.addEventListener("DOMContentLoaded", () => {
   max-width: 90%;
   max-height: 90%;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: auto;
+  overflow: hidden;
   box-shadow: 0 0 30px rgba(0,0,0,0.5);
   transform: scale(0.95);
   transition: transform 0.35s ease;
@@ -121,14 +177,34 @@ document.addEventListener("DOMContentLoaded", () => {
   max-width: 100%;
   max-height: 80vh;
   object-fit: contain;
-  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.media-caption {
-  color: #fff;
-  font-size: 0.9rem;
-  text-align: center;
-  padding: 0.5rem 1rem 1rem;
-  opacity: 0.8;
+.media-content.show {
+  opacity: 1;
 }
+
+/* Fade animations */
+@keyframes fadeLeft {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes fadeRight {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes fadeInLeft {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes fadeInRight {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.fade-left { animation: fadeLeft 0.3s forwards; }
+.fade-right { animation: fadeRight 0.3s forwards; }
+.fade-in-left { animation: fadeInLeft 0.3s ease; }
+.fade-in-right { animation: fadeInRight 0.3s ease; }
 </style>

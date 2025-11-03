@@ -99,6 +99,54 @@ html, body {
   --invert: 1;
 }
 
+.nav-arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--container);
+  color: var(--text-main);
+  border: 2px solid var(--border-container);
+  font-size: 1.8rem;
+  font-family: 'Fredoka', sans-serif;
+  cursor: pointer;
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: 
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+  z-index: 10000;
+  opacity: 0.85;
+}
+
+.nav-arrow.left {
+  left: 2rem;
+}
+
+.nav-arrow.right {
+  right: 2rem;
+}
+
+.nav-arrow:hover {
+  background-color: var(--color-2);
+  color: var(--text-light);
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  opacity: 1;
+}
+
+:root.dark-mode .nav-arrow {
+  background: var(--container);
+  color: var(--text-light);
+  border: 2px solid var(--border-container);
+}
+
+:root.dark-mode .nav-arrow:hover {
+  background-color: var(--color-1);
+  color: var(--text-light);
+}
+
 /*==========================
   Containers
 ==========================*/

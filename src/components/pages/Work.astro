@@ -19,14 +19,14 @@ const musicItems = [
   { src: "serenity.mp3", cover: "serenity.png", title: "Serenity", artist: "ZurraBunny" },
   { src: "catcoded.mp3", cover: "catcoded.png", title: "Cat-Coded", artist: "ZurraBunny" },
   { src: "microArp.ogg", cover: "microArp.png", title: "microArp", artist: "ZurraBunny" },
-  //{ src: "Funkiin Arts - Menu Theme.mp3", cover: "microArp.png", title: "Funkiin Arts - Menu Theme", artist: "ZurraBunny" },
+  { src: "Funkiin Arts - Menu Theme.mp3", cover: "funkiin arts.png", title: "Funkiin Arts - Menu Theme", artist: "ZurraBunny" },
   { src: "Libel.mp3", cover: "Libel.png", title: "Libel", artist: "ZurraBunny" },
   { src: "Sifted.wav", cover: "Sifted.png", title: "Sifted", artist: "ZurraBunny" }
 ];
 
 const galleryItems = {
   Illustrations: ["1 (1).png","1.png","3.png","astrowo.png","dress.png","emmarefs.png","fluttrerbee.png","scav.png","next stop.png","libelk.png","high ra and zur ha.png","lumi nun.png","luuust.png","pebbles empty.png","rf.png","shame on you.png","sigma wolf.png","TITLE CARD.png","uh.png","walk.png","zurra miles graduat.png","zuref.png","bearoth.png","lumens.png"],
-  Animation: ["3RD EXAM_FINAL.mp4","ball.webp","disney hopefully.webp","duckass.webp","music video parts.mp4","pookiedeer.webp","RUNNINGMAN.webp","SACK ANIM_maulawin.webp","shake ma hand.mp4","slowinslowout.webp","so-much-scavs.webp","thebigfight.webp","walkin.webp"],
+  Animation: ["3RD EXAM_FINAL.mp4","ball.webp","disney hopefully.webp","duckass.webp","music video parts.mp4","pookiedeer.webp","RUNNINGMAN.webp","trolljak.webp","SACK ANIM_maulawin.webp","shake ma hand.mp4","slowinslowout.webp","so-much-scavs.webp","thebigfight.webp","walkin.webp"],
   "3D": ["ewwie.webp","AI.png","karmaGate_Open.webp","scavscared.webp","metropolis3.png","shelter.webp","sofanthiel3d.webp","SPOILER_drillcrabortho.webp","white-squidcada.webp","livingrender.png","worm.png","token.webp","snail.webp"]
 };
 ---
@@ -224,6 +224,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const progressContainer = player.querySelector(".progress-container");
     const progressBar = player.querySelector(".progress-bar");
 
+    let isScrubbing = false;
+    let scrubPercent = 0;
+    let displayedPercent = 0;
+
+    // Smooth animation loop for progress bar
+    const animateProgress = () => {
+      if (isScrubbing) {
+        // Smoothly move towards scrubPercent
+        displayedPercent += (scrubPercent - displayedPercent) * 0.3;
+      } else if (audio.duration && !audio.paused) {
+        displayedPercent = audio.currentTime / audio.duration;
+      }
+
+      progressBar.style.width = `${displayedPercent * 100}%`;
+      requestAnimationFrame(animateProgress);
+    };
+    requestAnimationFrame(animateProgress);
+
     playBtn.addEventListener("click", () => {
       const allPlayers = document.querySelectorAll(".music-player");
 
@@ -239,7 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
         audio.play();
         playIcon.style.display = "none";
         pauseIcon.style.display = "block";
-        player.classList.add("playing"); // highlight active
+        player.classList.add("playing");
       } else {
         audio.pause();
         playIcon.style.display = "block";
@@ -248,22 +266,58 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    audio.addEventListener("play", () => player.classList.add("playing"));
-    audio.addEventListener("pause", () => player.classList.remove("playing"));
     audio.addEventListener("ended", () => {
       playIcon.style.display = "block";
       pauseIcon.style.display = "none";
+      displayedPercent = 0;
       progressBar.style.width = "0%";
       player.classList.remove("playing");
     });
 
-    audio.addEventListener("timeupdate", () => {
-      progressBar.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
+    // Calculate percent helper
+    const getPercent = e => {
+      const rect = progressContainer.getBoundingClientRect();
+      const offsetX = e.clientX ?? e.touches[0].clientX;
+      return Math.max(0, Math.min(1, (offsetX - rect.left) / rect.width));
+    };
+
+    const handleScrubMove = e => {
+      scrubPercent = getPercent(e);
+    };
+
+    const handleScrubEnd = () => {
+      isScrubbing = false;
+      document.removeEventListener("mousemove", handleScrubMove);
+      document.removeEventListener("mouseup", handleScrubEnd);
+      document.removeEventListener("touchmove", handleScrubMove);
+      document.removeEventListener("touchend", handleScrubEnd);
+      audio.currentTime = scrubPercent * audio.duration;
+    };
+
+    // Mouse scrubbing
+    progressContainer.addEventListener("mousedown", e => {
+      isScrubbing = true;
+      scrubPercent = getPercent(e);
+      document.addEventListener("mousemove", handleScrubMove);
+      document.addEventListener("mouseup", handleScrubEnd);
     });
 
+    // Touch scrubbing
+    progressContainer.addEventListener("touchstart", e => {
+      isScrubbing = true;
+      scrubPercent = getPercent(e);
+      document.addEventListener("touchmove", handleScrubMove);
+      document.addEventListener("touchend", handleScrubEnd);
+    });
+
+    // Instant jump (click)
     progressContainer.addEventListener("click", e => {
-      const rect = progressContainer.getBoundingClientRect();
-      audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+      if (!isScrubbing) {
+        const percent = getPercent(e);
+        displayedPercent = percent;
+        scrubPercent = percent;
+        audio.currentTime = percent * audio.duration;
+      }
     });
   });
 });
