@@ -56,6 +56,9 @@ html, body, * {
   --text-main: #2b0004;
   --text-light: #fff;
   --text-dark: #2b0004;
+  
+  --line-dormant: #e8a4af;
+  --line-highlight: #c62e3f;
 
   /* Background Grid */
   --bg-grid-color-a: rgba(255, 201, 198,0.2);
@@ -88,6 +91,9 @@ html, body, * {
   --text-main: #FFE0EC;
   --text-light: #fff;
   --text-dark: #FFADCD;
+
+  --line-dormant: #421E24;
+  --line-highlight: #B84B68;
 
   /* Grid overlay */
   --bg-grid-color-a: #1C1315;
@@ -259,3 +265,4 @@ body {
 }
 
 .close-btn:hover { transform: scale(1.1); }
+
