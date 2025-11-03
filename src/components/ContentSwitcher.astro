@@ -28,15 +28,15 @@ import Contact from './pages/Contact.astro';
   transition: opacity 0.4s ease, transform 0.4s ease;
   position: absolute;
   width: 100%;
-  pointer-events: none; /* prevent interaction when hidden */
-  user-select: none;    /* prevent text selection when hidden */
+  pointer-events: none;
+  user-select: none;
 }
 
 .fade-section.show {
   opacity: 1;
   transform: translateY(0);
   z-index: 1;
-  pointer-events: auto; /* enable interaction when visible */
+  pointer-events: auto;
   user-select: auto;
 }
 
@@ -44,10 +44,9 @@ import Contact from './pages/Contact.astro';
   opacity: 0;
   transform: translateY(5px);
   z-index: 0;
-  pointer-events: none; /* make sure hidden sections are non-interactable */
+  pointer-events: none;
   user-select: none;
 }
-
 </style>
 
 <script type="module" client:load>
@@ -58,7 +57,6 @@ const sections = {
   contact: document.getElementById('contact-container')
 };
 
-// Select tabs inside the sidebar
 const navTabs = document.querySelectorAll('.sidebar .tab');
 const duration = 200; // match CSS transition duration in ms
 
@@ -73,6 +71,12 @@ navTabs.forEach(tab => {
         if (!section.classList.contains('show')) {
           section.classList.remove('hide');
           section.classList.add('show');
+          
+          // Scroll to top smoothly
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
         }
       } else {
         if (section.classList.contains('show')) {
