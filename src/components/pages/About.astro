@@ -6,7 +6,7 @@ import Container from "/src/components/Container.astro";
   <Container variant="static">
     <h1>Introduction</h1>
     <p>
-      Hello! I'm [insert dead name here], my preferred name is Zurra / Azzurra / Azure.<br />
+      Hello! I'm Zurra / Azzurra / Azure.<br />
       I work as an Animator and Digital Illustrator. I'm also a self-taught Music Composer, 3D Designer, Sound Editor, and I build websites as a hobby.
     </p>
 
@@ -14,19 +14,33 @@ import Container from "/src/components/Container.astro";
     <section class="card">
       <h2>About Me</h2>
       <div class="accordion">
-        <div class="accordion-item">
-          <button class="accordion-header">
-            My Mission and Vision
-            <span class="arrow">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M7 10l5 5 5-5H7z" />
-              </svg>
-            </span>
-          </button>
-          <div class="accordion-body">
-            <p>egg</p>
-          </div>
-        </div>
+		<div class="accordion-item">
+		  <button class="accordion-header">
+			My Mission and Vision
+			<span class="arrow">
+			  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+				<path fill="currentColor" d="M7 10l5 5 5-5H7z" />
+			  </svg>
+			</span>
+		  </button>
+		  <div class="accordion-body">
+			<section class="mission-vision">
+			  <div class="mission">
+				<h2>Mission</h2>
+				<p>
+				  To master the language of visual storytelling through film, animation, and design by constantly learning, creating, and refining my craft. By combining all of the abilities that I'm capable of, I plan to produce works that can connect and inspire others to pursue art with passion
+				</p>
+			  </div>
+			  <div class="divider"></div>
+			  <div class="vision">
+				<h2>Vision</h2>
+				<p>
+				  To become a multi-skilled artist and storyteller that contributes to both indie and professional animation studios. I aim to create meaningful stories, collaborating with other passionate artists, and sharing knowledge with future artists through teaching
+				</p>
+			  </div>
+			</section>
+		  </div>
+</div>
 
         <div class="accordion-item">
           <button class="accordion-header">
@@ -439,6 +453,55 @@ h3::after {
   transition: width 1s ease-in-out;
   width: 0%;
   min-width: 30px;
+}
+
+.mission-vision {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 2rem;
+  width: 100%;
+  padding: 1rem 0;
+  color: var(--text-dark);
+}
+
+.mission-vision .mission,
+.mission-vision .vision {
+  flex: 1;
+  text-align: justify;
+}
+
+.mission-vision .divider {
+  width: 2px;
+  width: 2px;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  background: var(--color-5);
+}
+
+.mission-vision h2 {
+  font-size: 1.1rem;
+  color: var(--color-2);
+  margin: 0rem;
+  margin-bottom: -0.5rem;
+}
+
+.mission-vision p {
+  line-height: 1.6;
+}
+
+@media (max-width: 700px) {
+  .mission-vision {
+    flex-direction: column;
+  }
+
+  .mission-vision .divider {
+    width: 100%;
+    height: 1px;
+    margin: 1rem 0;
+  }
 }
 
 @media (max-width: 768px) {
