@@ -5,10 +5,11 @@ import Container from "/src/components/Container.astro";
 <main class="content">
   <Container variant="static">
     <h1>Introduction</h1>
-	<p>
-        Hello! I'm [insert dead name here], my preferred name is Zurra / Azzurra / Azure.<br />
-        I work as an Animator and Digital Illustrator. Im also a self-taught Music Composer, 3D Designer, Sound Editor, and I building websites as a hobby.
-      </p>
+    <p>
+      Hello! I'm [insert dead name here], my preferred name is Zurra / Azzurra / Azure.<br />
+      I work as an Animator and Digital Illustrator. I'm also a self-taught Music Composer, 3D Designer, Sound Editor, and I build websites as a hobby.
+    </p>
+
     <!-- About Me Section -->
     <section class="card">
       <h2>About Me</h2>
@@ -18,7 +19,7 @@ import Container from "/src/components/Container.astro";
             My Mission and Vision
             <span class="arrow">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M7 10l5 5 5-5H7z"/>
+                <path fill="currentColor" d="M7 10l5 5 5-5H7z" />
               </svg>
             </span>
           </button>
@@ -26,18 +27,53 @@ import Container from "/src/components/Container.astro";
             <p>egg</p>
           </div>
         </div>
-		
-		<div class="accordion-item">
+
+        <div class="accordion-item">
           <button class="accordion-header">
             Strengths and Weaknesses
             <span class="arrow">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M7 10l5 5 5-5H7z"/>
+                <path fill="currentColor" d="M7 10l5 5 5-5H7z" />
               </svg>
             </span>
           </button>
           <div class="accordion-body">
-            <p>something something, reason why i make website dynamic (esp the growth and goals tab) is cuz im a visual lerner</p>
+            <!-- Big Five Chart -->
+            <div class="big-five-chart">
+              <h3>Personality Test (Big Five Inventory)</h3>
+              <div class="bar">
+                <span>Openness to Experience</span>
+                <div class="bar-fill" data-value="3.5">3.50</div>
+              </div>
+              <div class="bar">
+                <span>Conscientiousness</span>
+                <div class="bar-fill" data-value="3.89">3.89</div>
+              </div>
+              <div class="bar">
+                <span>Extraversion</span>
+                <div class="bar-fill" data-value="3.13">3.13</div>
+              </div>
+              <div class="bar">
+                <span>Agreeableness</span>
+                <div class="bar-fill" data-value="4.44">4.44</div>
+              </div>
+              <div class="bar">
+                <span>Neuroticism</span>
+                <div class="bar-fill" data-value="2.25">2.25</div>
+              </div>
+            </div>
+			I’m calm and kind. I stay organized, don’t get upset easily, and like being helpful. I’m more quiet than outgoing, but I can be social when needed. I’m also a creative person while staying practical.
+			<h3>My Character Strengths (VIA Strengths)</h3>
+			<ul>
+              <li><strong>Spirituality</strong> - I value meaning, purpose, and my place in this world</li>
+              <li><strong>Kindness and Generosity</strong> - I enjoy helping others without expecting anything in return</li>
+              <li><strong>Fairness</strong> - I treat everyone equally and dont let bias influence my decisions / argument</li>
+              <li><strong>Forgiveness</strong> - I easily let go of grudges and give people second chances</li>
+              <li><strong>Patience</strong> - I let people take their time, all people handle things differently</li>
+              <li><strong>Humor</strong> - I lift other's moods and be optimistic even in serious situations</li>
+            </ul>
+			<h3>My Learning Style</h3>
+			<p><strong>I enjoy learning things visually!</strong> I tend to understand things better when its being shown to me more than describing it to meor reading off instructions. Certain elements in this website were made to aid my learning style, just so you know :o)</p>
           </div>
         </div>
 
@@ -172,130 +208,243 @@ You are an art piece, Imperfections and all
       </div>
     </section>
   </Container>
-
-  <script>
-    document.querySelectorAll(".accordion-header").forEach(header => {
-      header.addEventListener("click", () => {
-        const body = header.nextElementSibling;
-        const isOpen = header.classList.contains("active");
-
-        document.querySelectorAll(".accordion-header").forEach(h => h.classList.remove("active"));
-        document.querySelectorAll(".accordion-body").forEach(b => b.style.height = 0);
-
-        if (!isOpen) {
-          header.classList.add("active");
-          body.style.height = body.scrollHeight + "px";
-        }
-      });
-    });
-  </script>
 </main>
 
-<style>
-  main.content {
-    flex: 1;
-    margin-left: 260px;
-    padding: 2rem;
-    color: var(--text-dark);
-  }
+<script>
+  document.querySelectorAll(".accordion-header").forEach((header) => {
+    header.addEventListener("click", () => {
+      const body = header.nextElementSibling;
+      const isOpen = header.classList.contains("active");
 
-.accordion-header {
-  font-family: "Fredoka", sans-serif;
-  font-size: 1.2rem;
-  color: var(--color-3);
+      // close all
+      document.querySelectorAll(".accordion-header").forEach((h) => h.classList.remove("active"));
+      document.querySelectorAll(".accordion-body").forEach((b) => {
+        b.style.height = 0;
+        b.style.opacity = 0;
+      });
+
+      if (!isOpen) {
+        header.classList.add("active");
+        body.style.height = body.scrollHeight + "px";
+        body.style.opacity = 1;
+
+        // animate bars if present
+        if (body.querySelector(".big-five-chart")) {
+          body.querySelectorAll(".bar-fill").forEach((bar) => {
+            const value = parseFloat(bar.dataset.value);
+            bar.style.width = "0%";
+            setTimeout(() => {
+              bar.style.width = (value / 7) * 100 + "%";
+            }, 100);
+          });
+        }
+      }
+    });
+  });
+</script>
+
+<style>
+main.content {
+  flex: 1;
+  margin-left: 260px;
+  padding: 2rem;
+  color: var(--text-dark);
 }
 
-  h1 { font-size: 1.8rem; color: var(--color-1); margin-bottom: 1rem; }
-  h2 { font-size: 1.3rem; color: var(--color-2); margin-bottom: 0.5rem; }
-  h2 { font-size: 1.3rem; color: var(--color-2); margin-top: -0.5rem; }
-  h3 { font-size: 1.3rem; color: var(--color-2); margin-bottom: 0.5rem; }
-	
-	h3 {
+h1 {
+  font-size: 1.8rem;
+  color: var(--color-1);
+  margin-bottom: 1rem;
+}
+h2 {
+  font-size: 1.3rem;
+  color: var(--color-2);
+  margin-top: -0.5rem;
+}
+h3 {
+  font-size: 1.3rem;
+  color: var(--color-2);
+  margin-bottom: 0.5rem;
   position: relative;
   display: flex;
   align-items: center;
   gap: 0.75rem;
   font-weight: 600;
 }
-	
-	h3::after {
+h3::after {
   content: "";
   flex-grow: 1;
   height: 2px;
-  background-color: var(--color-5); /* or any color you want */
-  opacity: 0.5; /* optional, for a softer look */
+  background-color: var(--color-5);
+  opacity: 0.5;
 }
-	
-  .card {
-    margin-top: 1.5rem;
-    padding: 1.25rem;
-    border-radius: 1rem;
-    background: var(--color-6);
-    border: 2px solid var(--color-5);
+
+.card {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  background: var(--color-6);
+  border: 2px solid var(--color-5);
+}
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.accordion-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--color-5);
+  border: 2px solid var(--color-5);
+  border-radius: 0.75rem;
+  padding: 0.6rem 1rem;
+  font-family: "Fredoka", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-3);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.accordion-header.active {
+  background: var(--color-3);
+  color: var(--text-main);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.arrow {
+  display: flex;
+  align-items: center;
+  transition: transform 0.25s ease;
+}
+
+.arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+.accordion-header.active .arrow {
+  transform: rotate(180deg);
+}
+
+.accordion-body {
+  overflow: hidden;
+  height: 0;
+  opacity: 0;
+  transition: height 0.35s ease, opacity 0.3s ease;
+  border: 2px solid var(--color-5);
+  border-top: none;
+  border-radius: 0 0 0.75rem 0.75rem;
+  background: var(--color-6);
+  padding: 0 1rem;
+}
+
+.accordion-body ul {
+  padding-left: 1.25rem;
+  list-style-type: disc;
+  margin: 0.5rem 0;
+}
+
+.big-five-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding-bottom: 1rem;
+}
+
+.big-five-chart h3 {
+  font-size: 1.1rem;
+  text-align: center;
+  color: var(--color-2);
+}
+
+.bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.bar span {
+  width: 190px;
+  font-weight: 400;
+  color: var(--text-dark);
+  font-size: 0.95rem;
+  padding-bottom: 0.5rem;
+  z-index: 2;
+}
+
+/* background track behind bar fill */
+.bar::before {
+  content: "";
+  position: absolute;
+  left: 190px;
+  right: 0;
+  height: 1rem;
+  border-radius: 0.5rem;
+  background: var(--bg-bar);
+  z-index: 0;
+  
+}
+
+/* bar fill itself */
+.bar-fill {
+  position: relative;
+  height: 1rem;
+  border-radius: 0.5rem;
+  text-align: right;
+  color: var(--text-dark);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding-right: 0.5rem;
+  transition: width 1s ease-in-out;
+  z-index: 1;
+  width: 0%;
+  min-width: 30px;
+}
+
+
+/* Trait colors */
+.bar:nth-child(2) .bar-fill {
+  background: var(--graph-graient);
+}
+.bar:nth-child(3) .bar-fill {
+  background: var(--graph-graient);
+}
+.bar:nth-child(4) .bar-fill {
+  background: var(--graph-graient);
+}
+.bar:nth-child(5) .bar-fill {
+  background: var(--graph-graient);
+}
+.bar:nth-child(6) .bar-fill {
+  background: var(--graph-graient);
+}
+
+.bar-fill {
+  height: 1rem;
+  border-radius: 0.5rem;
+  text-align: right;
+  color: var(--text-dark);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding-right: 0.5rem;
+  padding-bottom: 0.3rem;
+  transition: width 1s ease-in-out;
+  width: 0%;
+  min-width: 30px;
+}
+
+@media (max-width: 768px) {
+  main.content {
+    margin-left: 0;
+    padding: 1rem;
   }
-
-  .accordion { display: flex; flex-direction: column; gap: 0.5rem; }
-
-  .accordion-header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--color-5);
-    border: 2px solid var(--color-5);
-    border-radius: 0.75rem;
-    padding: 0.6rem 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    border-bottom: none; /* hide bottom line when closed */
-  }
-
-  .accordion-header.active {
-    background: var(--color-3);
-    color: var(--text-main);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom: none; /* hide bottom line when closed */
-  }
-
-  .arrow {
-    display: flex;
-    align-items: center; /* vertical center */
-    transition: transform 0.25s ease;
-  }
-
-  .arrow svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .accordion-header.active .arrow {
-    transform: rotate(180deg);
-  }
-
-	.accordion-body {
-	  overflow: hidden;
-	  height: 0;
-	  transition: height 0.35s ease, border 0.25s ease, opacity 0.3s ease;
-	  border: 2px solid var(--color-5); /* show border when open */
-	  border-bottom: none;
-	  border-bottom-left-radius: 0.75rem;
-	  border-bottom-right-radius: 0.75rem;
-	  background: var(--color-6);
-	  padding: 0 1rem;
-	  opacity: 0;
-	}
-
-	.accordion-header.active + .accordion-body {
-	  border: 2px solid var(--color-5); /* show border when open */
-	  border-top: none;
-	  opacity: 1;
-	}
-
-  .accordion-body ul { padding-left: 1.25rem; list-style-type: disc; margin: 0.5rem 0; }
-
-  @media (max-width: 768px) {
-    main.content { margin-left: 0; padding: 1rem; }
-  }
+}
 </style>

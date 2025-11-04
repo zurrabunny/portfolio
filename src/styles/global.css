@@ -65,6 +65,8 @@ html, body, * {
   --bg-grid-color-b: rgba(254, 211, 206,0.2);
   
   --invert: 0.1;
+  --graph-graient: linear-gradient(90deg, #df7c8a, #e8a4af);
+  --bg-bar: #A84D64;
 }
 
 :root.dark-mode {
@@ -100,6 +102,8 @@ html, body, * {
   --bg-grid-color-b: #24171D;
   
   --invert: 1;
+  --graph-graient: linear-gradient(90deg, #8f4255, #a05066);
+  --bg-bar: #2B161B;
 }
 
 .nav-arrow {
