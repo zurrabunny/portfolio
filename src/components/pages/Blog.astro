@@ -6,7 +6,9 @@ import Container from "../Container.astro";
   <Container variant="static" class="flowchart-container">
     <h1 class="flowchart-header">Personal and Professional Goals 2025 - 2035</h1>
     <p class="flowchart-description">
-      these be where my goals at, if i dont achieve them, i die (in a professional way)<br>Click on the nodes to highlight their path and see the SMART stuff..<br>note that the smart stuff here so far are placeholders I WILL change them eventually
+      these be where my goals at, if i dont achieve them, i die (in a professional way)<br>
+      Click on the nodes to highlight their path and see the SMART stuff..<br>
+      note that the smart stuff here so far are placeholders I WILL change them eventually
     </p>
 
     <div class="flowchart">
@@ -39,6 +41,7 @@ import Container from "../Container.astro";
       <div class="node" id="node16" style="top: 1235px;">Become an part time<br>Animation / Storyboard Instructor</div>
       <div class="node" id="node17" style="top: 296px;">Learn more about<br>Color Scripting</div>
 
+      <!-- Dropdown-enabled nodes -->
       <div class="node" id="node4" style="top: 190px;">
         Study Film Language<br>and Shot Composition
         <div class="smart-dropdown">
@@ -130,12 +133,10 @@ import Container from "../Container.astro";
       <!-- Lines -->
       {Array.from({ length: 26 }, (_, i) => <div class="line" id={`line${i+1}`}></div>)}
     </div>
-	
-	    <section class="card">
+
+    <section class="card">
       <h2>Goal Framework</h2>
       <div class="accordion">
-	  
-	  <!-- S -->
         <div class="accordion-item">
           <button class="accordion-header">
             temp dropdown
@@ -146,23 +147,16 @@ import Container from "../Container.astro";
             </span>
           </button>
           <div class="accordion-body">
-
             <h3>dropdown title</h3>
-			<p>hi</p>
+            <p>hi</p>
           </div>
         </div>
-		
       </div>
     </section>
 
-	<section class="card">
+    <section class="card">
       <h2>temp card</h2>
-      
-      <ul>
-      <li>er
-      </ul>
-		
-      </div>
+      <ul><li>er</li></ul>
     </section>
   </Container>
 </main>
@@ -498,11 +492,9 @@ main.content {
   opacity: 0.5; /* optional, for a softer look */
 }
 
-
-
 .node {
   position: absolute;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(1);
   padding: 8px 8px;
   font-size: 0.7rem;
   background: var(--color-2);
@@ -511,51 +503,76 @@ main.content {
   text-align: center;
   z-index: 2;
   cursor: pointer;
-  transition: all 0.3s ease;
-  overflow: hidden;
+  overflow: visible;
   max-width: 180px;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    border 0.3s ease,
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.4s ease; /* 👈 smooth fade when others dim */
 }
 
-.node.open {
+/* Node opens with a subtle pop */
+.node.open,
+.node.selected {
   background: var(--color-3);
   color: var(--text-dark);
-  transform: translate(-50%, -10%);
   border: 1px solid var(--color-4);
   z-index: 3;
+  transform: translate(-50%, -50%) scale(1.08);
 }
 
+/* ✅ Animated Dropdown */
 .smart-dropdown {
-  max-height: 0;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  background: var(--color-6);
+  border: 2px solid var(--color-5);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  width: max-content;
+  min-width: 200px;
+  max-width: 250px;
+  padding: 8px 12px;
   opacity: 0;
+  max-height: 0;
   overflow: hidden;
-  transition: all 1s cubic-bezier(0.1, 0, 0.3, 1);
-  font-size: 0.7rem;
-  margin-top: 8px;
-  text-align: left;
-  border-top: 1px solid var(--color-4);
-  padding-top: 0;
+  transform-origin: top center;
+  pointer-events: none;
+  transition:
+    opacity 0.5s ease,
+    max-height 0.35s ease,
+    transform 0.35s ease;
 }
 
+/* Smooth slide + fade down */
 .node.open .smart-dropdown {
-  max-height: 600px;
   opacity: 1;
-  padding-top: 6px;
-  animation: dropdownOpen 0.3s cubic-bezier(0.1, 0, 0.3, 1) forwards;
+  max-height: 600px;
+  padding: 8px 12px;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
 }
 
+/* Text animation inside dropdown */
 .smart-dropdown p {
   margin: 2px 0;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-@keyframes dropdownOpen {
-  from {
-    opacity: 0;
-    transform: translateY(-10px); /* starts slightly above */
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0); /* ends in place */
-  }
+.node.open .smart-dropdown p {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 👇 Optional: smooth fade for lines when inactive */
+.line {
+  transition: opacity 0.4s ease, background 0.3s ease;
 }
 
 </style>
