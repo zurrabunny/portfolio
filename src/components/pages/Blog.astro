@@ -8,7 +8,7 @@ import Container from "../Container.astro";
     <p class="flowchart-description">
       these be where my goals at, if i dont achieve them, i die (in a professional way)<br>
       Click on the nodes to highlight their path and see the SMART stuff..<br>
-      note that the smart stuff here so far are placeholders I WILL change them eventually
+      note that the smart stuff here so far are <strong>GENERATED</strong> placeholders.. I WILL change them eventually
     </p>
 
     <div class="flowchart">
@@ -262,10 +262,16 @@ function clearHighlights() {
   });
 }
 
+const clickSound = new Audio('sounds/check.ogg'); // adjust path if needed
+clickSound.volume = 0.7; // optional: control volume
+
 let activeNode = null;
 document.querySelectorAll('.node').forEach(node => {
   node.addEventListener('click', e => {
     e.stopPropagation();
+    clickSound.currentTime = 0; // rewind so it can play again immediately
+    clickSound.play().catch(() => {}); // prevents browser autoplay errors
+
     const alreadyActive = activeNode === node;
     clearHighlights();
     if (alreadyActive) { activeNode = null; return; }
@@ -275,8 +281,7 @@ document.querySelectorAll('.node').forEach(node => {
     highlightAncestors(node.id, activeNodes);
     if (children[node.id]) children[node.id].forEach(l => l.line.classList.add("gradient"));
     document.querySelectorAll('.node').forEach(n => n.style.opacity = activeNodes.has(n.id) ? '1' : '0.2');
-    document.querySelectorAll('.line').forEach(l => l.style.opacity = (l.classList.contains("active") || l.classList.contains("gradient")) ? '1' : '0.2');
-  });
+    document.querySelectorAll('.line').forEach(l => l.style.opacity = (l.classList.contains("active") || l.classList.contains("gradient")) ? '1' : '0.2');  });
 });
 
 const nodes = document.querySelectorAll('.node');
@@ -519,6 +524,7 @@ main.content {
   background: var(--color-3);
   color: var(--text-dark);
   border: 1px solid var(--color-4);
+  border-radius: 4px 4px 4px 4px;
   z-index: 3;
   transform: translate(-50%, -50%) scale(1.08);
 }
@@ -563,6 +569,7 @@ main.content {
   opacity: 0;
   transform: translateY(-4px);
   transition: opacity 0.3s ease, transform 0.3s ease;
+  text-align: justify;
 }
 
 .node.open .smart-dropdown p {
