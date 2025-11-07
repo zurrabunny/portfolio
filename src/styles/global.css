@@ -67,6 +67,8 @@ html, body, * {
   --invert: 0.1;
   --graph-graient: linear-gradient(90deg, #df7c8a, #e8a4af);
   --bg-bar: #A84D64;
+  
+  --node: #e36b79;
 }
 
 :root.dark-mode {
@@ -104,6 +106,8 @@ html, body, * {
   --invert: 1;
   --graph-graient: linear-gradient(90deg, #8f4255, #a05066);
   --bg-bar: #2B161B;
+  
+  --node: #BF5A68;
 }
 
 .nav-arrow {
