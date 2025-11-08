@@ -4,14 +4,38 @@ import Container from "/src/components/Container.astro";
 
 <main class="content">
   <Container variant="static">
-    <h1>theres nothing here either :^</h1>
-    <section class="card">
-      <div class="wip-wrapper">
-        <img src="wip.gif" class="wip-gif" />
+    <h1>Let’s Get in Touch!</h1>
+
+    <section class="contact-card">
+      <p class="intro">
+        Have my contacts!! TAKE ALL OF THEM !!<br><br>If you believe my work is a good fit for the job, please don’t hesitate to contact me! For business inquiries, feel free to email me or click the button below to reach my email even faster. For anything else<br>( personal projects or if you just wanna say hi )<br> you’re welcome to reach out on Discord. I’ll be happy to hear from you! >:]
+      </p>
+
+      <div class="contact-info">
+        <h2>Contact Info</h2>
+        <ul>
+          <li><strong>Email:</strong> <a href="mailto:azzurraseabunny@gmail.com">azzurraseabunny@gmail.com</a></li>
+          <li><strong>Discord:</strong> zurrabunny</li>
+          <li><strong>Instagram:</strong> <a href="https://www.instagram.com/altzurra/" target="_blank">@altzurra ( only for close connections )</a></li>
+          <li><strong>Twitter:</strong> <a href="https://x.com/azzurra_seabunn" target="_blank">@azzurra_seabunn</a></li>
+        </ul>
       </div>
+
+      <!-- Direct Gmail link -->
+      <button class="btn" id="compose-email">Compose Email</button>
     </section>
   </Container>
 </main>
+
+<script>
+  // Opens Gmail compose window
+  document.querySelector("#compose-email").addEventListener("click", () => {
+    const subject = encodeURIComponent("Portfolio Inquiry");
+    const body = encodeURIComponent("Hello Zurra,\n\nI would like to get in touch regarding...");
+    const gmailURL = `https://mail.google.com/mail/?view=cm&fs=1&to=zurra@gmail.com&su=${subject}&body=${body}`;
+    window.open(gmailURL, "_blank");
+  });
+</script>
 
 <style>
   main.content {
@@ -30,30 +54,86 @@ import Container from "/src/components/Container.astro";
     color: var(--color-1);
   }
 
-  h2 {
-    font-size: 1.3rem;
-    margin-bottom: 0.5rem;
-    color: var(--color-2);
-  }
+h2 {
+  font-size: 1.3rem;
+  color: var(--color-2);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  position: relative;
+}
 
-  .card {
+h2::before,
+h2::after {
+  content: "";
+  flex-grow: 1;
+  height: 2px;
+  background-color: var(--color-5);
+  opacity: 0.5;
+}
+
+h2::before {
+  margin-right: 0.75rem; /* space between line and text */
+}
+
+h2::after {
+  margin-left: 0.75rem; /* space between text and line */
+}
+
+
+  .contact-card {
     margin-top: 1.5rem;
-    padding: 1.25rem;
+    padding: 1.5rem;
     border-radius: 1rem;
     background: var(--color-6);
     border: 2px solid var(--color-5);
+    max-width: 700px;
+    margin-inline: auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     text-align: center;
   }
 
-  .wip-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 1rem;
+  .intro {
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
   }
 
-  .wip-gif {
-    max-width: 400px;
-    height: auto;
+  .contact-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+  }
+
+  .contact-info li {
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-info a {
+    color: var(--color-2);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .contact-info a:hover {
+    color: var(--text-main);
+  }
+
+  .btn {
+    background: var(--color-2);
+    color: var(--text-light);
+    font-weight: bold;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-family: 'Fredoka', sans-serif;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .btn:hover {
+    background: var(--color-1);
+    transform: translateY(-2px);
   }
 </style>

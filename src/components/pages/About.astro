@@ -11,7 +11,7 @@ import Container from "/src/components/Container.astro";
   
 <div style="display: flex; align-items: center; gap: 1rem;">
   <div>
-    <h3 style="margin: 0;">Hello! I'm Zurra / Azzurra / Azure.</h3>
+    <h3 style="margin: 0;">Hello! I'm Zurra / Azzurra / Azure</h3>
     <p style="margin: 0;">
       I work as an Animator and Digital Illustrator. I'm also a self-taught Music Composer, 3D Designer, Sound Editor, and I build websites as a hobby.
     </p>
@@ -260,21 +260,71 @@ You are an art piece, Imperfections and all
           <div class="accordion-body">
             
 			<!-- Feedback Display -->
-		<div class="feedback-card">
-		  <div class="feedback-header">
-			<div>
-			  <h3>Feedback from Sir Ross</h3>
-			  <p class="feedback-role">Storyboard & Animation Instructor, CIIT College of Arts and Technology</p>
+			<div class="feedback-card">
+				  <h3>Feedback from Sir Ross</h3>
+				  <feedback-role>Storyboard & Animation Instructor, CIIT College of Arts and Technology</feedback-role>
+			  <blockquote class="feedback-text">
+				“If you continue doing this kind of level of animatic work consistently, it will only take you 1 to 2 years tops get to work with international studios.<br><br>
+
+				Try putting your animatics on instagram, twitter and cara account (just for business sake) tag Titmouse, Line Studios, Lemon Sky studios. <br><br>
+
+				Keep making short animatics and short animation exercises for action and fights. Even roughs and tie downs just post it. ”
+			  </blockquote>
+			  
+				<h3>Review from An Anonymous Pig</h3>
+			<feedback-role>My Boss</feedback-role>
+			  <blockquote class="feedback-text">
+				“You’re incredibly talented, and everything you’ve created so far shows that.<br><br>
+
+				You have plenty of time to grow, learn, and figure out what you really enjoy. Even if it feels overwhelming now, there’s no rush, you can take things step by step.<br><br>
+
+				It seems like self-doubt might be holding you back a bit. Try focusing on one project at a time: enjoy it, make progress, share it, and see it through to completion. Finishing something meaningful can really boost your confidence.<br><br>
+
+				Honestly, your work is impressive, I’m genuinely jealous. You’re already doing amazing compared to most people.<br><br>
+
+				Go at your own pace, focus on what you love, and trust that it will all come together.”
+			  </blockquote>
+			  
+			  	<h3>Review from An Anonymous Scientist</h3>
+			<feedback-role>Client and Long Time Friend</feedback-role>
+			  <blockquote class="feedback-text">
+				“You're a big man with big dreams,
+				from all the talents you have
+				now to your awesome personality,
+				it all adds up to how impressively
+				far you've came and i'm glad to be
+				here and support you”
+			  </blockquote>
+			  
+			   	<h3>Review from An Anonymous Cat</h3>
+			<feedback-role>Client and Long Time Friend</feedback-role>
+			  <blockquote class="feedback-text">
+				“A kind, and an integral person.
+				Skilled in cartoony styles, and anthropomorphic animals in different styles.
+				Comes up with creative ideas and experienced at storyboarding”
+			  </blockquote>
+			  
+			  
+			  
+				<h3>Review from An Anonymous Axolotl</h3>
+			<feedback-role>Client and Long Time Friend</feedback-role>
+			  <blockquote class="feedback-text">
+				“Youre probably one of the most
+				trusted, talented and just
+				frickin amazing people I've met!”
+			  </blockquote>
+			  
+			  	<h3>Review from An Anonymous Chicken</h3>
+			<feedback-role>Client and Long Time Friend</feedback-role>
+			  <blockquote class="feedback-text">
+				“You continue to amaze me with
+				your art and talent! and I will
+				continue to support you ♡”
+			  </blockquote>
+			  
 			</div>
-		  </div>
-		  <blockquote class="feedback-text">
-			“If you continue doing this kind of level of animatic work consistently, it will only take you 1 to 2 years tops get to work with international studios.<br><br>
-
-Try putting your animatics on instagram, twitter and cara account (just for business sake) tag Titmouse, Line Studios, Lemon Sky studios. <br><br>
-
-Keep making short animatics and short animation exercises for action and fights. Even roughs and tie downs just post it. ”
-		  </blockquote>
-		</div>
+			
+			<!-- Feedback Display -->
 			
         </div>
 		
@@ -583,13 +633,13 @@ h3::after {
 .feedback-header {
   display: flex;
   align-items: center;
-  margin-bottom: 0rem;
   font-size: 1.1rem;
 }
 
-.feedback-role {
-  font-size: 1.27rem;
+feedback-role {
+  font-size: 1rem;
   color: var(--color-2);
+  padding-bottom: 0rem;
 }
 
 .feedback-text {
@@ -601,6 +651,8 @@ h3::after {
   border-left: 4px solid var(--color-2);
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 </style>
