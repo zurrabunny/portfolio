@@ -59,6 +59,7 @@ const sections = {
 
 const navTabs = document.querySelectorAll('.sidebar .tab');
 const duration = 200; // match CSS transition duration in ms
+const animatedBars = document.querySelector('.animated-bars');
 
 navTabs.forEach(tab => {
   tab.addEventListener('click', e => {
@@ -71,12 +72,17 @@ navTabs.forEach(tab => {
         if (!section.classList.contains('show')) {
           section.classList.remove('hide');
           section.classList.add('show');
-          
+
           // Scroll to top smoothly
           window.scrollTo({
             top: 0,
             behavior: 'smooth'
           });
+
+          // Start animation if it's the contact section
+          if (key === 'contact' && animatedBars) {
+            animatedBars.classList.remove('paused');
+          }
         }
       } else {
         if (section.classList.contains('show')) {
@@ -85,6 +91,11 @@ navTabs.forEach(tab => {
         }
       }
     });
+
+    // Pause animation if leaving contact section
+    if (target !== 'contact' && animatedBars) {
+      animatedBars.classList.add('paused');
+    }
   });
 });
 </script>
