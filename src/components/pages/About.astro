@@ -227,6 +227,57 @@ You are an art piece, Imperfections and all
             </ul>
           </div>
         </div>
+		
+		<div class="accordion-item">
+          <button class="accordion-header">
+            a bunch  of career portfolio bs ill organize later
+            <span class="arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M7 10l5 5 5-5H7z"/>
+              </svg>
+            </span>
+          </button>
+          <div class="accordion-body">
+            <h3>remind me to organize these</h3>
+            <ul>
+              <li>A member of <strong>Lightbox - CIIT Animation Organization</strong></li>
+				<li>Worked on <strong>Page by page : A journey to bring out the creativity of a storyteller</strong><br>CIIT Senior Highschool - 2024</li>
+				<li>Worked as a Multimedia Intern for Bookshelf PH</li>
+				<li></li>
+            </ul>
+          </div>
+        </div>
+
+		<div class="accordion-item">
+          <button class="accordion-header">
+            Feedbacks / Reviews
+            <span class="arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M7 10l5 5 5-5H7z"/>
+              </svg>
+            </span>
+          </button>
+          <div class="accordion-body">
+            
+			<!-- Feedback Display -->
+		<div class="feedback-card">
+		  <div class="feedback-header">
+			<div>
+			  <h3>Feedback from Sir Ross</h3>
+			  <p class="feedback-role">Storyboard & Animation Instructor, CIIT College of Arts and Technology</p>
+			</div>
+		  </div>
+		  <blockquote class="feedback-text">
+			“If you continue doing this kind of level of animatic work consistently, it will only take you 1 to 2 years tops get to work with international studios.<br><br>
+
+Try putting your animatics on instagram, twitter and cara account (just for business sake) tag Titmouse, Line Studios, Lemon Sky studios. <br><br>
+
+Keep making short animatics and short animation exercises for action and fights. Even roughs and tie downs just post it. ”
+		  </blockquote>
+		</div>
+			
+        </div>
+		
       </div>
     </section>
   </Container>
@@ -358,13 +409,18 @@ h3::after {
   overflow: hidden;
   height: 0;
   opacity: 0;
-  transition: height 0.35s ease, opacity 0.3s ease;
   border: 2px solid var(--color-5);
   border-top: none;
   border-radius: 0 0 0.75rem 0.75rem;
   background: var(--color-6);
   padding: 0 1rem;
+  transition:
+    height 0.35s ease,
+    opacity 0.3s ease,
+    background-color 0.4s ease,
+    border-color 0.4s ease;
 }
+
 
 .accordion-body ul {
   padding-left: 1.25rem;
@@ -518,4 +574,33 @@ h3::after {
     padding: 1rem;
   }
 }
+
+/* ---------- Feedback Display ---------- */
+.feedback-card {
+  padding: 0rem 1.25rem 1rem;
+}
+
+.feedback-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0rem;
+  font-size: 1.1rem;
+}
+
+.feedback-role {
+  font-size: 1.27rem;
+  color: var(--color-2);
+}
+
+.feedback-text {
+  font-style: italic;
+  line-height: 1.6;
+  background: var(--line-dormant);
+  margin: 0rem;
+  color: var(--text-main);
+  border-left: 4px solid var(--color-2);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}
+
 </style>
