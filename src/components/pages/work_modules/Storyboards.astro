@@ -1,0 +1,115 @@
+---
+const storyboardItems = [
+  { src: "terrorinthecity.mp4", title: "Terror in the City", description: "A past inhabitant wanders the husk of her former home" },
+  { src: "azurewasteland.mp4", title: "Azure Wasteland", description: "An evil figure takes her leftover sandwich, idk" }
+];
+---
+
+<div class="bento-gallery storyboard-grid">
+  {storyboardItems.map(item => (
+    <div class="storyboard-item bento-item">
+      <div class="video-wrapper">
+        <video
+          class="previewable"
+          src={`storyboard/${item.src}`}
+          preload="metadata"
+          muted
+          playsinline
+        />
+        <div class="play-overlay">
+          <svg viewBox="0 0 64 64">
+            <path d="M16,12 L52,32 L16,52 Z" fill="white" stroke="white" stroke-width="10" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="item-text">
+        <h3>{item.title}</h3>
+        <hr />
+        <p>{item.description}</p>
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+.storyboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 2fr); /* exactly 2 per row */
+  gap: 0.5rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.storyboard-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.video-wrapper {
+  position: relative;
+  width: 110%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.video-wrapper video {
+  width: 90%; /* same as animations */
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.video-wrapper .play-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.video-wrapper:hover .play-overlay {
+  opacity: 1;
+}
+
+.video-wrapper .play-overlay svg {
+  width: 40px; /* match animations */
+  height: 40px;
+  fill: white;
+  filter: drop-shadow(0 0 4px rgba(0,0,0,.5));
+}
+
+.item-text {
+  padding: 0rem 0 0 0;
+}
+
+.item-text h3 {
+  font-size: 1.5rem;
+  margin: 0rem 0;
+}
+
+.item-text hr {
+  border: none;
+  border-top: 2px solid rgba(0,0,0,0.2);
+  margin: 0rem 0;
+}
+
+.item-text p {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-dark);
+}
+
+/* Responsive */
+@media(max-width:1200px){.storyboard-grid{grid-template-columns:repeat(auto-fit,minmax(350px,1fr));}}
+@media(max-width:900px){.storyboard-grid{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));}}
+@media(max-width:600px){.storyboard-grid{grid-template-columns:1fr;}}
+</style>

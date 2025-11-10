@@ -1,0 +1,67 @@
+---
+const galleryItems = [
+  "3RD EXAM_FINAL.mp4","ball.webp","disney hopefully.webp","duckass.webp",
+  "music video parts.mp4","pookiedeer.webp","RUNNINGMAN.webp","shake ma hand.mp4",
+  "trolljak.webp","SACK ANIM_maulawin.webp","slowinslowout.webp",
+  "so-much-scavs.webp","thebigfight.webp","walkin.webp"
+];
+---
+
+<div class="bento-grid">
+  {galleryItems.map(src => {
+    const isVideo = src.endsWith(".mp4") || src.endsWith(".mov") || src.endsWith(".webm");
+    return (
+      <div class="bento-item video-item">
+        {isVideo ? (
+          <div class="video-wrapper">
+            <video class="previewable" src={`animations/${src}`} preload="metadata" muted playsinline />
+            <div class="play-overlay">
+              <svg viewBox="0 0 64 64">
+                <path d="M16,12 L52,32 L16,52 Z" fill="white" stroke="white" stroke-width="10" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+        ) : (
+          <img class="previewable" src={`animations/${src}`} alt={src} loading="lazy" />
+        )}
+      </div>
+    );
+  })}
+</div>
+
+<style>
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.5rem;
+}
+
+.bento-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.bento-item img,
+.bento-item video {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.video-wrapper { position: relative; width: 100%; }
+.video-wrapper .play-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+.video-wrapper:hover .play-overlay { opacity: 1; }
+.video-wrapper .play-overlay svg { width: 40px; height: 40px; fill: white; filter: drop-shadow(0 0 4px rgba(0,0,0,.5)); }
+</style>

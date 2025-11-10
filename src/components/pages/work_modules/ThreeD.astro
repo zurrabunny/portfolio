@@ -1,0 +1,39 @@
+---
+const galleryItems = [
+  "ewwie.webp","AI.png","karmaGate_Open.webp","scavscared.webp","metropolis3.png",
+  "shelter.webp","sofanthiel3d.webp","SPOILER_drillcrabortho.webp",
+  "white-squidcada.webp","livingrender.png","worm.png","token.webp","snail.webp"
+];
+---
+
+<div class="bento-grid">
+  {galleryItems.map(src => (
+    <div class="bento-item">
+      <img class="previewable" src={`3d/${src}`} alt={src} loading="lazy" />
+    </div>
+  ))}
+</div>
+
+<style>
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.5rem;
+}
+
+.bento-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.bento-item img,
+.bento-item video {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 12px;
+  cursor: pointer;
+}
+</style>

@@ -1,0 +1,283 @@
+---
+const musicItems = [
+  { src: "Halcyon.ogg", cover: "Halcyon.jpg", title: "Halcyon", artist: "ZurraBunny & OnlineBlanks", bpm: 100 },
+  { src: "Scav.ogg", cover: "scav.png", title: "Scav", artist: "ZurraBunny & OnlineBlanks", bpm: 190 },
+  { src: "Unholy Seranata.ogg", cover: "Unholy Seranata.png", title: "Unholy Seranata", artist: "ZurraBunny & OnlineBlanks", bpm: 175 },
+  { src: "Overwhelmed.wav", cover: "Overwhelmed.jpeg", title: "Overwhelmed", artist: "ZurraBunny", bpm: 100 },
+  { src: "Shorts and Shores.mp3", cover: "honeymoon.png", title: "Shorts and Shores", artist: "ZurraBunny", bpm: 100 },
+  { src: "Starstruck.mp3", cover: "honeymoon.png", title: "Starstruck", artist: "ZurraBunny", bpm: 65 },
+  { src: "=3-ified.mp3", cover: "=3-ified.jpg", title: ":3-ified", artist: "ZurraBunny", bpm: 120 },
+  { src: "Next Stop.mp3", cover: "next stop.png", title: "Next Stop", artist: "ZurraBunny", bpm: 125 },
+  { src: "serenity.mp3", cover: "serenity.png", title: "Serenity", artist: "ZurraBunny", bpm: 90 },
+  { src: "catcoded.mp3", cover: "catcoded.png", title: "Cat-Coded", artist: "ZurraBunny", bpm: 105 },
+  { src: "microArp.ogg", cover: "microArp.png", title: "microArp", artist: "ZurraBunny", bpm: 130 },
+  { src: "Funkiin Arts - Menu Theme.mp3", cover: "funkiin arts.png", title: "Funkiin Arts - Menu Theme", artist: "ZurraBunny", bpm: 100 },
+  { src: "Libel.mp3", cover: "Libel.png", title: "Libel", artist: "ZurraBunny", bpm: 115 },
+  { src: "Sifted.wav", cover: "Sifted.png", title: "Sifted", artist: "ZurraBunny", bpm: 120 },
+  { src: "avert.mp3", cover: "avert.png", title: "Avert", artist: "ZurraBunny", bpm: 125 },
+];
+---
+
+<div class="music-row">
+  {musicItems.map((item) => (
+    <div class="music-player" data-bpm={item.bpm}>
+      <div class="music-cover">
+        <img src={`music/${item.cover}`} alt={item.title} />
+      </div>
+      <div class="music-info">
+        <h3>{item.title}</h3>
+        <p>{item.artist}</p>
+      </div>
+      <div class="player-controls">
+        <button class="play-btn">
+          <img class="play-icon" src="play.svg" alt="Play" />
+          <img class="pause-icon" src="pause.svg" alt="Pause" style="display:none;" />
+        </button>
+        <div class="progress-container">
+          <div class="progress-bar"></div>
+        </div>
+        <audio>
+          <source src={`music/${item.src}`} />
+        </audio>
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+.music-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  justify-items: center;
+  align-items: flex-start;
+  background: transparent;
+  color: white;
+  padding: 0rem;
+}
+
+.music-player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--container, #1b1b1b);
+  color: var(--text-dark);
+  border: 2px solid var(--border-container, #333);
+  border-radius: 1rem;
+  padding: 1rem;
+  width: 100%;
+  max-width: 220px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
+  transition: .2s;
+}
+
+.music-player:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .15);
+}
+
+.music-cover img {
+  width: 100%;
+  border-radius: .75rem;
+  margin-bottom: .5rem;
+}
+
+@keyframes bop {
+  0%, 20%, 100% { transform: scale(1); }
+  10% { transform: scale(1); }
+}
+
+.music-cover.bopping {
+  animation-name: bop;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.music-player.playing {
+  background: var(--color-7, #252525);
+  border-color: var(--color-1, #58f);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.music-info h3 {
+  font-size: 1rem;
+  margin: .3rem 0;
+  font-weight: 600;
+  text-align: center;
+}
+
+.music-info p {
+  font-size: .85rem;
+  margin: 0;
+  text-align: center;
+  color: var(--color-2);
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  width: 100%;
+  margin-top: .5rem;
+}
+
+.play-btn {
+  background: var(--color-4, #333);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.play-btn img {
+  width: 18px;
+  height: 18px;
+  display: block;
+  object-fit: contain;
+}
+
+.play-btn:hover img {
+  transform: scale(1.1);
+}
+
+.progress-container {
+  flex: 1;
+  height: 6px;
+  background: rgba(0, 0, 0, .3);
+  border-radius: 3px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--color-2);
+  border-radius: 3px;
+  transition: width .05s linear;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const players = document.querySelectorAll(".music-player");
+
+  players.forEach(player => {
+    const audio = player.querySelector("audio");
+    const playBtn = player.querySelector(".play-btn");
+    const playIcon = playBtn.querySelector(".play-icon");
+    const pauseIcon = playBtn.querySelector(".pause-icon");
+    const progressBar = player.querySelector(".progress-bar");
+    const progressContainer = player.querySelector(".progress-container");
+    const cover = player.querySelector(".music-cover");
+    const bpm = parseFloat(player.dataset.bpm) || 120;
+    const beatDuration = 60 / bpm;
+
+    let isScrubbing = false;
+    let scrubPercent = 0;
+    let displayedPercent = 0;
+
+    const animateProgress = () => {
+      if (isScrubbing) {
+        displayedPercent += (scrubPercent - displayedPercent) * 0.3;
+      } else if (audio.duration && !audio.paused) {
+        displayedPercent = audio.currentTime / audio.duration;
+      }
+      progressBar.style.width = `${displayedPercent * 100}%`;
+      requestAnimationFrame(animateProgress);
+    };
+    requestAnimationFrame(animateProgress);
+
+    const startBop = () => {
+      cover.classList.add("bopping");
+      cover.style.animationDuration = `${beatDuration}s`;
+    };
+    const stopBop = () => cover.classList.remove("bopping");
+
+    playBtn.addEventListener("click", () => {
+      if (audio.paused) {
+        players.forEach(p => {
+          const a = p.querySelector("audio");
+          if (a !== audio) {
+            a.pause();
+            a.currentTime = 0;
+            p.classList.remove("playing");
+            p.querySelector(".music-cover").classList.remove("bopping");
+            const pi = p.querySelector(".play-icon");
+            const paus = p.querySelector(".pause-icon");
+            if (pi && paus) {
+              pi.style.display = "block";
+              paus.style.display = "none";
+            }
+          }
+        });
+
+        audio.play();
+        player.classList.add("playing");
+        startBop();
+        playIcon.style.display = "none";
+        pauseIcon.style.display = "block";
+      } else {
+        audio.pause();
+        player.classList.remove("playing");
+        stopBop();
+        playIcon.style.display = "block";
+        pauseIcon.style.display = "none";
+      }
+    });
+
+    audio.addEventListener("ended", () => {
+      player.classList.remove("playing");
+      stopBop();
+      playIcon.style.display = "block";
+      pauseIcon.style.display = "none";
+      displayedPercent = 0;
+    });
+
+    const getPercent = e => {
+      const rect = progressContainer.getBoundingClientRect();
+      const offsetX = e.clientX ?? e.touches[0].clientX;
+      return Math.max(0, Math.min(1, (offsetX - rect.left) / rect.width));
+    };
+
+    const handleScrubMove = e => scrubPercent = getPercent(e);
+    const handleScrubEnd = () => {
+      isScrubbing = false;
+      audio.currentTime = scrubPercent * audio.duration;
+      document.removeEventListener("mousemove", handleScrubMove);
+      document.removeEventListener("mouseup", handleScrubEnd);
+      document.removeEventListener("touchmove", handleScrubMove);
+      document.removeEventListener("touchend", handleScrubEnd);
+    };
+
+    progressContainer.addEventListener("mousedown", e => {
+      isScrubbing = true;
+      scrubPercent = getPercent(e);
+      document.addEventListener("mousemove", handleScrubMove);
+      document.addEventListener("mouseup", handleScrubEnd);
+    });
+
+    progressContainer.addEventListener("touchstart", e => {
+      isScrubbing = true;
+      scrubPercent = getPercent(e);
+      document.addEventListener("touchmove", handleScrubMove);
+      document.addEventListener("touchend", handleScrubEnd);
+    });
+
+    progressContainer.addEventListener("click", e => {
+      if (!isScrubbing) {
+        const percent = getPercent(e);
+        displayedPercent = percent;
+        scrubPercent = percent;
+        audio.currentTime = percent * audio.duration;
+      }
+    });
+  });
+});
+</script>

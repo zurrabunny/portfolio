@@ -1,0 +1,42 @@
+---
+const galleryItems = {
+  Illustrations: [
+    "1 (1).png", "1.png", "3.png", "astrowo.png", "dress.png", "zurratrain.png",
+    "emmarefs.png", "fluttrerbee.png", "scav.png", "next stop.png", "libelk.png",
+    "zewra.png", "high ra and zur ha.png", "lumi nun.png", "luuust.png",
+    "pebbles empty.png", "rf.png", "shame on you.png", "sigma wolf.png",
+    "TITLE CARD.png", "uh.png", "walk.png", "zurra miles graduat.png",
+    "zuref.png", "bearoth.png", "lumens.png"
+  ],
+};
+---
+
+<div class="bento-grid">
+  {galleryItems.Illustrations.map(src => (
+    <div class="bento-item">
+      <img class="previewable" src={`illustrations/${src}`} alt={src} loading="lazy" />
+    </div>
+  ))}
+</div>
+
+<style>
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.5rem;
+}
+
+.bento-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.bento-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  cursor: pointer;
+}
+</style>

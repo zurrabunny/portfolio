@@ -1,35 +1,11 @@
 ---
 import Container from "/src/components/Container.astro";
-import ImageModal from "./ImageModal.astro"; // ✅ import
-
-const storyboardItems = [
-  { src: "terrorinthecity.mp4", title: "Terror in the City", description: "A past inhabitant wanders the husk of her former home" },
-  { src: "azurewasteland.mp4", title: "Azure Wasteland", description: "An evil figure takes her leftover sandwich, idk" }
-];
-
-const musicItems = [
-  { src: "Halcyon.ogg", cover: "Halcyon.jpg", title: "Halcyon", artist: "ZurraBunny & OnlineBlanks" },
-  { src: "Scav.ogg", cover: "scav.png", title: "Scav", artist: "ZurraBunny & OnlineBlanks" },
-  { src: "Unholy Seranata.ogg", cover: "Unholy Seranata.png", title: "Unholy Seranata", artist: "ZurraBunny & OnlineBlanks" },
-  { src: "Overwhelmed.wav", cover: "Overwhelmed.jpeg", title: "Overwhelmed", artist: "ZurraBunny" },
-  { src: "Shorts and Shores.mp3", cover: "honeymoon.png", title: "Shorts and Shores", artist: "ZurraBunny" },
-  { src: "Starstruck.mp3", cover: "honeymoon.png", title: "Starstruck", artist: "ZurraBunny" },
-  { src: "=3-ified.mp3", cover: "=3-ified.jpg", title: ":3-ified", artist: "ZurraBunny" },
-  { src: "Next Stop.mp3", cover: "next stop.png", title: "Next Stop", artist: "ZurraBunny" },
-  { src: "serenity.mp3", cover: "serenity.png", title: "Serenity", artist: "ZurraBunny" },
-  { src: "catcoded.mp3", cover: "catcoded.png", title: "Cat-Coded", artist: "ZurraBunny" },
-  { src: "microArp.ogg", cover: "microArp.png", title: "microArp", artist: "ZurraBunny" },
-  { src: "Funkiin Arts - Menu Theme.mp3", cover: "funkiin arts.png", title: "Funkiin Arts - Menu Theme", artist: "ZurraBunny" },
-  { src: "Libel.mp3", cover: "Libel.png", title: "Libel", artist: "ZurraBunny" },
-  { src: "Sifted.wav", cover: "Sifted.png", title: "Sifted", artist: "ZurraBunny" },
-  { src: "avert.mp3", cover: "avert.png", title: "Avert", artist: "ZurraBunny" },
-];
-
-const galleryItems = {
-  Illustrations: ["1 (1).png","1.png","3.png","astrowo.png","dress.png","zurratrain.png","emmarefs.png","fluttrerbee.png","scav.png","next stop.png","libelk.png","zewra.png","high ra and zur ha.png","lumi nun.png","luuust.png","pebbles empty.png","rf.png","shame on you.png","sigma wolf.png","TITLE CARD.png","uh.png","walk.png","zurra miles graduat.png","zuref.png","bearoth.png","lumens.png"],
-  Animation: ["3RD EXAM_FINAL.mp4","ball.webp","disney hopefully.webp","duckass.webp","music video parts.mp4","pookiedeer.webp","RUNNINGMAN.webp","trolljak.webp","SACK ANIM_maulawin.webp","shake ma hand.mp4","slowinslowout.webp","so-much-scavs.webp","thebigfight.webp","walkin.webp"],
-  "3D": ["ewwie.webp","AI.png","karmaGate_Open.webp","scavscared.webp","metropolis3.png","shelter.webp","sofanthiel3d.webp","SPOILER_drillcrabortho.webp","white-squidcada.webp","livingrender.png","worm.png","token.webp","snail.webp"]
-};
+import ImageModal from "./ImageModal.astro";
+import Music from "./work_modules/Music.astro";
+import Illustrations from "./work_modules/Illustrations.astro";
+import Animation from "./work_modules/Animations.astro";
+import ThreeD from "./work_modules/ThreeD.astro";
+import Storyboards from "./work_modules/Storyboards.astro";
 ---
 
 <main class="content">
@@ -44,100 +20,34 @@ const galleryItems = {
 
     <h1 id="tab-title">Illustrations</h1>
 
-	<section class="bento-gallery" id="illustrations">
-	  {galleryItems.Illustrations.map(src => (
-		<div class="bento-item">
-		  <img class="previewable" src={`illustrations/${src}`} alt="Illustration" />
-		</div>
-	  ))}
-	</section>
+    <section class="bento-gallery" id="illustrations">
+      <Illustrations />
+    </section>
 
-<section class="bento-gallery" id="animation" style="display:none">
-  {galleryItems.Animation.map(src => {
-    const isVideo = src.endsWith(".mp4") || src.endsWith(".mov") || src.endsWith(".webm");
-    return (
-      <div class="bento-item video-item">
-        {isVideo ? (
-          <div class="video-wrapper">
-            <video
-              class="previewable"
-              src={`animations/${src}`}
-              preload="metadata"
-              muted
-              playsinline
-            ></video>
-            <div class="play-overlay">
-          <svg viewBox="0 0 64 64" width="40" height="40">
-			  <path d="M16,12 L52,32 L16,52 Z" fill="white" stroke="white" stroke-width="10" stroke-linejoin="round"/>
-			</svg>
-            </div>
-          </div>
-        ) : (
-          <img class="previewable" src={`animations/${src}`} alt="Animation preview" />
-        )}
-      </div>
-    );
-  })}
-</section>
+    <section class="bento-gallery" id="animation" style="display:none">
+      <Animation />
+    </section>
 
+    <section class="bento-gallery" id="3d" style="display:none">
+      <ThreeD />
+    </section>
 
-	<section class="bento-gallery" id="3d" style="display:none">
-	  {galleryItems["3D"].filter(src => src.endsWith(".webp")).map(src => (
-		<div class="bento-item"><img class="previewable" src={`3d/${src}`} alt="3D WebP" /></div>
-	  ))}
-	  {galleryItems["3D"].filter(src => src.endsWith(".png")).map(src => (
-		<div class="bento-item"><img class="previewable" src={`3d/${src}`} alt="3D PNG" /></div>
-	  ))}
-	</section>
-
-<section class="bento-gallery" id="storyboard" style="display:none">
-  {storyboardItems.map(item => (
-    <div class="bento-item storyboard-item">
-      <div class="video-wrapper">
-        <video
-          class="previewable"
-          src={`storyboard/${item.src}`}
-          preload="metadata"
-          muted
-          playsinline
-        />
-        <div class="play-overlay">
-          <svg viewBox="0 0 64 64" width="40" height="40">
-			  <path d="M16,12 L52,32 L16,52 Z" fill="white" stroke="white" stroke-width="10" stroke-linejoin="round"/>
-			</svg>
-        </div>
-      </div>
-      <div class="item-text">
-        <h3>{item.title}</h3>
-        <hr />
-        <p>{item.description}</p>
-      </div>
-    </div>
-  ))}
-</section>
+    <section class="bento-gallery" id="storyboard" style="display:none">
+      <Storyboards />
+    </section>
 
     <div class="music-row" id="music" style="display:none">
-      {musicItems.map((item, index) => (
-        <div class="music-item music-player" data-index={index}>
-          <div class="music-cover"><img src={`music/${item.cover}`} alt={item.title} /></div>
-          <div class="music-info"><h3>{item.title}</h3><p>{item.artist}</p></div>
-          <div class="player-controls">
-            <button class="play-btn" aria-label="Play/Pause">
-              <svg class="icon play-icon" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21" fill="currentColor"/></svg>
-              <svg class="icon pause-icon" viewBox="0 0 24 24" style="display:none"><rect x="5" y="3" width="5" height="18" fill="currentColor"/><rect x="14" y="3" width="5" height="18" fill="currentColor"/></svg>
-            </button>
-            <div class="progress-container"><div class="progress-bar"></div></div>
-          </div>
-          <audio src={`music/${item.src}`}></audio>
-        </div>
-      ))}
+      <Music />
     </div>
   </Container>
-   <ImageModal />
+  <ImageModal />
 </main>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+  const animationSpeed = 0.6; // seconds
+  const staggerDelay = 0.02;  // seconds per letter/item
+
   const tabs = document.querySelectorAll(".tabs button");
   const sections = {
     Illustrations: document.getElementById("illustrations"),
@@ -148,262 +58,255 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   const title = document.getElementById("tab-title");
 
+  // Wrap title letters ONCE
+  const wrapTitleLetters = () => {
+    if (!title.dataset.wrapped) {
+      const text = title.textContent;
+      title.innerHTML = "";
+      text.split("").forEach(char => {
+        const span = document.createElement("span");
+        span.textContent = char;
+        span.style.display = "inline-block";
+        span.style.opacity = 0;
+        title.appendChild(span);
+      });
+      title.dataset.wrapped = "true";
+    }
+  };
+  wrapTitleLetters();
+
+  const animateTitleAndItems = (text, items) => {
+    const letters = Array.from(title.querySelectorAll("span"));
+
+    // Update letters text and reset
+    letters.forEach((span, i) => {
+      span.textContent = text[i] || "";
+      span.style.opacity = 0;
+      span.style.animation = "none";
+    });
+
+    // Animate letters staggered
+    letters.forEach((span, i) => {
+      setTimeout(() => {
+        span.style.animation = `fadeInUp ${animationSpeed}s forwards`;
+      }, i * staggerDelay * 1000);
+    });
+
+    // Animate gallery items staggered after letters
+    items.forEach((item, index) => {
+      const delay = (letters.length + index) * staggerDelay * 1000;
+      item.style.opacity = 0;
+      item.style.animation = "none";
+      setTimeout(() => {
+        item.style.animation = `fadeInUp ${animationSpeed}s forwards`;
+      }, delay);
+
+      // Animate nested text blocks if present
+      const textBlock = item.querySelector(".item-text");
+      if (textBlock) {
+        textBlock.style.opacity = 0;
+        textBlock.style.animation = "none";
+        setTimeout(() => {
+          textBlock.style.animation = `fadeInUp ${animationSpeed}s forwards`;
+        }, delay + (staggerDelay * 1000 / 2));
+      }
+    });
+  };
+
+  // Animate music players the same way
+  const animateMusicPlayers = () => {
+    const musicPlayers = document.querySelectorAll("#music .music-player");
+    musicPlayers.forEach((player, i) => {
+      const delay = i * staggerDelay * 1000; // stagger without letters length
+      player.style.opacity = 0;
+      player.style.animation = "none";
+      setTimeout(() => {
+        player.style.animation = `fadeInUp ${animationSpeed}s forwards`;
+      }, delay);
+
+      const textBlock = player.querySelector(".music-info");
+      if (textBlock) {
+        textBlock.style.opacity = 0;
+        textBlock.style.animation = "none";
+        setTimeout(() => {
+          textBlock.style.animation = `fadeInUp ${animationSpeed}s forwards`;
+        }, delay + (staggerDelay * 1000 / 2));
+      }
+    });
+  };
+
   tabs.forEach(tab => {
     tab.addEventListener("click", () => {
       const selected = tab.dataset.tab;
 
-      // Active tab styling
+      // Update active tab
       tabs.forEach(t => t.classList.remove("active"));
       tab.classList.add("active");
-      title.innerHTML = ""; // clear old text
-[...selected].forEach((letter, i) => {
-  const span = document.createElement("span");
-  span.textContent = letter;
-  span.style.opacity = "0";
-  span.style.display = "inline-block";
-  span.style.transition = `opacity 0.3s ease ${i * 0.05}s, transform 0.3s ease ${i * 0.05}s`;
-  span.style.transform = "translateY(5px)";
-  title.appendChild(span);
-});
 
-requestAnimationFrame(() => {
-  title.querySelectorAll("span").forEach(span => {
-    span.style.opacity = "1";
-    span.style.transform = "translateY(0)";
-  });
-});
-
-      // Show/hide sections with repeated fade-up animation
+      // Show/hide sections
       Object.keys(sections).forEach(key => {
-        const section = sections[key];
-        const children = Array.from(section.children);
-
-        if (key === selected) {
-          section.style.display = key === "Music" ? "flex" : "block";
-          
-          // Reset children for animation
-          children.forEach(child => {
-            child.style.opacity = "0";
-            child.style.transform = "translateY(5px)";
-            child.style.transition = "none";
-          });
-
-          // Trigger fade-up with stagger
-          requestAnimationFrame(() => {
-            children.forEach((child, i) => {
-              child.style.transition = `opacity 0.5s ease ${i*0.02}s, transform 0.5s ease ${i*0.02}s`;
-              child.style.opacity = "1";
-              child.style.transform = "translateY(0)";
-            });
-          });
-        } else {
-          section.style.display = "none";
-          children.forEach(child => {
-            child.style.opacity = "0";
-            child.style.transform = "translateY(5px)";
-            child.style.transition = "none";
-          });
-        }
+        sections[key].style.display = key === selected ? (key === "Music" ? "flex" : "block") : "none";
       });
+
+      const items = sections[selected].querySelectorAll(".bento-item");
+      animateTitleAndItems(selected, items);
+
+      if (selected === "Music") animateMusicPlayers();
     });
   });
 
-  // ✅ Trigger Illustrations tab on page load
-  const defaultTab = document.querySelector('.tabs button[data-tab="Illustrations"]');
-  if (defaultTab) defaultTab.click();
+  // Trigger default tab
+  document.querySelector('.tabs button[data-tab="Illustrations"]')?.click();
 });
-
-// Music player functionality
-document.addEventListener("DOMContentLoaded", () => {
-  const players = document.querySelectorAll(".music-player");
-
-  players.forEach(player => {
-    const audio = player.querySelector("audio");
-    const playBtn = player.querySelector(".play-btn");
-    const playIcon = playBtn.querySelector(".play-icon");
-    const pauseIcon = playBtn.querySelector(".pause-icon");
-    const progressContainer = player.querySelector(".progress-container");
-    const progressBar = player.querySelector(".progress-bar");
-
-    let isScrubbing = false;
-    let scrubPercent = 0;
-    let displayedPercent = 0;
-
-    // Smooth animation loop for progress bar
-    const animateProgress = () => {
-      if (isScrubbing) {
-        // Smoothly move towards scrubPercent
-        displayedPercent += (scrubPercent - displayedPercent) * 0.3;
-      } else if (audio.duration && !audio.paused) {
-        displayedPercent = audio.currentTime / audio.duration;
-      }
-
-      progressBar.style.width = `${displayedPercent * 100}%`;
-      requestAnimationFrame(animateProgress);
-    };
-    requestAnimationFrame(animateProgress);
-
-    playBtn.addEventListener("click", () => {
-      const allPlayers = document.querySelectorAll(".music-player");
-
-      // Pause all other players
-      document.querySelectorAll("audio").forEach(a => {
-        if (a !== audio) a.pause();
-      });
-
-      // Remove highlight from all
-      allPlayers.forEach(p => p.classList.remove("playing"));
-
-      if (audio.paused) {
-        audio.play();
-        playIcon.style.display = "none";
-        pauseIcon.style.display = "block";
-        player.classList.add("playing");
-      } else {
-        audio.pause();
-        playIcon.style.display = "block";
-        pauseIcon.style.display = "none";
-        player.classList.remove("playing");
-      }
-    });
-
-    audio.addEventListener("ended", () => {
-      playIcon.style.display = "block";
-      pauseIcon.style.display = "none";
-      displayedPercent = 0;
-      progressBar.style.width = "0%";
-      player.classList.remove("playing");
-    });
-
-    // Calculate percent helper
-    const getPercent = e => {
-      const rect = progressContainer.getBoundingClientRect();
-      const offsetX = e.clientX ?? e.touches[0].clientX;
-      return Math.max(0, Math.min(1, (offsetX - rect.left) / rect.width));
-    };
-
-    const handleScrubMove = e => {
-      scrubPercent = getPercent(e);
-    };
-
-    const handleScrubEnd = () => {
-      isScrubbing = false;
-      document.removeEventListener("mousemove", handleScrubMove);
-      document.removeEventListener("mouseup", handleScrubEnd);
-      document.removeEventListener("touchmove", handleScrubMove);
-      document.removeEventListener("touchend", handleScrubEnd);
-      audio.currentTime = scrubPercent * audio.duration;
-    };
-
-    // Mouse scrubbing
-    progressContainer.addEventListener("mousedown", e => {
-      isScrubbing = true;
-      scrubPercent = getPercent(e);
-      document.addEventListener("mousemove", handleScrubMove);
-      document.addEventListener("mouseup", handleScrubEnd);
-    });
-
-    // Touch scrubbing
-    progressContainer.addEventListener("touchstart", e => {
-      isScrubbing = true;
-      scrubPercent = getPercent(e);
-      document.addEventListener("touchmove", handleScrubMove);
-      document.addEventListener("touchend", handleScrubEnd);
-    });
-
-    // Instant jump (click)
-    progressContainer.addEventListener("click", e => {
-      if (!isScrubbing) {
-        const percent = getPercent(e);
-        displayedPercent = percent;
-        scrubPercent = percent;
-        audio.currentTime = percent * audio.duration;
-      }
-    });
-  });
-});
-
 </script>
 
 <style>
-main.content { flex:1; margin-left:260px; padding:2rem; color:var(--text-dark); position:relative; z-index:1; }
+main.content {
+  flex:1;
+  margin-left:260px;
+  padding:2rem;
+  color:var(--text-dark);
+  position:relative;
+  z-index:1;
+}
 
-.tabs { display:flex; gap:1rem; margin-bottom:1rem; }
-.tabs button { background:var(--container); color:var(--text-dark); border:2px solid var(--color-4); border-radius:.75rem; padding:.5rem 1rem; font-weight:600; cursor:pointer; transition:.3s; font-family: "Fredoka", sans-serif; font-size: 1.2rem;}
-.tabs button.active { background:var(--color-4); color:var(--text-main); border-color:var(--color-1); }
+.tabs {
+  display:flex;
+  gap:1rem;
+  margin-bottom:1rem;
+}
+.tabs button {
+  background:var(--container);
+  color:var(--text-dark);
+  border:2px solid var(--color-4);
+  border-radius:.75rem;
+  padding:.5rem 1rem;
+  font-weight:600;
+  cursor:pointer;
+  transition:.3s;
+  font-family:"Fredoka",sans-serif;
+  font-size:1.2rem;
+}
+.tabs button.active {
+  background:var(--color-4);
+  color:var(--text-main);
+  border-color:var(--color-1);
+}
 
 .bento-gallery { column-count:4; column-gap:.5rem; }
 .bento-item { display:inline-block; width:100%; margin-bottom:.1rem; border-radius:.5rem; overflow:hidden; cursor:pointer; transition:transform .2s ease, box-shadow .2s ease; }
 .bento-item img, .bento-item video { width:100%; height:auto; display:block; object-fit:cover; }
 
-.storyboard-item { display:flex; flex-direction:column; break-inside:avoid; margin:0 auto 1.5rem; max-width:500px; }
-.bento-gallery#storyboard { column-count:2; column-gap:1rem; }
-@media(max-width:900px){.bento-gallery#storyboard{column-count:1;}}
+.storyboard-item {
+  display:flex;
+  flex-direction:column;
+  break-inside:avoid;
+  margin:0 auto 1.5rem;
+  max-width:500px;
+}
 
-.item-text { padding:.5rem 0; }
-.item-text h3 { margin:.3rem 0; font-size:1.2rem; font-weight:600; }
-.item-text hr { border:none; border-top:3px solid rgba(0,0,0,.2); margin:.3rem 0; }
-.item-text p { margin:0; font-size:1rem; color:var(--text-dark); }
-
-.music-row { display:flex; flex-wrap:wrap; gap:1.5rem; }
-.music-player { display:flex; flex-direction:column; align-items:center; background:var(--container); border:2px solid var(--border-container); border-radius:1rem; padding:1rem; width:220px; box-shadow:0 4px 12px rgba(0,0,0,.1); transition:.2s; }
-.music-player:hover { transform:translateY(-3px); box-shadow:0 6px 16px rgba(0,0,0,.15); }
-.music-cover img { width:100%; border-radius:.75rem; margin-bottom:.5rem; }
-.music-player.playing { background: var(--color-7); border-color: var(--color-1); transition: background 0.3s ease, border-color 0.3s ease; }
-.music-info h3 { font-size:1rem; margin:.3rem 0; font-weight:600; text-align:center; }
-.music-info p { font-size:.85rem; margin:0; text-align:center; color:var(--text-dark); }
-.player-controls { display:flex; align-items:center; gap:.5rem; width:100%; margin-top:.5rem; }
-.play-btn { background:var(--color-4); color:var(--text-main); border:none; border-radius:50%; width:36px; height:36px; display:flex; align-items:center; justify-content:center; cursor:pointer; }
-.play-btn .icon { width:20px; height:20px; }
-.progress-container { flex:1; height:6px; background:rgba(0,0,0,.1); border-radius:3px; overflow:hidden; cursor:pointer; position:relative; }
-.progress-bar { height:100%; width:0%; background:var(--color-1); border-radius:3px; transition:width .05s linear; }
-
-.bento-item, .music-player { opacity:0; transform:translateY(20px); transition:opacity .5s ease, transform .5s ease; }
+.item-text {
+  padding:.5rem 0;
+}
+.item-text h3 {
+  margin:.3rem 0;
+  font-size:1.2rem;
+  font-weight:600;
+}
+.item-text hr {
+  border:none;
+  border-top:3px solid rgba(0,0,0,.2);
+  margin:.3rem 0;
+}
+.item-text p {
+  margin:0;
+  font-size:1rem;
+  color:var(--text-dark);
+}
 
 #tab-title {
   display: flex;
   justify-content: center;
-  gap: 0.05em;
   font-size: 2rem;
   margin-bottom: 1rem;
   font-weight: 700;
   letter-spacing: 0.03em;
 }
 
-.video-wrapper {
-  position: relative; /* important! overlay centers relative to this */
+#tab-title span {
   display: inline-block;
+  opacity: 0;
+}
+
+/* Storyboard fixes */
+#storyboard.bento-gallery {
+  column-count: initial;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 2rem;
   width: 100%;
+}
+
+/* Keep storyboard-item styling */
+.storyboard-item {
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
 }
 
 .video-wrapper video {
-  display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .video-wrapper .play-overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.25s ease;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .25s ease;
 }
-
 .video-wrapper:hover .play-overlay {
-  opacity: 1;
+  opacity:1;
 }
-
 .video-wrapper .play-overlay svg {
-  width: 40px;
-  height: 40px;
-  fill: white;
-  filter: drop-shadow(0 0 4px rgba(0,0,0,0.5));
+  width:40px;
+  height:40px;
+  fill:white;
+  filter:drop-shadow(0 0 4px rgba(0,0,0,.5));
 }
 
 @media(max-width:1200px){.bento-gallery{column-count:3;}}
 @media(max-width:900px){.bento-gallery{column-count:2;}}
 @media(max-width:600px){.bento-gallery{column-count:1;}}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.music-player.staggered {
+  opacity: 0; /* start invisible */
+  animation: fadeUp 0.5s forwards;
+}
+
 </style>
