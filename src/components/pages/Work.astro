@@ -18,7 +18,12 @@ import Storyboards from "./work_modules/Storyboards.astro";
       <button data-tab="Music">Music</button>
     </div>
 
-    <h1 id="tab-title">Illustrations</h1>
+    <!-- Divider around title -->
+    <div class="title-divider">
+      <div class="line"></div>
+      <h1 id="tab-title">Illustrations</h1>
+      <div class="line"></div>
+    </div>
 
     <section class="bento-gallery" id="illustrations">
       <Illustrations />
@@ -57,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Music: document.getElementById("music")
   };
   const title = document.getElementById("tab-title");
+  const lines = document.querySelectorAll(".title-divider .line");
 
   // Wrap title letters ONCE
   const wrapTitleLetters = () => {
@@ -83,6 +89,16 @@ document.addEventListener("DOMContentLoaded", () => {
       span.textContent = text[i] || "";
       span.style.opacity = 0;
       span.style.animation = "none";
+    });
+
+    // Animate lines
+    lines.forEach((line, i) => {
+      line.style.opacity = 0;
+      line.style.transform = "scaleX(0)";
+      line.style.animation = "none";
+      setTimeout(() => {
+        line.style.animation = `lineIn ${animationSpeed}s forwards`;
+      }, i * staggerDelay * 1000);
     });
 
     // Animate letters staggered
@@ -113,11 +129,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  // Animate music players the same way
   const animateMusicPlayers = () => {
     const musicPlayers = document.querySelectorAll("#music .music-player");
     musicPlayers.forEach((player, i) => {
-      const delay = i * staggerDelay * 1000; // stagger without letters length
+      const delay = i * staggerDelay * 1000;
       player.style.opacity = 0;
       player.style.animation = "none";
       setTimeout(() => {
@@ -224,18 +239,46 @@ main.content {
   color:var(--text-dark);
 }
 
-#tab-title {
+/* Title Divider */
+.title-divider {
   display: flex;
+  align-items: center;
   justify-content: center;
-  font-size: 2rem;
   margin-bottom: 1rem;
+  gap: 1rem;
+}
+.title-divider .line {
+  flex: 1;
+  height: 2px;
+  background-color: var(--color-6);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: center;
+}
+
+#tab-title {
+  font-size: 2rem;
   font-weight: 700;
   letter-spacing: 0.03em;
+  margin: 0;
+  white-space: nowrap;
+  display: flex;
+  justify-content: center;
 }
 
 #tab-title span {
   display: inline-block;
   opacity: 0;
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes lineIn {
+  0% { opacity: 0; transform: scaleX(0); }
+  100% { opacity: 1; transform: scaleX(1); }
 }
 
 /* Storyboard fixes */
@@ -247,7 +290,6 @@ main.content {
   width: 100%;
 }
 
-/* Keep storyboard-item styling */
 .storyboard-item {
   display: flex;
   flex-direction: column;
@@ -262,14 +304,12 @@ main.content {
   aspect-ratio: 16 / 9;
   overflow: hidden;
 }
-
 .video-wrapper video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
-
 .video-wrapper .play-overlay {
   position:absolute;
   top:50%;
@@ -279,12 +319,9 @@ main.content {
   opacity:0;
   transition:opacity .25s ease;
 }
-.video-wrapper:hover .play-overlay {
-  opacity:1;
-}
+.video-wrapper:hover .play-overlay { opacity:1; }
 .video-wrapper .play-overlay svg {
-  width:40px;
-  height:40px;
+  width:40px; height:40px;
   fill:white;
   filter:drop-shadow(0 0 4px rgba(0,0,0,.5));
 }
@@ -293,20 +330,8 @@ main.content {
 @media(max-width:900px){.bento-gallery{column-count:2;}}
 @media(max-width:600px){.bento-gallery{column-count:1;}}
 
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .music-player.staggered {
-  opacity: 0; /* start invisible */
+  opacity: 0;
   animation: fadeUp 0.5s forwards;
 }
-
 </style>
