@@ -282,7 +282,7 @@ body {
 }
 
 .tag-btn {
-  background: transparent;
+  background: var(--container);
   border: 2px solid var(--color-4);
   border-radius: 9999px;
   padding: 0.35rem 0.8rem;
