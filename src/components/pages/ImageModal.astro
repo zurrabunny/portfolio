@@ -23,57 +23,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentIndex = -1;
   let currentGallery = [];
-  let animating = false;
 
   document.body.appendChild(modal);
 
-  function openModal(el, direction = null) {
-    // get gallery items from the same tab section
-    const section = el.closest(".bento-gallery");
-    currentGallery = Array.from(section.querySelectorAll(".previewable"));
+  function openModal(el) {
+    // get only visible gallery items from the same section
+    const section = el.closest(".bento-gallery, .bento-grid");
+    currentGallery = Array.from(section.querySelectorAll(".previewable")).filter(i => {
+      return i.closest(".bento-item").style.display !== "none";
+    });
 
     const index = currentGallery.indexOf(el);
     if (index === -1) return;
     currentIndex = index;
 
+    // Immediately stop any playing video
+    vidEl.pause();
+    vidEl.src = "";
+
     const isVideo = el.tagName.toLowerCase() === "video";
 
-    // fade-out animation
-    const currentEl = modal.querySelector(".media-content.show");
-    if (currentEl) {
-      currentEl.classList.remove("show");
-      currentEl.classList.add(direction === "next" ? "fade-left" : "fade-right");
+    if (isVideo) {
+      vidEl.src = el.src;
+      vidEl.style.display = "block";
+      imgEl.style.display = "none";
+    } else {
+      imgEl.src = el.dataset.full || el.src;
+      imgEl.style.display = "block";
+      vidEl.style.display = "none";
     }
 
-    setTimeout(() => {
-      // stop any playing video
-      vidEl.pause();
-      vidEl.src = "";
-
-      imgEl.style.display = "none";
-      vidEl.style.display = "none";
-
-      if (isVideo) {
-        vidEl.src = el.src;
-        vidEl.style.display = "block";
-        vidEl.className = "media-content show";
-      } else {
-        imgEl.src = el.dataset.full || el.src;
-        imgEl.style.display = "block";
-        imgEl.className = "media-content show";
-      }
-
-      // fade-in direction
-      const activeEl = modal.querySelector(".show");
-      if (direction === "next") activeEl.classList.add("fade-in-right");
-      if (direction === "prev") activeEl.classList.add("fade-in-left");
-
-      modal.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden";
-      modal.classList.add("show");
-      requestAnimationFrame(() => modal.classList.add("visible"));
-      animating = false;
-    }, 150);
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    modal.classList.add("show");
+    requestAnimationFrame(() => modal.classList.add("visible"));
   }
 
   function closeModal() {
@@ -94,18 +77,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function showNext() {
-    if (animating || !currentGallery.length) return;
+    if (!currentGallery.length) return;
     if (currentIndex < currentGallery.length - 1) {
-      animating = true;
-      openModal(currentGallery[currentIndex + 1], "next");
+      openModal(currentGallery[currentIndex + 1]);
     }
   }
 
   function showPrev() {
-    if (animating || !currentGallery.length) return;
+    if (!currentGallery.length) return;
     if (currentIndex > 0) {
-      animating = true;
-      openModal(currentGallery[currentIndex - 1], "prev");
+      openModal(currentGallery[currentIndex - 1]);
     }
   }
 
@@ -177,34 +158,28 @@ document.addEventListener("DOMContentLoaded", () => {
   max-width: 100%;
   max-height: 80vh;
   object-fit: contain;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  display: block;
 }
 
 .media-content.show {
-  opacity: 1;
+  display: block;
 }
 
-/* Fade animations */
-@keyframes fadeLeft {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
+/* Optional navigation arrows */
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  color: #fff;
+  background: rgba(0,0,0,0.3);
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 0.5rem;
+  user-select: none;
 }
-@keyframes fadeRight {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
-}
-@keyframes fadeInLeft {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-@keyframes fadeInRight {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-.fade-left { animation: fadeLeft 0.3s forwards; }
-.fade-right { animation: fadeRight 0.3s forwards; }
-.fade-in-left { animation: fadeInLeft 0.3s ease; }
-.fade-in-right { animation: fadeInRight 0.3s ease; }
+.nav-arrow.left { left: 1rem; }
+.nav-arrow.right { right: 1rem; }
 </style>
