@@ -1,20 +1,25 @@
 /*==========================
-  Fonts
+  Fonts (Google Fonts)
 ==========================*/
-@font-face {
-  font-family: 'Fredoka';
-  src: url('/fonts/Fredoka.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap');
 
-/* Apply Fredoka to everything */
-html, body, * {
-  font-family: 'Fredoka', sans-serif !important;
+/*==========================
+  Global Font & Transitions
+==========================*/
+html, body {
+  font-family: 'Fredoka', sans-serif;
   letter-spacing: 1.3px;
   line-height: 1.6;
   transition: background-color 0.4s ease, color 0.4s ease;
 }
+
+* {
+  font-family: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
 
 /*==========================
   Global Transitions
