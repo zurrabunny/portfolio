@@ -1,25 +1,106 @@
 ---
 const galleryItems = {
   Illustrations: [
-    "1 (1).png", "1.png", "3.png", "astrowo.png", "dress.png", "zurratrain.png",
-    "emmarefs.png", "fluttrerbee.png", "scav.png", "next stop.png", "libelk.png",
-    "zewra.png", "high ra and zur ha.png", "lumi nun.png", "luuust.png",
-    "pebbles empty.png", "rf.png", "shame on you.png", "sigma wolf.png",
-    "TITLE CARD.png", "uh.png", "walk.png", "zurra miles graduat.png",
-    "zuref.png", "bearoth.png", "lumens.png"
+    { src: "1 (1).png", tags: ["Characters","Album Art"] },
+    { src: "1.png", tags: ["Characters"] },
+    { src: "3.png", tags: ["Characters"] },
+    { src: "astrowo.png", tags: ["Characters"] },
+    { src: "dress.png", tags: ["Characters"] },
+    { src: "zurratrain.png", tags: ["Characters","Backgrounds"] },
+    { src: "emmarefs.png", tags: ["Characters"] },
+    { src: "fluttrerbee.png", tags: ["Characters"] },
+    { src: "scav.png", tags: ["Characters","Album Art"] },
+    { src: "next stop.png", tags: ["Characters","Album Art"] },
+    { src: "funkiin arts.png", tags: ["Characters","Album Art"] },
+    { src: "honeymoon.png", tags: ["Album Art"] },
+    { src: "serenity.png", tags: ["Album Art"] },
+    { src: "Sifted.png", tags: ["Album Art"] },
+    { src: "Unholy Seranata.png", tags: ["Characters","Album Art"] },
+    { src: "=3-ified.jpg", tags: ["Album Art"] },
+    { src: "libelk.png", tags: ["Album Art"] },
+    { src: "zewra.png", tags: ["Characters","Backgrounds"] },
+    { src: "high ra and zur ha.png", tags: ["Characters"] },
+    { src: "lumi nun.png", tags: ["Characters"] },
+    { src: "luuust.png", tags: ["Characters"] },
+    { src: "pebbles empty.png", tags: ["Characters","Backgrounds"] },
+    { src: "rf.png", tags: ["Backgrounds"] },
+    { src: "shame on you.png", tags: ["Creatures"] },
+    { src: "sigma wolf.png", tags: ["Characters"] },
+    { src: "TITLE CARD.png", tags: ["Misc"] },
+    { src: "uh.png", tags: ["Backgrounds"] },
+    { src: "walk.png", tags: ["Backgrounds"] },
+    { src: "zurra miles graduat.png", tags: ["Characters"] },
+    { src: "zuref.png", tags: ["Characters"] },
+    { src: "bearoth.png", tags: ["Creatures"] },
+    { src: "lumens.png", tags: ["Characters"] }
   ],
 };
 ---
 
-<div class="bento-grid">
-  {galleryItems.Illustrations.map(src => (
-    <div class="bento-item">
-      <img class="previewable" src={`illustrations/${src}`} alt={src} loading="lazy" />
+
+<div class="bento-grid" id="illustrationGrid">
+  {galleryItems.Illustrations.map(item => (
+    <div class="bento-item" data-tags={item.tags.join(",")}>
+      <img
+        class="previewable"
+        src={`illustrations/${item.src}`}
+        alt={item.src}
+        loading="lazy"
+      />
     </div>
   ))}
 </div>
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const items = document.querySelectorAll("#illustrationGrid .bento-item");
+  const tagFilter = document.getElementById("tagFilter");
+
+  // Collect all unique tags
+  const allTags = new Set(["All"]);
+  items.forEach(item => {
+    const tags = item.dataset.tags.split(",");
+    tags.forEach(tag => allTags.add(tag));
+  });
+
+  // Generate tag buttons
+  allTags.forEach(tag => {
+    const btn = document.createElement("button");
+    btn.textContent = tag;
+    btn.className = tag === "All" ? "tag-btn active" : "tag-btn";
+    btn.dataset.tag = tag;
+    tagFilter.appendChild(btn);
+
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".tag-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      items.forEach(item => {
+        const tags = item.dataset.tags.split(",");
+        if (tag === "All" || tags.includes(tag)) {
+          item.style.display = "block";
+          item.style.opacity = 0;
+          item.style.transform = "scale(0.95)";
+          setTimeout(() => {
+            item.style.transition = "opacity 0.3s, transform 0.3s";
+            item.style.opacity = 1;
+            item.style.transform = "scale(1)";
+          }, 30);
+        } else {
+          item.style.transition = "opacity 0.2s, transform 0.2s";
+          item.style.opacity = 0;
+          item.style.transform = "scale(0.95)";
+          setTimeout(() => { item.style.display = "none"; }, 200);
+        }
+      });
+    });
+  });
+});
+</script>
+
 <style>
+
+
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -27,8 +108,7 @@ const galleryItems = {
 }
 
 .bento-item {
-  display: flex;
-  flex-direction: column;
+  display: inline-block;
   width: 100%;
 }
 
@@ -38,5 +118,10 @@ const galleryItems = {
   display: block;
   border-radius: 8px;
   cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.bento-item img:hover {
+  transform: scale(1.01);
 }
 </style>

@@ -83,9 +83,14 @@ const musicItems = [
 }
 
 @keyframes bop {
-  0%, 20%, 100% { transform: scale(1); }
-  10% { transform: scale(1); }
+  0%, 20%, 100% {
+    transform: translateY(0);
+  }
+  10% {
+    transform: translateY(0px);
+  }
 }
+
 
 .music-cover.bopping {
   animation-name: bop;

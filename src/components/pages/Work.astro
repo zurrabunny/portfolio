@@ -25,6 +25,10 @@ import Storyboards from "./work_modules/Storyboards.astro";
       <div class="line"></div>
     </div>
 
+    <!-- Tag Filter -->
+    <div class="tag-filter" id="tagFilter"></div>
+
+    <!-- Sections -->
     <section class="bento-gallery" id="illustrations">
       <Illustrations />
     </section>
@@ -50,9 +54,8 @@ import Storyboards from "./work_modules/Storyboards.astro";
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  const animationSpeed = 0.6; // seconds
-  const staggerDelay = 0.02;  // seconds per letter/item
-
+  const animationSpeed = 0.6;
+  const staggerDelay = 0.02;
   const tabs = document.querySelectorAll(".tabs button");
   const sections = {
     Illustrations: document.getElementById("illustrations"),
@@ -63,8 +66,11 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   const title = document.getElementById("tab-title");
   const lines = document.querySelectorAll(".title-divider .line");
+  const tagFilter = document.getElementById("tagFilter");
 
-  // Wrap title letters ONCE
+  let activeTag = "All";
+
+  // Wrap title letters
   const wrapTitleLetters = () => {
     if (!title.dataset.wrapped) {
       const text = title.textContent;
@@ -81,17 +87,18 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   wrapTitleLetters();
 
-  const animateTitleAndItems = (text, items) => {
+  // Animate title letters
+  const animateTitle = (text) => {
     const letters = Array.from(title.querySelectorAll("span"));
-
-    // Update letters text and reset
     letters.forEach((span, i) => {
       span.textContent = text[i] || "";
       span.style.opacity = 0;
       span.style.animation = "none";
+      setTimeout(() => {
+        span.style.animation = `fadeInUp ${animationSpeed}s forwards`;
+      }, i * staggerDelay * 1000);
     });
 
-    // Animate lines
     lines.forEach((line, i) => {
       line.style.opacity = 0;
       line.style.transform = "scaleX(0)";
@@ -100,82 +107,163 @@ document.addEventListener("DOMContentLoaded", () => {
         line.style.animation = `lineIn ${animationSpeed}s forwards`;
       }, i * staggerDelay * 1000);
     });
+  };
 
-    // Animate letters staggered
-    letters.forEach((span, i) => {
-      setTimeout(() => {
-        span.style.animation = `fadeInUp ${animationSpeed}s forwards`;
-      }, i * staggerDelay * 1000);
-    });
-
-    // Animate gallery items staggered after letters
+  // Animate gallery items (with stagger)
+  const animateGalleryItems = (items) => {
     items.forEach((item, index) => {
-      const delay = (letters.length + index) * staggerDelay * 1000;
       item.style.opacity = 0;
-      item.style.animation = "none";
+      item.style.transform = "scale(0.95)";
+      item.style.display = "inline-block";
       setTimeout(() => {
-        item.style.animation = `fadeInUp ${animationSpeed}s forwards`;
-      }, delay);
-
-      // Animate nested text blocks if present
-      const textBlock = item.querySelector(".item-text");
-      if (textBlock) {
-        textBlock.style.opacity = 0;
-        textBlock.style.animation = "none";
-        setTimeout(() => {
-          textBlock.style.animation = `fadeInUp ${animationSpeed}s forwards`;
-        }, delay + (staggerDelay * 1000 / 2));
-      }
+        item.style.transition = `opacity ${animationSpeed}s, transform ${animationSpeed}s`;
+        item.style.opacity = 1;
+        item.style.transform = "scale(1)";
+      }, index * staggerDelay * 1000);
     });
   };
 
+  // Animate music players
   const animateMusicPlayers = () => {
-    const musicPlayers = document.querySelectorAll("#music .music-player");
-    musicPlayers.forEach((player, i) => {
+    const players = document.querySelectorAll("#music .music-player");
+    players.forEach((player, i) => {
       const delay = i * staggerDelay * 1000;
       player.style.opacity = 0;
       player.style.animation = "none";
       setTimeout(() => {
         player.style.animation = `fadeInUp ${animationSpeed}s forwards`;
       }, delay);
-
-      const textBlock = player.querySelector(".music-info");
-      if (textBlock) {
-        textBlock.style.opacity = 0;
-        textBlock.style.animation = "none";
+      const info = player.querySelector(".music-info");
+      if (info) {
+        info.style.opacity = 0;
+        info.style.animation = "none";
         setTimeout(() => {
-          textBlock.style.animation = `fadeInUp ${animationSpeed}s forwards`;
+          info.style.animation = `fadeInUp ${animationSpeed}s forwards`;
         }, delay + (staggerDelay * 1000 / 2));
       }
     });
   };
 
+  // Wait for items
+  function waitForItems(selector, callback) {
+    const interval = setInterval(() => {
+      const items = document.querySelectorAll(selector);
+      if (items.length) {
+        clearInterval(interval);
+        callback(items);
+      }
+    }, 50);
+  }
+
+  // Generate tag buttons (only once)
+  function generateTagButtons() {
+    waitForItems("#illustrations .bento-item", (items) => {
+      if (!tagFilter) return;
+
+      if (!tagFilter.dataset.generated) {
+        const allTags = new Set(["All"]);
+        items.forEach(item => {
+          const tags = item.dataset.tags?.split(",").map(t => t.trim()) || [];
+          tags.forEach(tag => allTags.add(tag));
+        });
+
+        tagFilter.innerHTML = "";
+        Array.from(allTags).forEach(tag => {
+          const btn = document.createElement("button");
+          btn.dataset.tag = tag;
+          btn.textContent = tag;
+          btn.className = "tag-btn";
+          tagFilter.appendChild(btn);
+
+          if (tag === activeTag) btn.classList.add("active");
+
+          btn.addEventListener("click", () => {
+            document.querySelectorAll(".tag-btn")?.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            activeTag = tag;
+
+            items.forEach(item => {
+              const itemTags = item.dataset.tags?.split(",").map(t => t.trim()) || [];
+              if (tag === "All" || itemTags.includes(tag)) {
+                item.style.display = "inline-block";
+                item.style.opacity = 1;
+                item.style.transform = "scale(1)";
+              } else {
+                item.style.display = "none";
+                item.style.opacity = 0;
+              }
+            });
+          });
+        });
+
+        tagFilter.dataset.generated = "true";
+      }
+    });
+  }
+
+  // Animate tags (stagger, always on tab switch)
+  function animateTagButtons() {
+    if (!tagFilter) return;
+    const buttons = tagFilter.querySelectorAll(".tag-btn");
+    buttons.forEach((btn, i) => {
+      btn.style.opacity = 0;
+      btn.style.transform = "translateY(10px)";
+      btn.style.transition = "none";
+
+      setTimeout(() => {
+        btn.style.transition = "opacity 0.4s, transform 0.4s";
+        btn.style.opacity = 1;
+        btn.style.transform = "translateY(0)";
+      }, i * staggerDelay * 4000);
+    });
+  }
+
+  // Tab click
   tabs.forEach(tab => {
     tab.addEventListener("click", () => {
       const selected = tab.dataset.tab;
-
-      // Update active tab
       tabs.forEach(t => t.classList.remove("active"));
       tab.classList.add("active");
 
-      // Show/hide sections
       Object.keys(sections).forEach(key => {
         sections[key].style.display = key === selected ? (key === "Music" ? "flex" : "block") : "none";
       });
 
-      const items = sections[selected].querySelectorAll(".bento-item");
-      animateTitleAndItems(selected, items);
+      if (selected === "Illustrations") {
+        tagFilter.style.display = "flex";
+        generateTagButtons();
+        animateTagButtons(); // reset and stagger animation on each tab switch
+
+        const items = sections["Illustrations"].querySelectorAll(".bento-item");
+        animateGalleryItems(items);
+
+        items.forEach(item => {
+          const itemTags = item.dataset.tags?.split(",").map(t => t.trim()) || [];
+          if (!(activeTag === "All" || itemTags.includes(activeTag))) {
+            item.style.display = "none";
+            item.style.opacity = 0;
+          }
+        });
+      } else {
+        tagFilter.style.display = "none";
+
+        const items = sections[selected].querySelectorAll(".bento-item");
+        animateGalleryItems(items);
+      }
+
+      animateTitle(selected);
 
       if (selected === "Music") animateMusicPlayers();
     });
   });
 
-  // Trigger default tab
+  // Default tab
   document.querySelector('.tabs button[data-tab="Illustrations"]')?.click();
 });
 </script>
 
 <style>
+
 main.content {
   flex:1;
   margin-left:260px;
