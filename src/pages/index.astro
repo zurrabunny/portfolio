@@ -30,3 +30,30 @@ import DarkModeToggle from '../components/DarkModeToggle.astro';
     </div>
   </body>
 </html>
+
+<style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+
+      /* Mobile adjustments */
+      @media (max-width: 900px) {
+        #page-wrapper {
+          flex-direction: column;
+        }
+
+        .dark-mode-toggle {
+          position: fixed;
+          top: 1rem;
+          right: 1rem;
+          z-index: 200;
+        }
+      }
+	  
+        main.content {
+          padding: 0rem;
+        }
+      }
+    </style>
