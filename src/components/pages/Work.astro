@@ -144,79 +144,117 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  // Wait for items
-  function waitForItems(selector, callback) {
-    const interval = setInterval(() => {
-      const items = document.querySelectorAll(selector);
-      if (items.length) {
-        clearInterval(interval);
-        callback(items);
-      }
-    }, 50);
+// Wait for items to exist
+function waitForItems(selector, callback) {
+  const items = document.querySelectorAll(selector);
+  if (items.length) {
+    callback(items);
+  } else {
+    setTimeout(() => waitForItems(selector, callback), 100);
   }
+}
 
-  // Generate tag buttons (only once)
-  function generateTagButtons() {
-    waitForItems("#illustrations .bento-item", (items) => {
-      if (!tagFilter) return;
+// Generate tag buttons (only once)
+function generateTagButtons() {
+  waitForItems("#illustrations .bento-item", (items) => {
+    if (!tagFilter) return;
 
-      if (!tagFilter.dataset.generated) {
-        const allTags = new Set(["All"]);
-        items.forEach(item => {
-          const tags = item.dataset.tags?.split(",").map(t => t.trim()) || [];
-          tags.forEach(tag => allTags.add(tag));
-        });
+    if (!tagFilter.dataset.generated) {
+      const allTags = new Set(["All"]);
+      items.forEach(item => {
+        const tags = item.dataset.tags?.split(",").map(t => t.trim()) || [];
+        tags.forEach(tag => allTags.add(tag));
+      });
 
-        tagFilter.innerHTML = "";
-        Array.from(allTags).forEach(tag => {
-          const btn = document.createElement("button");
-          btn.dataset.tag = tag;
-          btn.textContent = tag;
-          btn.className = "tag-btn";
-          tagFilter.appendChild(btn);
+      tagFilter.innerHTML = "";
+      Array.from(allTags).forEach(tag => {
+        const btn = document.createElement("button");
+        btn.dataset.tag = tag;
+        btn.textContent = tag;
+        btn.className = "tag-btn";
+        tagFilter.appendChild(btn);
 
-          if (tag === activeTag) btn.classList.add("active");
+        if (tag === activeTag) btn.classList.add("active");
 
-          btn.addEventListener("click", () => {
-            document.querySelectorAll(".tag-btn")?.forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            activeTag = tag;
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".tag-btn")?.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          activeTag = tag;
 
-            items.forEach(item => {
-              const itemTags = item.dataset.tags?.split(",").map(t => t.trim()) || [];
-              if (tag === "All" || itemTags.includes(tag)) {
-                item.style.display = "inline-block";
-                item.style.opacity = 1;
-                item.style.transform = "scale(1)";
-              } else {
-                item.style.display = "none";
-                item.style.opacity = 0;
-              }
-            });
+          items.forEach(item => {
+            const itemTags = item.dataset.tags?.split(",").map(t => t.trim()) || [];
+            if (tag === "All" || itemTags.includes(tag)) {
+              item.style.display = "inline-block";
+              item.style.opacity = 1;
+              item.style.transform = "scale(1)";
+            } else {
+              item.style.display = "none";
+              item.style.opacity = 0;
+            }
           });
         });
+      });
 
-        tagFilter.dataset.generated = "true";
-      }
-    });
+      tagFilter.dataset.generated = "true";
+    }
+  });
+}
+
+// Animate tags (stagger, always on tab switch)
+function animateTagButtons() {
+  if (!tagFilter) return;
+  const buttons = tagFilter.querySelectorAll(".tag-btn");
+  buttons.forEach((btn, i) => {
+    btn.style.opacity = 0;
+    btn.style.transform = "translateY(10px)";
+    btn.style.transition = "none";
+
+    setTimeout(() => {
+      btn.style.transition = "opacity 0.4s, transform 0.4s";
+      btn.style.opacity = 1;
+      btn.style.transform = "translateY(0)";
+    }, i * staggerDelay * 4000);
+  });
+}
+
+// ---------- MOBILE SUPPORT ----------
+function setupTagFilterMobile() {
+  if (!tagFilter) return;
+
+  // On mobile, allow horizontal scrolling instead of wrapping
+  const mq = window.matchMedia("(max-width: 900px)");
+  function applyMobileStyles(e) {
+    if (e.matches) {
+      tagFilter.style.display = "flex";
+      tagFilter.style.flexWrap = "nowrap";
+      tagFilter.style.overflowX = "auto";
+      tagFilter.style.gap = "0.5rem";
+      tagFilter.style.padding = "0.5rem 0";
+      tagFilter.querySelectorAll(".tag-btn").forEach(btn => {
+        btn.style.flex = "0 0 auto";
+        btn.style.minWidth = "60px";
+      });
+    } else {
+      // Reset desktop styles
+      tagFilter.style.display = "flex";
+      tagFilter.style.flexWrap = "wrap";
+      tagFilter.style.overflowX = "visible";
+      tagFilter.style.gap = "1rem";
+      tagFilter.querySelectorAll(".tag-btn").forEach(btn => {
+        btn.style.flex = "initial";
+        btn.style.minWidth = "initial";
+      });
+    }
   }
 
-  // Animate tags (stagger, always on tab switch)
-  function animateTagButtons() {
-    if (!tagFilter) return;
-    const buttons = tagFilter.querySelectorAll(".tag-btn");
-    buttons.forEach((btn, i) => {
-      btn.style.opacity = 0;
-      btn.style.transform = "translateY(10px)";
-      btn.style.transition = "none";
+  applyMobileStyles(mq);
+  mq.addEventListener("change", applyMobileStyles);
+}
 
-      setTimeout(() => {
-        btn.style.transition = "opacity 0.4s, transform 0.4s";
-        btn.style.opacity = 1;
-        btn.style.transform = "translateY(0)";
-      }, i * staggerDelay * 4000);
-    });
-  }
+// Initialize
+generateTagButtons();
+animateTagButtons();
+setupTagFilterMobile();
 
   // Tab click
   tabs.forEach(tab => {
@@ -263,71 +301,88 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 <style>
-
 main.content {
-  flex:1;
-  margin-left:260px;
-  padding:2rem;
-  color:var(--text-dark);
-  position:relative;
-  z-index:1;
+  flex: 1;
+  margin-left: 260px;
+  padding: 2rem;
+  color: var(--text-dark);
+  position: relative;
+  z-index: 1;
 }
 
 .tabs {
-  display:flex;
-  gap:1rem;
-  margin-bottom:1rem;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 .tabs button {
-  background:var(--container);
-  color:var(--text-dark);
-  border:2px solid var(--color-4);
-  border-radius:.75rem;
-  padding:.5rem 1rem;
-  font-weight:600;
-  cursor:pointer;
-  transition:.3s;
-  font-family:"Fredoka",sans-serif;
-  font-size:1.2rem;
+  background: var(--container);
+  color: var(--text-dark);
+  border: 2px solid var(--color-4);
+  border-radius: 0.75rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  font-family: "Fredoka", sans-serif;
+  font-size: 1.2rem;
 }
 .tabs button.active {
-  background:var(--color-4);
-  color:var(--text-main);
-  border-color:var(--color-1);
+  background: var(--color-4);
+  color: var(--text-main);
+  border-color: var(--color-1);
 }
 
-.bento-gallery { column-count:4; column-gap:.5rem; }
-.bento-item { display:inline-block; width:100%; margin-bottom:.1rem; border-radius:.5rem; overflow:hidden; cursor:pointer; transition:transform .2s ease, box-shadow .2s ease; }
-.bento-item img, .bento-item video { width:100%; height:auto; display:block; object-fit:cover; }
+/* ---------- Gallery Layout ---------- */
+.bento-gallery {
+  column-count: 4;
+  column-gap: 0.5rem;
+}
+.bento-item {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 0.1rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.bento-item img,
+.bento-item video {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
 
+/* ---------- Storyboard Items ---------- */
 .storyboard-item {
-  display:flex;
-  flex-direction:column;
-  break-inside:avoid;
-  margin:0 auto 1.5rem;
-  max-width:500px;
+  display: flex;
+  flex-direction: column;
+  break-inside: avoid;
+  margin: 0 auto 1.5rem;
+  max-width: 500px;
 }
-
 .item-text {
-  padding:.5rem 0;
+  padding: 0.5rem 0;
 }
 .item-text h3 {
-  margin:.3rem 0;
-  font-size:1.2rem;
-  font-weight:600;
+  margin: 0.3rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 .item-text hr {
-  border:none;
-  border-top:3px solid rgba(0,0,0,.2);
-  margin:.3rem 0;
+  border: none;
+  border-top: 3px solid rgba(0, 0, 0, 0.2);
+  margin: 0.3rem 0;
 }
 .item-text p {
-  margin:0;
-  font-size:1rem;
-  color:var(--text-dark);
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-dark);
 }
 
-/* Title Divider */
+/* ---------- Title Divider ---------- */
 .title-divider {
   display: flex;
   align-items: center;
@@ -343,7 +398,6 @@ main.content {
   transform: scaleX(0);
   transform-origin: center;
 }
-
 #tab-title {
   font-size: 2rem;
   font-weight: 700;
@@ -353,23 +407,22 @@ main.content {
   display: flex;
   justify-content: center;
 }
-
 #tab-title span {
   display: inline-block;
   opacity: 0;
 }
 
+/* ---------- Title Animations ---------- */
 @keyframes fadeInUp {
   0% { opacity: 0; transform: translateY(10px); }
   100% { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes lineIn {
   0% { opacity: 0; transform: scaleX(0); }
   100% { opacity: 1; transform: scaleX(1); }
 }
 
-/* Storyboard fixes */
+/* ---------- Storyboard Fixes ---------- */
 #storyboard.bento-gallery {
   column-count: initial;
   display: grid;
@@ -377,7 +430,6 @@ main.content {
   gap: 2rem;
   width: 100%;
 }
-
 .storyboard-item {
   display: flex;
   flex-direction: column;
@@ -385,7 +437,6 @@ main.content {
   overflow: hidden;
   cursor: pointer;
 }
-
 .video-wrapper {
   position: relative;
   width: 100%;
@@ -399,27 +450,118 @@ main.content {
   display: block;
 }
 .video-wrapper .play-overlay {
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  pointer-events:none;
-  opacity:0;
-  transition:opacity .25s ease;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
-.video-wrapper:hover .play-overlay { opacity:1; }
+.video-wrapper:hover .play-overlay { opacity: 1; }
 .video-wrapper .play-overlay svg {
-  width:40px; height:40px;
-  fill:white;
-  filter:drop-shadow(0 0 4px rgba(0,0,0,.5));
+  width: 40px; height: 40px;
+  fill: white;
+  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.5));
 }
 
-@media(max-width:1200px){.bento-gallery{column-count:3;}}
-@media(max-width:900px){.bento-gallery{column-count:2;}}
-@media(max-width:600px){.bento-gallery{column-count:1;}}
+/* ---------- Responsive Column Counts ---------- */
+@media (max-width: 1200px) { .bento-gallery { column-count: 3; } }
+@media (max-width: 900px) { .bento-gallery { column-count: 2; } }
+@media (max-width: 600px) { .bento-gallery { column-count: 1; } }
 
+/* ---------- Animation ---------- */
 .music-player.staggered {
   opacity: 0;
   animation: fadeUp 0.5s forwards;
+}
+
+/* ---------- MOBILE FIXES ---------- */
+@media (max-width: 900px) {
+  main.content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  h2, h3 {
+    font-size: 1.1rem;
+  }
+
+  /* Shrink text for all base elements */
+  p, li, span, a {
+    font-size: 0.7rem;
+    margin: 0.25rem 0;
+  }
+
+  /* Adjust tabs for smaller screens */
+  .tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .tabs button {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  /* Gallery spacing */
+  .bento-gallery {
+    column-count: 2;
+    column-gap: 0.3rem;
+  }
+
+  /* Storyboard items */
+  .storyboard-item {
+    margin-bottom: 1rem;
+    max-width: 100%;
+  }
+
+  .item-text h3 {
+    font-size: 0.9rem;
+  }
+  .item-text p {
+    font-size: 0.7rem;
+  }
+
+  /* Title divider & animation text */
+  #tab-title {
+    font-size: 1.4rem;
+  }
+
+  .title-divider .line {
+    height: 1.5px;
+  }
+
+  /* Extra compression for compact view */
+  main.content {
+    flex: 1;
+    margin: 0.5rem;
+    padding: 0.5rem;
+  }
+}
+
+/* ---------- TINY SCREENS (phones <480px) ---------- */
+@media (max-width: 480px) {
+  main.content {
+    padding: 0.5rem;
+  }
+
+  #tab-title {
+    font-size: 1.1rem;
+  }
+
+  p, li, span, a {
+    font-size: 0.6rem;
+  }
+
+  .tabs button {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.6rem;
+  }
 }
 </style>
