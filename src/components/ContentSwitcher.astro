@@ -61,41 +61,49 @@ const navTabs = document.querySelectorAll('.sidebar .tab');
 const duration = 200; // match CSS transition duration in ms
 const animatedBars = document.querySelector('.animated-bars');
 
+// Function to handle switching logic (shared by sidebar + dropdown)
+function switchContent(target) {
+  Object.keys(sections).forEach(key => {
+    const section = sections[key];
+    if (key === target) {
+      if (!section.classList.contains('show')) {
+        section.classList.remove('hide');
+        section.classList.add('show');
+
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Resume contact animation if any
+        if (key === 'contact' && animatedBars) {
+          animatedBars.classList.remove('paused');
+        }
+      }
+    } else {
+      if (section.classList.contains('show')) {
+        section.classList.remove('show');
+        section.classList.add('hide');
+      }
+    }
+  });
+
+  // Pause animation if leaving contact section
+  if (target !== 'contact' && animatedBars) {
+    animatedBars.classList.add('paused');
+  }
+}
+
+// --- Sidebar buttons ---
 navTabs.forEach(tab => {
   tab.addEventListener('click', e => {
     e.preventDefault();
     const target = tab.dataset.target;
-
-    Object.keys(sections).forEach(key => {
-      const section = sections[key];
-      if (key === target) {
-        if (!section.classList.contains('show')) {
-          section.classList.remove('hide');
-          section.classList.add('show');
-
-          // Scroll to top smoothly
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-          });
-
-          // Start animation if it's the contact section
-          if (key === 'contact' && animatedBars) {
-            animatedBars.classList.remove('paused');
-          }
-        }
-      } else {
-        if (section.classList.contains('show')) {
-          section.classList.remove('show');
-          section.classList.add('hide');
-        }
-      }
-    });
-
-    // Pause animation if leaving contact section
-    if (target !== 'contact' && animatedBars) {
-      animatedBars.classList.add('paused');
-    }
+    switchContent(target);
   });
+});
+
+// --- Listen for dropdown event ---
+window.addEventListener('switchContent', e => {
+  const { target } = e.detail;
+  switchContent(target);
 });
 </script>

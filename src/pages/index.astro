@@ -11,19 +11,25 @@ import DarkModeToggle from '../components/DarkModeToggle.astro';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>zurra's site of fun and whimsy</title>
-
-    <!-- SVG Favicon -->
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   </head>
 
   <body>
+    <!-- Dropdown lives OUTSIDE the wrapper -->
+	<DarkModeToggle />
+    <div class="mobile-dropdown">
+      <button class="dropdown-toggle">☰</button>
+      <div class="dropdown-content">
+        <a href="#" data-target="about">About</a>
+        <a href="#" data-target="work">Works</a>
+        <a href="#" data-target="blog">Growth and Goals</a>
+        <a href="#" data-target="contact">Contact</a>
+      </div>
+    </div>
+
     <div id="page-wrapper">
-      <!-- Background / Sidebar / Toggles -->
       <BackgroundGrid />
       <Sidebar />
-      <DarkModeToggle />
-
-      <!-- Main content -->
       <main id="main-content" class="content">
         <ContentSwitcher client:load />
       </main>
@@ -57,7 +63,7 @@ main.content {
   box-sizing: border-box;
 }
 
-/* Background grid safe */
+/* Background grid */
 .bg-grid-root {
   position: fixed;
   top: 0;
@@ -74,8 +80,64 @@ main.content {
   display: block;
 }
 
-/* Mobile adjustments */
+/* ===== MOBILE DROPDOWN ===== */
+.mobile-dropdown {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 300;
+}
+
+.dropdown-toggle {
+  background: var(--color-4);
+  color: var(--text-main);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.dropdown-toggle:hover {
+  background: var(--color-3);
+  transform: scale(1.05);
+}
+
+/* Accordion-style dropdown */
+.dropdown-content {
+  overflow: hidden;
+  background: var(--bg-sidebar);
+  border: 2px solid var(--border-sidebar);
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  position: absolute;
+  top: 3.3rem;
+  left: 0;
+  width: 180px;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+}
+
+.dropdown-content a {
+  display: block;
+  color: var(--text-main);
+  text-decoration: none;
+  padding: 10px 16px;
+  transition: background 0.2s ease, padding-left 0.2s ease;
+}
+.dropdown-content a:hover {
+  background: var(--color-3);
+  padding-left: 22px;
+}
+
+/* ===== Mobile layout ===== */
 @media (max-width: 900px) {
+  .mobile-dropdown {
+    display: block;
+  }
+
   #page-wrapper {
     flex-direction: column;
     width: 100vw;
@@ -96,3 +158,54 @@ main.content {
   }
 }
 </style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const dropdown = document.querySelector(".mobile-dropdown");
+  const toggle = dropdown.querySelector(".dropdown-toggle");
+  const content = dropdown.querySelector(".dropdown-content");
+  const links = content.querySelectorAll("a");
+
+  toggle.addEventListener("click", () => {
+    if (dropdown.classList.contains("active")) {
+      // Close accordion smoothly
+      content.style.maxHeight = content.scrollHeight + "px"; // set current height to allow transition
+      requestAnimationFrame(() => {
+        content.style.maxHeight = "0px";
+        content.style.opacity = 0;
+      });
+      dropdown.classList.remove("active");
+    } else {
+      // Open accordion smoothly
+      content.style.maxHeight = content.scrollHeight + "px";
+      content.style.opacity = 1;
+      dropdown.classList.add("active");
+    }
+  });
+
+  // Close when clicking a link
+  links.forEach(link => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const target = link.getAttribute("data-target");
+      const event = new CustomEvent("switchContent", { detail: { target } });
+      window.dispatchEvent(event);
+
+      // Collapse smoothly
+      content.style.maxHeight = content.scrollHeight + "px";
+      requestAnimationFrame(() => {
+        content.style.maxHeight = "0px";
+        content.style.opacity = 0;
+      });
+      dropdown.classList.remove("active");
+    });
+  });
+
+  // Reset maxHeight after transition to allow auto height next time
+  content.addEventListener("transitionend", () => {
+    if (dropdown.classList.contains("active")) {
+      content.style.maxHeight = "none";
+    }
+  });
+});
+</script>

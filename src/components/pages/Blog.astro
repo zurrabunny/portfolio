@@ -191,7 +191,6 @@ const lines = [
   { line: line26, from: 'node9', to: 'node20' },
 ];
 
-// Build parent & child maps
 const parents = {}, children = {};
 lines.forEach(l => {
   if (!parents[l.to]) parents[l.to] = [];
@@ -253,7 +252,7 @@ function highlightAncestors(nodeId, activeNodes = new Set()) {
 function clearHighlights() {
   document.querySelectorAll('.node').forEach(n => {
     n.style.opacity = '1';
-    n.classList.remove('selected'); // <-- remove selected class
+    n.classList.remove('selected');
   });
   document.querySelectorAll('.line').forEach(l => {
     l.style.opacity = '1';
@@ -262,51 +261,56 @@ function clearHighlights() {
   });
 }
 
-const clickSound = new Audio('sounds/check.ogg'); // adjust path if needed
-clickSound.volume = 0.7; // optional: control volume
+const clickSound = new Audio('sounds/check.ogg');
+clickSound.volume = 0.7;
 
 let activeNode = null;
-document.querySelectorAll('.node').forEach(node => {
-  node.addEventListener('click', e => {
-    e.stopPropagation();
-    clickSound.currentTime = 0; // rewind so it can play again immediately
-    clickSound.play().catch(() => {}); // prevents browser autoplay errors
-
-    const alreadyActive = activeNode === node;
-    clearHighlights();
-    if (alreadyActive) { activeNode = null; return; }
-    activeNode = node;
-    node.classList.add('selected');
-    const activeNodes = new Set([node.id]);
-    highlightAncestors(node.id, activeNodes);
-    if (children[node.id]) children[node.id].forEach(l => l.line.classList.add("gradient"));
-    document.querySelectorAll('.node').forEach(n => n.style.opacity = activeNodes.has(n.id) ? '1' : '0.2');
-    document.querySelectorAll('.line').forEach(l => l.style.opacity = (l.classList.contains("active") || l.classList.contains("gradient")) ? '1' : '0.2');  });
-});
-
 const nodes = document.querySelectorAll('.node');
 
 nodes.forEach(node => {
   node.addEventListener('click', e => {
     e.stopPropagation();
-    const isOpen = node.classList.contains('open');
-    nodes.forEach(n => n.classList.remove('open'));
-    if (!isOpen) node.classList.add('open');
+    clickSound.currentTime = 0;
+    clickSound.play().catch(() => {});
+
+    const alreadyActive = activeNode === node;
+    clearHighlights();
+    if (alreadyActive) { 
+      activeNode = null; 
+      // Close the dropdown if node was already active
+      node.classList.remove('open');
+      return; 
+    }
+
+    activeNode = node;
+    node.classList.add('selected');
+
+    const activeNodes = new Set([node.id]);
+    highlightAncestors(node.id, activeNodes);
+
+    if (children[node.id]) children[node.id].forEach(l => l.line.classList.add("gradient"));
+
+    document.querySelectorAll('.node').forEach(n => n.style.opacity = activeNodes.has(n.id) ? '1' : '0.2');
+    document.querySelectorAll('.line').forEach(l => l.style.opacity = (l.classList.contains("active") || l.classList.contains("gradient")) ? '1' : '0.2');
+
+    // Smart dropdown toggle ONLY if screen wider than 900px
+    if (window.innerWidth > 900) {
+      nodes.forEach(n => n.classList.remove('open'));
+      node.classList.add('open');
+    }
   });
 });
 
+// Close dropdowns when clicking outside nodes
 document.addEventListener('click', () => {
   nodes.forEach(n => n.classList.remove('open'));
-});
-
-// Click outside nodes to clear highlights
-document.addEventListener('click', () => {
   if (activeNode) {
     activeNode = null;
     clearHighlights();
   }
 });
 
+// Initialize flowchart on load & resize
 window.addEventListener('load', () => {
   autoSpaceNodes();
   updateLines();
@@ -315,7 +319,6 @@ window.addEventListener('resize', () => {
   autoSpaceNodes();
   updateLines();
 });
-
 </script>
 
 <style>
@@ -393,110 +396,87 @@ main.content {
   background: linear-gradient(to right, var(--line-highlight), transparent);
 }
 
+/* ---------- Card ---------- */
+.card {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  background: var(--color-6);
+  border: 2px solid var(--color-5);
+}
 
-
-
-
- .card {
-    margin-top: 1.5rem;
-    padding: 1.25rem;
-    border-radius: 1rem;
-    background: var(--color-6);
-    border: 2px solid var(--color-5);
-  }
-
-  .accordion { display: flex; flex-direction: column; gap: 0.5rem; }
-
-  .accordion-header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--color-5);
-    border: 2px solid var(--color-5);
-    border-radius: 0.75rem;
-    padding: 0.6rem 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    border-bottom: none; /* hide bottom line when closed */
-  }
-
-  .accordion-header.active {
-    background: var(--color-3);
-    color: var(--text-main);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom: none; /* hide bottom line when closed */
-  }
-
-  .arrow {
-    display: flex;
-    align-items: center; /* vertical center */
-    transition: transform 0.25s ease;
-  }
-
-  .arrow svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .accordion-header.active .arrow {
-    transform: rotate(180deg);
-  }
-
-	.accordion-body {
-	  overflow: hidden;
-	  height: 0;
-	  transition: height 0.35s ease, border 0.25s ease, opacity 0.3s ease;
-	  border: 2px solid var(--color-5); /* show border when open */
-	  border-bottom: none;
-	  border-bottom-left-radius: 0.75rem;
-	  border-bottom-right-radius: 0.75rem;
-	  background: var(--color-6);
-	  padding: 0 1rem;
-	  opacity: 0;
-	}
-
-	.accordion-header.active + .accordion-body {
-	  border: 2px solid var(--color-5); /* show border when open */
-	  border-top: none;
-	  opacity: 1;
-	}
-
-  .accordion-body ul { padding-left: 1.25rem; list-style-type: disc; margin: 0.5rem 0; }
-
-  @media (max-width: 768px) {
-    main.content { margin-left: 0; padding: 1rem; }
-  }
+/* ---------- Accordion ---------- */
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
 
 .accordion-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--color-5);
+  border: 2px solid var(--color-5);
+  border-radius: 0.75rem;
+  padding: 0.6rem 1rem;
   font-family: "Fredoka", sans-serif;
   font-size: 1.2rem;
+  font-weight: 600;
   color: var(--color-3);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border-bottom: none;
 }
 
-  h1 { font-size: 1.8rem; color: var(--color-1); margin-bottom: 1rem; }
-  h2 { font-size: 1.3rem; color: var(--color-2); margin-bottom: 0.5rem; }
-  h2 { font-size: 1.3rem; color: var(--color-2); margin-top: -0.5rem; }
-  h3 { font-size: 1.3rem; color: var(--color-2); margin-bottom: 0.5rem; }
-	
-	h3 {
-  position: relative;
+.accordion-header.active {
+  background: var(--color-3);
+  color: var(--text-main);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: none;
+}
+
+.arrow {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  font-weight: 600;
-}
-	
-	h3::after {
-  content: "";
-  flex-grow: 1;
-  height: 2px;
-  background-color: var(--color-5); /* or any color you want */
-  opacity: 0.5; /* optional, for a softer look */
+  transition: transform 0.25s ease;
 }
 
+.arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+.accordion-header.active .arrow {
+  transform: rotate(180deg);
+}
+
+.accordion-body {
+  overflow: hidden;
+  height: 0;
+  opacity: 0;
+  border: 2px solid var(--color-5);
+  border-top: none;
+  border-radius: 0 0 0.75rem 0.75rem;
+  background: var(--color-6);
+  padding: 0 1rem;
+  transition: height 0.35s ease, opacity 0.3s ease, background-color 0.4s ease, border-color 0.4s ease;
+}
+
+.accordion-header.active + .accordion-body {
+  height: auto;
+  opacity: 1;
+}
+
+.accordion-body ul {
+  padding-left: 1.25rem;
+  list-style-type: disc;
+  margin: 0.5rem 0;
+}
+
+/* ---------- Nodes ---------- */
 .node {
   position: absolute;
   transform: translate(-50%, -50%) scale(1);
@@ -510,26 +490,20 @@ main.content {
   cursor: pointer;
   overflow: visible;
   max-width: 180px;
-  transition:
-    background 0.3s ease,
-    color 0.3s ease,
-    border 0.3s ease,
-    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
-    opacity 0.4s ease; /* 👈 smooth fade when others dim */
+  transition: background 0.3s ease, color 0.3s ease, border 0.3s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
 }
 
-/* Node opens with a subtle pop */
 .node.open,
 .node.selected {
   background: var(--color-3);
   color: var(--text-dark);
   border: 1px solid var(--color-4);
-  border-radius: 4px 4px 4px 4px;
+  border-radius: 4px;
   z-index: 3;
   transform: translate(-50%, -50%) scale(1.08);
 }
 
-/* ✅ Animated Dropdown */
+/* ---------- Dropdown ---------- */
 .smart-dropdown {
   position: absolute;
   top: 100%;
@@ -548,22 +522,16 @@ main.content {
   overflow: hidden;
   transform-origin: top center;
   pointer-events: none;
-  transition:
-    opacity 0.5s ease,
-    max-height 0.35s ease,
-    transform 0.35s ease;
+  transition: opacity 0.5s ease, max-height 0.35s ease, transform 0.35s ease;
 }
 
-/* Smooth slide + fade down */
 .node.open .smart-dropdown {
   opacity: 1;
   max-height: 600px;
-  padding: 8px 12px;
   transform: translateX(-50%) translateY(0);
   pointer-events: auto;
 }
 
-/* Text animation inside dropdown */
 .smart-dropdown p {
   margin: 2px 0;
   opacity: 0;
@@ -577,9 +545,42 @@ main.content {
   transform: translateY(0);
 }
 
-/* 👇 Optional: smooth fade for lines when inactive */
-.line {
-  transition: opacity 0.4s ease, background 0.3s ease;
+/* ---------- Headings ---------- */
+h1 { font-size: 1.8rem; color: var(--color-1); margin-bottom: 1rem; }
+h2 { font-size: 1.3rem; color: var(--color-2); margin-bottom: 0.5rem; margin-top: -0.5rem; }
+h3 {
+  font-size: 1.3rem;
+  color: var(--color-2);
+  margin-bottom: 0.5rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+}
+h3::after {
+  content: "";
+  flex-grow: 1;
+  height: 2px;
+  background-color: var(--color-5);
+  opacity: 0.5;
 }
 
+/* ---------- Responsive Mobile ---------- */
+@media (max-width: 900px) {
+  main.content { margin-left: 0; padding: 0.5rem; flex: 1; }
+  .flowchart-header { font-size: 1rem; }
+  .flowchart-description { font-size: 0.65rem; }
+  .flowchart { width: 100%; padding: 20px; margin-left: 0; }
+  .timeline-year { font-size: 7px; width: 40px; left: 0; }
+  .timeline-line { left: 50px; right: 50px; }
+  .node { font-size: 0.45rem; max-width: 50px; padding: 5px 5px; }
+  .smart-dropdown { min-width: 120px; max-width: 160px; padding: 3px 6px; }
+  .card { padding: 0.5rem; margin-top: 0.5rem; }
+  .accordion-header { font-size: 1rem; border-radius: 1rem; padding: 0.6rem 0.8rem; }
+  .accordion-body { padding: 0 0.5rem; }
+  p, li, span, a { font-size: 0.55rem; margin: 0.5rem; }
+  h2 { font-size: 0.9rem; margin: 0.3rem; }
+  h3 { font-size: 0.8rem; }
+}
 </style>
