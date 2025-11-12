@@ -182,4 +182,24 @@ document.addEventListener("DOMContentLoaded", () => {
 }
 .nav-arrow.left { left: 1rem; }
 .nav-arrow.right { right: 1rem; }
+
+/* Existing styles remain the same */
+
+@media (max-width: 900px) {
+  .media-modal {
+    max-width: 60%;   /* slightly smaller on mobile */
+    max-height: 60%;  /* reduce height for mobile */
+  }
+
+  .media-content {
+    max-width: 95%;
+    max-height: 70vh; /* smaller viewport height */
+  }
+
+  .nav-arrow {
+    font-size: 1.5rem;  /* smaller arrows */
+    padding: 0.3rem 0.6rem;
+  }
+  
+}
 </style>

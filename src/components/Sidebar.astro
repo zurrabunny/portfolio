@@ -97,41 +97,59 @@ const { class: extraClass } = Astro.props;
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+/* Responsive for tablets and smaller screens */
+@media (max-width: 900px) {
   .sidebar {
-    position: relative;
-    width: 100%;
-    height: auto;
-    flex-direction: row;
+    position: relative;          /* no longer fixed */
+    width: 100%;                 /* full width */
+    height: auto;                /* automatic height */
+    flex-direction: row;         /* horizontal layout */
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
+    border-radius: 0;            /* remove rounded corners */
     border-right: none;
     border-bottom: 2px solid rgba(0, 0, 0, 0.05);
-  }
-
-  .tabs {
-    flex-direction: row;
-    gap: 16px;
-    justify-content: flex-end;
+    overflow: visible;           /* allow content to show */
   }
 
   .profile {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     margin-bottom: 0;
   }
 
   .profile-pic {
-    width: 80px;
-    height: 80px;
+    width: 60px;      /* smaller profile */
+    height: 60px;
   }
-  
+
+  .title-pic {
+    width: 100px;     /* smaller title/logo */
+    height: auto;
+  }
 
   .info {
-    display: none;
+    display: none;     /* hide text to save space */
+  }
+
+  .tabs {
+    flex-direction: row;
+    gap: 8px;
+    justify-content: flex-end;
+    flex-wrap: wrap;   /* wrap tabs if needed */
+  }
+
+  .tab {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+
+  .line-separator {
+    display: none;     /* hide line on mobile */
   }
 }
+
 </style>

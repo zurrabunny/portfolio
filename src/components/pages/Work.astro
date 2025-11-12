@@ -479,8 +479,10 @@ main.content {
 /* ---------- MOBILE FIXES ---------- */
 @media (max-width: 900px) {
   main.content {
-    margin-left: 0;
-    padding: 1rem;
+  flex: 1;
+  margin: 1px;
+  padding: 0.5rem;
+  color: var(--text-dark);
   }
 
   h1 {
@@ -493,10 +495,10 @@ main.content {
   }
 
   /* Shrink text for all base elements */
-  p, li, span, a {
-    font-size: 0.7rem;
-    margin: 0.25rem 0;
-  }
+p, li, span, a {
+  font-size: 0.55rem;
+  margin: 0.5rem;
+}
 
   /* Adjust tabs for smaller screens */
   .tabs {

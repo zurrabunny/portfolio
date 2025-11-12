@@ -63,6 +63,19 @@ const { class: extraClass } = Astro.props;
 .sun {
   opacity: 0;
 }
+
+/* Fixed to bottom-right of viewport on mobile */
+@media (max-width: 900px) {
+  .dark-mode-toggle {
+    position: fixed;   /* ensures it's always relative to viewport */
+    bottom: 2%;        /* distance from bottom of viewport */
+    right: 35%;         /* distance from right of viewport */
+    top: auto;         /* remove top positioning */
+    width: 40px;       /* optional: slightly smaller on mobile */
+    height: 40px;
+  }
+}
+
 </style>
 
 <script type="module" client:load>
