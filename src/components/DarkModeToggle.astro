@@ -69,9 +69,14 @@ const { class: extraClass } = Astro.props;
   .dark-mode-toggle {
     position: fixed;   /* ensures it's always relative to viewport */
     right: 86.5%;         /* distance from right of viewport */
-    top: 4.4rem;         /* remove top positioning */
+    top: 3.7rem;         /* remove top positioning */
     width: 40px;       /* optional: slightly smaller on mobile */
     height: 40px;
+	background-color: transparent;
+  }
+  
+  .dark-mode-toggle:hover {
+  background-color: transparent;
   }
 }
 
