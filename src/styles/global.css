@@ -35,6 +35,14 @@ html, body {
               filter 0.4s ease;
 }
 
+@media (max-width: 900px) {
+  /* Disable transitions for instant dark mode */
+  html, body, *, *::before, *::after {
+    transition: none !important;
+  }
+}
+
+
 /*==========================
   Color Palette & Dark Mode
 ==========================*/

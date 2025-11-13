@@ -14,7 +14,11 @@ import ContentSwitcher from '../components/ContentSwitcher.astro';
   </head>
 
   <body>
-    <!-- Dark Mode Toggle -->
+    <!-- Page content -->
+    <div id="page-wrapper">
+      <BackgroundGrid />
+      <Sidebar />
+	  <!-- Dark Mode Toggle -->
     <button class="dark-mode-toggle" id="dark-mode-toggle">
       <svg class="icon moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/>
@@ -42,11 +46,6 @@ import ContentSwitcher from '../components/ContentSwitcher.astro';
         <a href="#" data-target="contact">Contact</a>
       </div>
     </div>
-
-    <!-- Page content -->
-    <div id="page-wrapper">
-      <BackgroundGrid />
-      <Sidebar />
       <main id="main-content" class="content">
 	  <thing class="thing-wrapper">
         <ContentSwitcher client:load />
@@ -98,11 +97,12 @@ main.content {
 /* Mobile Dropdown */
 .mobile-dropdown {
   display: none;
-  position: fixed;
+  position: absolute;
   top: 1rem;
   left: 1rem;
   z-index: 300;
 }
+
 .dropdown-toggle {
   background-color: transparent;
   color: var(--text-main);
@@ -174,7 +174,7 @@ main.content {
   main.content { width: 100%; max-width: 500px; overflow-x: hidden; }
 
   .dark-mode-toggle {
-    position: fixed;
+    position: absolute;
     top: 1.5em;
     left: 3.6rem;
     transform: none;

@@ -4,21 +4,23 @@ import Container from "/src/components/Container.astro";
 
 <main class="content">
   <Container variant="static">
-  
-  <h1>DO NOT OPEN THIS WEBSITE ON YOUR PHONE I HAVENT FINISHED THE MOBILE LAYOUT YET :(</h1>
-  
-  <div style="text-align: center;">
-  <img src="wip.gif" alt="Queerness" style="width: 300px; height: auto; border-radius: 8px;" />
-</div>
-  
-<div style="display: flex; align-items: center; gap: 1rem;">
-  <div>
-    <h3 style="margin: 0;">Hello! I'm Azure / Azzurra / Zurra</h3>
-    <p style="margin: 0;">
-      I work as an Animator and Digital Illustrator. I'm also a self-taught Music Composer, 3D Designer, Sound Editor, and I build websites as a hobby.
-    </p>
-  </div>
-</div>
+
+    <div style="text-align: center;">
+	<div class="zurra-top-space"></div>
+      <div class="zurra-mode-wrapper">
+        <img src="zurralightmode.png" alt="Light Mode" class="zurra-light" />
+        <img src="zurradarkmode.png" alt="Dark Mode" class="zurra-dark" />
+      </div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 1rem; margin-top: 1rem;">
+      <div>
+        <h3 style="margin: 0;">Hello! I'm Azure / Azzurra / Zurra</h3>
+        <p style="margin: 0;">
+          I work as an Animator and Digital Illustrator. I'm also a self-taught Music Composer, 3D Designer, Sound Editor, and I build websites as a hobby.
+        </p>
+      </div>
+    </div>
 
     <!-- About Me Section -->
     <section class="card">
@@ -616,6 +618,52 @@ italic {
   font-style: italic;
 }
 
+.zurra-top-space {
+  height: 400px; /* adjust this for more or less space */
+}
+
+.zurra-mode-wrapper {
+  position: relative;
+  transform: translateY(-450px);
+  width: 800px;
+  max-width: 830px; /* keeps it from getting too large on big screens */
+  height: auto;
+  display: inline-block;
+  border-radius: 8px;
+}
+
+/* Images stack inside the wrapper */
+.zurra-mode-wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  transition: opacity 0.4s ease;
+}
+
+/* Light mode default */
+.zurra-light {
+  opacity: 1;
+  z-index: 1;
+}
+
+.zurra-dark {
+  opacity: 0;
+  z-index: 0;
+}
+
+/* Dark mode fade */
+:root.dark-mode .zurra-light {
+  opacity: 0;
+}
+
+:root.dark-mode .zurra-dark {
+  opacity: 1;
+}
+
+
 /* ---------- MOBILE FIXES ---------- */
 @media (max-width: 900px) {
 
@@ -739,6 +787,12 @@ p, li, span, a {
 	
 	.accordion {
 	  gap: 0.1rem;
+	}
+	
+	.zurra-mode-wrapper {
+	  position: relative;
+	  transform: translateY(-450px);
+	  width: 350px;
 	}
 }
 
