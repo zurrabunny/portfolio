@@ -2,15 +2,30 @@
 ---
 <div id="devlog-modal" class="modal">
   <div class="modal-inner">
-    <button class="modal-close">✕</button>
+  
+    <button class="modal-close" aria-label="Close">
+	  <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+		<line x1="18" y1="6" x2="6" y2="18" />
+		<line x1="6" y1="6" x2="18" y2="18" />
+	  </svg>
+	</button>
+
     <h2 class="modal-title"></h2>
-    <small class="modal-date"></small>
+
+    <!-- Date with goal title line -->
+    <div class="goal-title-line">
+      <div class="goal-line"></div>
+      <small class="modal-date"></small>
+      <div class="goal-line"></div>
+    </div>
+
     <div class="modal-content"></div>
   </div>
 </div>
 
 <script client:load>
 const modal = document.getElementById('devlog-modal');
+const modalInner = modal.querySelector('.modal-inner');
 const titleEl = modal.querySelector('.modal-title');
 const dateEl = modal.querySelector('.modal-date');
 const contentEl = modal.querySelector('.modal-content');
@@ -26,62 +41,113 @@ const waitForCards = setInterval(() => {
         titleEl.innerText = card.dataset.title;
         dateEl.innerText = new Date(card.dataset.date).toDateString();
         contentEl.innerHTML = card.dataset.body;
+        // Show modal with animation
         modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // LOCK background scroll
+        requestAnimationFrame(() => modal.classList.add('showing'));
+        document.body.style.overflow = 'hidden';
       });
     });
   }
 }, 100);
 
-closeBtn.addEventListener('click', () => {
-  modal.style.display = 'none';
-  document.body.style.overflow = ''; // UNLOCK background scroll
+// Close modal function
+function closeModal() {
+  modal.classList.remove('showing');
+  modal.classList.add('hiding');
+  setTimeout(() => {
+    modal.style.display = 'none';
+    modal.classList.remove('hiding');
+    document.body.style.overflow = '';
+  }, 250); // match transition duration
+}
+
+closeBtn.addEventListener('click', closeModal);
+
+// Close when clicking outside modal-inner
+modal.addEventListener('click', e => {
+  if (!modalInner.contains(e.target)) {
+    closeModal();
+  }
 });
 </script>
 
 <style>
+/* Goal title line styling */
+.goal-title-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+  gap: 0.75rem;
+}
+
+.goal-line {
+  flex: 1;
+  height: 2px;
+  background-color: var(--color-4);
+  opacity: 1;
+}
+
 /* Modal overlay */
 .modal {
-  display: none;
+  display: none; /* hidden initially */
   position: fixed;
   z-index: 9999;
   top: 0; left: 0;
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.4);
-  -webkit-backdrop-filter: blur(1px);
-  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
   justify-content: center;
   align-items: center;
   padding: 2rem;
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
 
-/* Scrollable modal content */
+.modal.showing {
+  opacity: 1;
+}
+
 .modal-inner {
   background: var(--color-6);
   border-radius: 12px;
   padding: 2rem;
+  margin-top: -5rem;
   width: 100%;
   max-width: 800px;
-  max-height: 80vh;       /* restrict height */
-  overflow-y: auto;       /* ONLY modal content scrolls */
+  max-height: 80vh;
+  overflow-y: auto;
   position: relative;
   box-shadow: 0 0 20px rgba(0,0,0,0.5);
   font-family: "Fredoka", sans-serif;
   color: var(--text-main);
   line-height: 1.6;
   border: 5px solid var(--border-sidebar);
+  transform: scale(0.99);
+  transition: transform 0.25s ease;
 }
 
-/* Close button */
+.modal.showing .modal-inner {
+  transform: scale(1);
+}
+
+.modal.hiding .modal-inner {
+  transform: scale(0.99);
+}
+
+/* Close button - thicker */
 .modal-close {
   position: absolute;
   top: 0.5rem;
   right: 1rem;
-  font-size: 1.5rem;
+  font-size: 2rem; /* thicker */
+  font-weight: bold;
   background: transparent;
   border: none;
   cursor: pointer;
+  color: var(--color-2);
 }
 
 /* Modal text */
@@ -97,14 +163,17 @@ closeBtn.addEventListener('click', () => {
   font-size: 0.85rem;
   color: var(--color-2);
   display: block;
-  margin-bottom: 1rem;
+  text-align: center;
+  white-space: nowrap;
+  margin: 0;
 }
 
+/* Modal content styling */
 .modal-content h1,
 .modal-content h2,
 .modal-content h3 {
   color: var(--color-2);
-  margin-top: 0rem;
+  margin-top: 0;
   margin-bottom: 0.5rem;
 }
 
@@ -130,5 +199,15 @@ closeBtn.addEventListener('click', () => {
 
 .modal-content a:hover {
   color: var(--color-1);
+}
+
+/* Mobile adjustments */
+@media (max-width: 900px) {
+  .goal-title-line {
+    gap: 0.5rem;
+  }
+  .goal-line {
+    height: 1px;
+  }
 }
 </style>
