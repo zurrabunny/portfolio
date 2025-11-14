@@ -1,11 +1,10 @@
 ---
-import { getCollection, Content } from 'astro:content';
+import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
   const entries = await getCollection("devlog");
   return entries.map(entry => ({
     params: { slug: entry.slug },
-    props: { entry },
   }));
 }
 
@@ -16,5 +15,6 @@ const { entry } = Astro.props;
   <h1>{entry.data.title}</h1>
   <p><small>{entry.data.date}</small></p>
 
-  <Content content={entry.body} />
+  <!-- Render the markdown content -->
+  <entry.body />
 </main>
