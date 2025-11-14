@@ -16,7 +16,7 @@ dropdown menus, image tags, website tabs, and (my personal favourite) the Goal M
 
 I have ADHD, and it affects how I interpret information in front of me. BIG, LONG texts are always my weakness (unless I myself typed them out).
 So I've spent more than 2 weeks putting everything I've mentioned above into reality. The most complex ones (the Goal Map) took at least 3 days of
-non-stop coding and testing, making sure it works on both PC and mobile :(<br><br>
+non-stop coding and testing, making sure it works on both PC and mobile..<br><br>
 
 I am thankful that I managed to push through all of those obstacles. I do get a very clean layout of who I am in return. This website
 almost embodies who I truly am, and I really think that's neat :]<br><br>
