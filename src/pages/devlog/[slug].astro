@@ -1,6 +1,5 @@
 ---
 import { getCollection } from 'astro:content';
-import { Content } from 'astro:content';
 
 export async function getStaticPaths() {
   const entries = await getCollection("devlog");
