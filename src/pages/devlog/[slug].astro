@@ -4,11 +4,10 @@ import { getCollection } from 'astro:content';
 export async function getStaticPaths() {
   const entries = await getCollection("devlog");
   return entries.map((entry) => ({
-    params: { slug: entry.slug },
+    params: { slug: entry.slug }
   }));
-});
+}
 
-// Get the slug from params
 const { slug } = Astro.params;
 
 // Fetch the matching entry
@@ -19,6 +18,7 @@ if (!entry) {
   throw new Error(`No devlog found for slug: ${slug}`);
 }
 ---
+
 
 <main class="devlog-post">
   <h1>{entry.data.title}</h1>
