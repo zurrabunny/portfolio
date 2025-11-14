@@ -1,0 +1,85 @@
+---
+import Container from "/src/components/Container.astro";
+import DevlogList from './devlog/DevlogList.astro';
+import DevlogModal from './devlog/DevlogModal.astro';
+---
+
+<main class="content">
+  <Container variant="static">
+    <DevlogModal />
+	
+		<div class="goal-title-line">
+		  <div class="goal-line"></div>
+		  <h1 id="goal-title">
+			Blogs
+		  </h1>
+		  <div class="goal-line"></div>
+		</div>
+	
+		<p class="intro">
+        Hear my ramblings! whether that be current / upcoming projects, brainstorms, events, etc.
+		</p>
+	
+    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+      <DevlogList />
+    </div>
+  </Container>
+</main>
+
+<style>
+main.content {
+  flex: 1;
+  margin-left: 260px;
+  padding: 2rem;
+  color: var(--text-dark);
+}
+
+h1 {
+  font-size: 1.8rem;
+  color: var(--color-1);
+  margin-bottom: 1rem;
+}
+
+/* Goal title line styling */
+.goal-title-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.goal-line {
+  flex: 1;
+  height: 2px;
+  background-color: var(--color-6); /* adjust to visible color */
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Title styling */
+#goal-title {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0;
+  white-space: nowrap;
+  display: flex;
+  justify-content: center;
+}
+
+/* Mobile adjustments */
+@media (max-width: 900px) {
+  #goal-title {
+    font-size: 1.5rem;
+    text-align: center;
+    white-space: normal;
+  }
+  .goal-title-line {
+    gap: 0.5rem;
+  }
+  .goal-line {
+    height: 1px;
+  }
+}
+</style>

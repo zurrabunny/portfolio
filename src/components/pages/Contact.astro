@@ -17,12 +17,12 @@ import Container from "/src/components/Container.astro";
       </h1>
       <div class="line"></div>
     </div>
-
-    <section class="contact-card">
-      <p class="intro">
+	
+	<p class="intro">
         Have my contacts!! TAKE ALL OF THEM !!<br><br>If you believe my work is a good fit for the job, please don’t hesitate to contact me! For business inquiries, feel free to email me or click the button below to reach my email even faster. For anything else<br>( personal projects or if you just wanna say hi )<br> you’re welcome to reach out on Discord. I’ll be happy to hear from you! >:]
-      </p>
-
+    </p>
+	
+    <section class="contact-card">
       <div class="contact-info">
         <h2>Contact Info</h2>
         <ul>
@@ -89,7 +89,7 @@ h2::before { margin-right: 0.75rem; }
 h2::after { margin-left: 0.75rem; }
 
 .contact-card {
-  margin-top: 1.5rem;
+  margin-top: 0rem;
   padding: 1.5rem;
   border-radius: 1rem;
   background: var(--color-6);
@@ -100,7 +100,8 @@ h2::after { margin-left: 0.75rem; }
   text-align: center;
 }
 
-.intro { margin-bottom: 1.5rem; line-height: 1.7; }
+.intro { margin-t: 1.5rem; line-height: 1.7; }
+.contact-info h2 { list-style: none; padding: 0; margin: 0 0 1rem 0; }
 .contact-info ul { list-style: none; padding: 0; margin: 0 0 2rem 0; }
 .contact-info li { margin-bottom: 0.5rem; }
 .contact-info a { color: var(--color-2); text-decoration: none; transition: color 0.3s ease; }

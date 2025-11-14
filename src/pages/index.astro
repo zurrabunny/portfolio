@@ -3,6 +3,7 @@ import "../styles/global.css";
 import BackgroundGrid from '../components/BackgroundGrid.astro';
 import Sidebar from '../components/Sidebar.astro';
 import ContentSwitcher from '../components/ContentSwitcher.astro';
+import DevlogModal from '../components/pages/devlog/DevlogModal.astro';
 ---
 
 <html lang="en">
@@ -47,10 +48,17 @@ import ContentSwitcher from '../components/ContentSwitcher.astro';
       </div>
     </div>
       <main id="main-content" class="content">
-	  <thing class="thing-wrapper">
-        <ContentSwitcher client:load />
-	  </thing>
-      </main>
+		  <!-- Devlog Modal -->
+		  <DevlogModal />
+
+		  <!-- Main content switcher -->
+		  <thing class="thing-wrapper">
+			<ContentSwitcher client:load />
+		  </thing>
+
+		  <!-- Example: Devlog list section -->
+		</main>
+
     </div>
   </body>
 </html>

@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import DevlogCard from './DevlogCard.astro';
+
+const entries = await getCollection('devlog');
+
+// if entries is empty, log it
+console.log("DEVLOG ENTRIES:", entries);
+
+entries.sort((a, b) => new Date(b.data.date) - new Date(a.data.date));
+---
+
+<section class="devlog-list">
+  {entries.length === 0 && <p>No devlogs found.</p>}
+  {entries.map(entry => (
+    <DevlogCard entry={entry} />
+  ))}
+</section>

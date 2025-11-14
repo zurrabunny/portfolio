@@ -4,7 +4,15 @@ import Container from "../Container.astro";
 
 <main class="content">
   <Container variant="static" class="flowchart-container">
-    <h1 class="flowchart-header">Personal and Professional Goals 2025 - 2035</h1>
+  
+		<div class="goal-title-line">
+		  <div class="goal-line"></div>
+		  <h1 id="goal-title">
+			Goals of the Decade
+		  </h1>
+		  <div class="goal-line"></div>
+		</div>
+	
     <p class="flowchart-description">
       these be where my goals at, if i dont achieve them, i die (in a professional way)<br>
       Click on the nodes to highlight their path and see the SMART stuff..<br>
@@ -583,4 +591,48 @@ h3::after {
   h2 { font-size: 0.9rem; margin: 0.3rem; }
   h3 { font-size: 0.8rem; }
 }
+
+/* Goal title line styling */
+.goal-title-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.goal-line {
+  flex: 1;
+  height: 2px;
+  background-color: var(--color-6); /* adjust to visible color */
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Title styling */
+#goal-title {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0;
+  white-space: nowrap;
+  display: flex;
+  justify-content: center;
+}
+
+/* Mobile adjustments */
+@media (max-width: 900px) {
+  #goal-title {
+    font-size: 1.5rem;
+    text-align: center;
+    white-space: normal;
+  }
+  .goal-title-line {
+    gap: 0.5rem;
+  }
+  .goal-line {
+    height: 1px;
+  }
+}
+
 </style>

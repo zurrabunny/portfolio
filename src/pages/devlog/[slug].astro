@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import { Markdown } from 'astro/components';
+
+export async function getStaticPaths() {
+  const entries = await getCollection("devlog");
+  return entries.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+---
+
+<main class="devlog-post">
+  <h1>{entry.data.title}</h1>
+  <p><small>{entry.data.date}</small></p>
+
+  <Markdown content={entry.body} />
+</main>

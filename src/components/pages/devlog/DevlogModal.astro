@@ -1,0 +1,134 @@
+---
+---
+<div id="devlog-modal" class="modal">
+  <div class="modal-inner">
+    <button class="modal-close">✕</button>
+    <h2 class="modal-title"></h2>
+    <small class="modal-date"></small>
+    <div class="modal-content"></div>
+  </div>
+</div>
+
+<script client:load>
+const modal = document.getElementById('devlog-modal');
+const titleEl = modal.querySelector('.modal-title');
+const dateEl = modal.querySelector('.modal-date');
+const contentEl = modal.querySelector('.modal-content');
+const closeBtn = modal.querySelector('.modal-close');
+
+// Wait for DOM to have cards
+const waitForCards = setInterval(() => {
+  const cards = document.querySelectorAll('.devlog-card');
+  if (cards.length) {
+    clearInterval(waitForCards);
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        titleEl.innerText = card.dataset.title;
+        dateEl.innerText = new Date(card.dataset.date).toDateString();
+        contentEl.innerHTML = card.dataset.body;
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // LOCK background scroll
+      });
+    });
+  }
+}, 100);
+
+closeBtn.addEventListener('click', () => {
+  modal.style.display = 'none';
+  document.body.style.overflow = ''; // UNLOCK background scroll
+});
+</script>
+
+<style>
+/* Modal overlay */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px);
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* Scrollable modal content */
+.modal-inner {
+  background: var(--color-6);
+  border-radius: 12px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 800px;
+  max-height: 80vh;       /* restrict height */
+  overflow-y: auto;       /* ONLY modal content scrolls */
+  position: relative;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  font-family: "Fredoka", sans-serif;
+  color: var(--text-main);
+  line-height: 1.6;
+  border: 5px solid var(--border-sidebar);
+}
+
+/* Close button */
+.modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* Modal text */
+.modal-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  margin-top: 0rem;
+  color: var(--color-2);
+}
+
+.modal-date {
+  font-size: 0.85rem;
+  color: var(--color-2);
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.modal-content h1,
+.modal-content h2,
+.modal-content h3 {
+  color: var(--color-2);
+  margin-top: 0rem;
+  margin-bottom: 0.5rem;
+}
+
+.modal-content p {
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.modal-content ul,
+.modal-content ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.modal-content li {
+  margin-bottom: 0.5rem;
+}
+
+.modal-content a {
+  color: var(--color-5);
+  text-decoration: underline;
+}
+
+.modal-content a:hover {
+  color: var(--color-1);
+}
+</style>
