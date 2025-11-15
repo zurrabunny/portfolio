@@ -71,19 +71,4 @@ a {
   color: var(--line-highlight);
 }
 
-a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 0%;
-  height: 2px;
-  background: currentColor;
-  transition: 0.3s ease;
-}
-
-a:hover::after {
-  width: 100%;
-}
-
 tyle>
