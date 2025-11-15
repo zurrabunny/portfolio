@@ -6,6 +6,9 @@ const devlog = defineCollection({
     date: z.string(),
     description: z.string().optional(),
     tags: z.array(z.string()).optional(),
+
+    // 🔥 add this
+    pinned: z.boolean().default(false)
   }),
 });
 

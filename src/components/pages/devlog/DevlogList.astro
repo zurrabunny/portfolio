@@ -2,12 +2,22 @@
 import { getCollection } from 'astro:content';
 import DevlogCard from './DevlogCard.astro';
 
-const entries = await getCollection('devlog');
+let entries = await getCollection('devlog');
 
-// if entries is empty, log it
+// Debug log
 console.log("DEVLOG ENTRIES:", entries);
 
-entries.sort((a, b) => new Date(b.data.date) - new Date(a.data.date));
+// Sort: pinned first, then by date desc
+entries = entries.sort((a, b) => {
+  // If a is pinned and b isn’t → a comes first
+  if (a.data.pinned && !b.data.pinned) return -1;
+
+  // If b is pinned and a isn’t → b comes first
+  if (!a.data.pinned && b.data.pinned) return 1;
+
+  // If both are pinned OR both not pinned → sort by date (newest first)
+  return new Date(b.data.date) - new Date(a.data.date);
+});
 ---
 
 <section class="devlog-list">

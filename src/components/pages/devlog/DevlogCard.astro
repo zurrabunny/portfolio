@@ -1,13 +1,17 @@
 ---
 const { entry } = Astro.props;
-const { title, date, description } = entry.data;
+const { title, date, description, pinned } = entry.data;
 ---
 
 <article class="devlog-card"
          data-title={title}
          data-date={date}
          data-body={entry.body ? entry.body : ''}
-         data-tags={entry.data.tags ? entry.data.tags.join(',') : ''}>
+         data-tags={entry.data.tags ? entry.data.tags.join(',') : ''}
+         data-pinned={pinned ? 'true' : 'false'}>
+
+  {pinned && <span class="pinned-badge">Pinned</span>}
+
   <h2>{title}</h2>
   <p>{description}</p>
   <small>{date}</small>
@@ -15,34 +19,49 @@ const { title, date, description } = entry.data;
 
 <style>
 .devlog-card {
-  padding: 0.6rem 0.8rem;      /* smaller padding */
+  padding: 0.6rem 0.8rem;
   border: 2px solid var(--border-sidebar);
-  border-radius: 8px;          /* slightly smaller radius */
-  margin-bottom: 0.6rem;       /* less space between cards */
+  border-radius: 8px;
+  margin-bottom: 0.6rem;
   cursor: pointer;
   transition: background 0.2s ease;
-  font-size: 0.85rem;          /* compact text size */
+  font-size: 0.85rem;
+  position: relative; /* for badge positioning if needed */
 }
 
+.pinned-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: var(--color-2);
+  padding: 2px 6px;
+  color: white;
+  border-radius: 4px;
+  font-size: 0.65rem;
+}
+
+
 .devlog-card h2 {
-  font-size: 1rem;             /* smaller title */
-  margin: 0 0 0.3rem 0;        /* reduce spacing under title */
-  color: var(--text-dark);
+  font-size: 1rem;
+  margin: 0 0 0.3rem 0;
+  color: var(--color-2);
 }
 
 .devlog-card p {
-  font-size: 0.75rem;          /* smaller description */
+  font-size: 0.75rem;
   margin: 0 0 0.3rem 0;
   line-height: 1.2;
   color: var(--text-dark);
 }
 
 .devlog-card small {
-  font-size: 0.65rem;          /* smaller date text */
+  font-size: 0.65rem;
   color: var(--color-2);
 }
 
 .devlog-card:hover {
   background: var(--color-6);
 }
+
+
 </style>
