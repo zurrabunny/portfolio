@@ -48,18 +48,6 @@ const { class: extraClass } = Astro.props;
   pointer-events: auto; /* enable interaction */
 }
 
-.volume-control input[type="range"] {
-  -webkit-appearance: none;
-  width: 100px;          /* width visually, rotated */
-  height: 12px;          /* slider thickness */
-  transform: rotate(-90deg);
-  transform-origin: center;
-  background: var(--color-2);
-  border-radius: 6px;
-  cursor: pointer;
-  outline: none;
-}
-
 .volume-control input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -80,6 +68,17 @@ const { class: extraClass } = Astro.props;
   border: 2px solid #fff;
 }
 
+.volume-control input[type="range"] {
+  -webkit-appearance: none;
+  width: 100px;          /* width visually, rotated */
+  height: 12px;          /* slider thickness */
+  transform: rotate(-90deg);
+  transform-origin: center;
+  background: var(--color-2);
+  border-radius: 6px;
+  cursor: pointer;
+  outline: none;
+}
 
 .currently-playing {
   position: fixed;       
@@ -209,6 +208,15 @@ const { class: extraClass } = Astro.props;
 
 /* Mobile view */
 @media (max-width: 900px) {
+
+	.currently-playing {
+	  display: none;
+	}
+	
+	.volume-control {
+	  display: none;
+	}
+	
   .sidebar {
     position: relative;
     width: 100%;
