@@ -17,9 +17,63 @@ const { class: extraClass } = Astro.props;
     <a href="#" class="tab" data-target="contact">Contacts</a>
     <a href="#" class="tab" data-target="devlog">Blogs</a>
   </nav>
+  
+  <div class="currently-playing">
+	<img src="tuneup.gif" alt="zurras" class="music-pic" /><br>
+    <strong>Currently Playing:</strong>
+    <p class="track-info">Nothing</p>
+  </div>
 </aside>
 
 <style>
+.currently-playing {
+  position: fixed;       
+  bottom: 5px;          
+  right: 90px;           /* distance from right */
+  text-align: center;     /* align text to the right */
+  font-size: 12px;
+  color: var(--text-main);
+  opacity: 0;
+  transform: translateX(150%); /* hidden offscreen to the right initially */
+  transition: transform 1s ease, opacity 1s ease;
+  z-index: 999;
+  max-width: 160px;         /* limit width before wrapping */
+  word-break: break-word;    /* break long words */
+  overflow-wrap: anywhere;   /* support very long words */
+}
+
+.currently-playing.active {
+  transform: translate(50%, 0); /* slide in and stay centered */
+  opacity: 1;
+}
+
+.currently-playing .track-info {
+  font-weight: 600;
+  margin-top: 5px;
+  font-size: 9px;
+}
+
+.music-pic {
+  width: 100px;
+  object-fit: scale-down;
+  margin-bottom: -5px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  filter: brightness(var(--invert));
+}
+
+/* ----------- BOP ANIMATION FOR MUSIC PIC ----------- */
+.music-pic.bopping {
+  animation-name: bop-scale;
+  animation-duration: 0.6s;  /* duration per beat, adjust if you want */
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes bop-scale {
+  0%, 100% { transform: scale(1); }
+  0% { transform: scale(1.02); }
+}
+
 .sidebar {
   background-color: var(--bg-sidebar);
   color: var(--text-dark);
@@ -73,6 +127,7 @@ const { class: extraClass } = Astro.props;
   font-size: 16px;
   color: var(--text-main);
   margin: 5px 0;
+  margin-bottom: -1rem;
 }
 
 .tabs {

@@ -6,10 +6,10 @@ const musicItems = [
   { src: "Overwhelmed.wav", cover: "Overwhelmed.jpeg", title: "Overwhelmed", artist: "ZurraBunny", bpm: 100 },
   { src: "Shorts and Shores.mp3", cover: "honeymoon.png", title: "Shorts and Shores", artist: "ZurraBunny", bpm: 100 },
   { src: "Starstruck.mp3", cover: "honeymoon.png", title: "Starstruck", artist: "ZurraBunny", bpm: 65 },
-  { src: "=3-ified.mp3", cover: "=3-ified.jpg", title: ":3-ified", artist: "ZurraBunny", bpm: 120 },
+  { src: "=3-ified.mp3", cover: "=3-ified.jpg", title: ":3-ified", artist: "ZurraBunny", bpm: 180 },
   { src: "Next Stop.mp3", cover: "next stop.png", title: "Next Stop", artist: "ZurraBunny", bpm: 125 },
   { src: "serenity.mp3", cover: "serenity.png", title: "Serenity", artist: "ZurraBunny", bpm: 90 },
-  { src: "catcoded.mp3", cover: "catcoded.png", title: "Cat-Coded", artist: "ZurraBunny", bpm: 105 },
+  { src: "catcoded.mp3", cover: "catcoded.png", title: "Cat-Coded", artist: "ZurraBunny", bpm: 175 },
   { src: "Prideful Prance.mp3", cover: "prideful prance.png", title: "Prideful Prance", artist: "ZurraBunny", bpm: 175 },
   { src: "Funkiin Arts - Menu Theme.mp3", cover: "funkiin arts.png", title: "Funkiin Arts - Menu", artist: "ZurraBunny", bpm: 100 },
   { src: "microArp.ogg", cover: "microArp.png", title: "microArp", artist: "ZurraBunny", bpm: 130 },
@@ -198,10 +198,12 @@ const musicItems = [
 }
 </style>
 
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const players = document.querySelectorAll(".music-player");
+  const currentlyPlaying = document.querySelector(".currently-playing");
+  const currentlyPlayingText = currentlyPlaying.querySelector(".track-info");
+  const musicPic = currentlyPlaying.querySelector(".music-pic");
 
   players.forEach(player => {
     const audio = player.querySelector("audio");
@@ -212,7 +214,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const progressContainer = player.querySelector(".progress-container");
     const cover = player.querySelector(".music-cover");
     const bpm = parseFloat(player.dataset.bpm) || 120;
-    const beatDuration = 60 / bpm;
 
     let isScrubbing = false;
     let scrubPercent = 0;
@@ -229,50 +230,78 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     requestAnimationFrame(animateProgress);
 
-    const startBop = () => {
-      cover.classList.add("bopping");
-      cover.style.animationDuration = `${beatDuration}s`;
+    // Bop functions
+    const startBop = (element, bpm) => {
+      const duration = 60 / bpm;
+      element.classList.add("bopping");
+      element.style.animationDuration = `${duration}s`;
     };
-    const stopBop = () => cover.classList.remove("bopping");
+
+    const stopBop = (element) => {
+      element.classList.remove("bopping");
+    };
+
+    const showCurrentlyPlaying = (title, artist, bpm) => {
+      currentlyPlayingText.textContent = `${title} — ${artist}`;
+      currentlyPlaying.classList.add("active"); // slide in
+      if (musicPic) startBop(musicPic, bpm);     // start bop on pic
+    };
+
+    const hideCurrentlyPlaying = () => {
+      currentlyPlayingText.textContent = "Nothing";
+      currentlyPlaying.classList.remove("active"); // slide out
+      if (musicPic) stopBop(musicPic);            // stop bop on pic
+    };
 
     playBtn.addEventListener("click", () => {
       if (audio.paused) {
+        // Pause all other players
         players.forEach(p => {
           const a = p.querySelector("audio");
-          if (a !== audio) {
-            a.pause();
-            a.currentTime = 0;
-            p.classList.remove("playing");
-            p.querySelector(".music-cover").classList.remove("bopping");
-            const pi = p.querySelector(".play-icon");
-            const paus = p.querySelector(".pause-icon");
-            if (pi && paus) {
-              pi.style.display = "block";
-              paus.style.display = "none";
-            }
+          if (a !== audio) a.pause();
+          p.classList.remove("playing");
+          stopBop(p.querySelector(".music-cover"));
+          const pi = p.querySelector(".play-icon");
+          const paus = p.querySelector(".pause-icon");
+          if (pi && paus) {
+            pi.style.display = "block";
+            paus.style.display = "none";
           }
         });
 
+        // Play this track
         audio.play();
         player.classList.add("playing");
-        startBop();
+        startBop(cover, bpm);
         playIcon.style.display = "none";
         pauseIcon.style.display = "block";
+
+        // Show currently playing
+        const title = player.querySelector(".music-info h3").textContent;
+        const artist = player.querySelector(".music-info p").textContent;
+        showCurrentlyPlaying(title, artist, bpm);
       } else {
+        // Pause this track
         audio.pause();
         player.classList.remove("playing");
-        stopBop();
+        stopBop(cover);
         playIcon.style.display = "block";
         pauseIcon.style.display = "none";
+
+        // Hide currently playing
+        hideCurrentlyPlaying();
       }
     });
 
     audio.addEventListener("ended", () => {
       player.classList.remove("playing");
-      stopBop();
+      stopBop(cover);
       playIcon.style.display = "block";
       pauseIcon.style.display = "none";
       displayedPercent = 0;
+
+      // Hide currently playing
+      hideCurrentlyPlaying();
     });
 
     const getPercent = e => {
@@ -313,6 +342,12 @@ document.addEventListener("DOMContentLoaded", () => {
         audio.currentTime = percent * audio.duration;
       }
     });
+  });
+
+  // ---------- CLICK CURRENTLY-PLAYING TO SWITCH TO MUSIC TAB ----------
+  currentlyPlaying.addEventListener("click", () => {
+    const musicTabBtn = document.querySelector('.tabs button[data-tab="Music"]');
+    if (musicTabBtn) musicTabBtn.click();
   });
 });
 </script>
