@@ -202,7 +202,7 @@ details[open] p {
 }
 
 details p {
-  margin-top: 0.6rem;
+  margin-top: 1.5rem;
   color: var(--text-dark);
   font-size: 0.9rem;
   line-height: 1.4;

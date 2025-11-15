@@ -6,7 +6,7 @@ description: "I'm gonna yap about the process of how this website came to be !!"
 
 <h3>storytime >:]</h3>
 
-It's really easy for me to make a static-looking website where all of the text and data you'd need
+<p>It's really easy for me to make a static-looking website where all of the text and data you'd need
 to know about me are already displayed in front of you without any intervention, but I know to myself that
 reading a bunch of words on a screen can be a chore sometimes, especially when it isn't accompanied with
 visuals and diagrams and all that.<br><br>
@@ -22,4 +22,13 @@ I am thankful that I managed to push through all of those obstacles. I do get a 
 almost embodies who I truly am, and I really think that's neat :]<br><br>
 
 The other website makers I've tried are either visually messy (unwanted visuals / watermarks) or functionally limiting, and if I
-really want to express who I am and what I'm like, it's best that I do that from scratch.
+really want to express who I am and what I'm like, it's best that I do that from scratch.</p>
+
+<style>
+p {
+  margin-top: 0.6rem;
+  color: var(--text-dark);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+</style>
