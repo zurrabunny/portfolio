@@ -7,7 +7,7 @@ const musicItems = [
   { src: "Shorts and Shores.mp3", cover: "honeymoon.png", title: "Shorts and Shores", artist: "ZurraBunny", bpm: 100 },
   { src: "Starstruck.mp3", cover: "honeymoon.png", title: "Starstruck", artist: "ZurraBunny", bpm: 65 },
   { src: "=3-ified.mp3", cover: "=3-ified.jpg", title: ":3-ified", artist: "ZurraBunny", bpm: 180 },
-  { src: "Next Stop.mp3", cover: "next stop.png", title: "Next Stop", artist: "ZurraBunny", bpm: 156 },
+  { src: "Next Stop.mp3", cover: "next stop.png", title: "Next Stop", artist: "ZurraBunny", bpm: 78 },
   { src: "serenity.mp3", cover: "serenity.png", title: "Serenity", artist: "ZurraBunny", bpm: 172 },
   { src: "catcoded.mp3", cover: "catcoded.png", title: "Cat-Coded", artist: "ZurraBunny", bpm: 175 },
   { src: "Prideful Prance.mp3", cover: "prideful prance.png", title: "Prideful Prance", artist: "ZurraBunny", bpm: 175 },
@@ -204,6 +204,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const currentlyPlaying = document.querySelector(".currently-playing");
   const currentlyPlayingText = currentlyPlaying.querySelector(".track-info");
   const musicPic = currentlyPlaying.querySelector(".music-pic");
+  const volumeControl = document.querySelector(".volume-control");
+  const volumeSlider = volumeControl?.querySelector("#volume-slider");
+
+  const updateVolumeVisibility = () => {
+    // Show volume control only if any track is playing
+    const anyPlaying = Array.from(players).some(p => !p.querySelector("audio").paused);
+    if (volumeControl) {
+      if (anyPlaying) {
+        volumeControl.classList.add("active");
+      } else {
+        volumeControl.classList.remove("active");
+      }
+    }
+  };
 
   players.forEach(player => {
     const audio = player.querySelector("audio");
@@ -230,7 +244,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     requestAnimationFrame(animateProgress);
 
-    // Bop functions
     const startBop = (element, bpm) => {
       const duration = 60 / bpm;
       element.classList.add("bopping");
@@ -243,14 +256,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const showCurrentlyPlaying = (title, artist, bpm) => {
       currentlyPlayingText.textContent = `${title} — ${artist}`;
-      currentlyPlaying.classList.add("active"); // slide in
-      if (musicPic) startBop(musicPic, bpm);     // start bop on pic
+      currentlyPlaying.classList.add("active");
+      if (musicPic) startBop(musicPic, bpm);
+      updateVolumeVisibility();
     };
 
     const hideCurrentlyPlaying = () => {
       currentlyPlayingText.textContent = "Nothing";
-      currentlyPlaying.classList.remove("active"); // slide out
-      if (musicPic) stopBop(musicPic);            // stop bop on pic
+      currentlyPlaying.classList.remove("active");
+      if (musicPic) stopBop(musicPic);
+      updateVolumeVisibility();
     };
 
     playBtn.addEventListener("click", () => {
@@ -269,26 +284,23 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
 
-        // Play this track
         audio.play();
         player.classList.add("playing");
         startBop(cover, bpm);
         playIcon.style.display = "none";
         pauseIcon.style.display = "block";
 
-        // Show currently playing
         const title = player.querySelector(".music-info h3").textContent;
         const artist = player.querySelector(".music-info p").textContent;
         showCurrentlyPlaying(title, artist, bpm);
+
+        if (volumeSlider) volumeSlider.value = audio.volume;
       } else {
-        // Pause this track
         audio.pause();
         player.classList.remove("playing");
         stopBop(cover);
         playIcon.style.display = "block";
         pauseIcon.style.display = "none";
-
-        // Hide currently playing
         hideCurrentlyPlaying();
       }
     });
@@ -299,10 +311,14 @@ document.addEventListener("DOMContentLoaded", () => {
       playIcon.style.display = "block";
       pauseIcon.style.display = "none";
       displayedPercent = 0;
-
-      // Hide currently playing
       hideCurrentlyPlaying();
     });
+
+    if (volumeSlider) {
+      volumeSlider.addEventListener("input", e => {
+        audio.volume = parseFloat(e.target.value);
+      });
+    }
 
     const getPercent = e => {
       const rect = progressContainer.getBoundingClientRect();
@@ -344,7 +360,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // ---------- CLICK CURRENTLY-PLAYING TO SWITCH TO MUSIC TAB ----------
   currentlyPlaying.addEventListener("click", () => {
     const event = new CustomEvent("switchContent", { detail: { target: "work" } });
     window.dispatchEvent(event);

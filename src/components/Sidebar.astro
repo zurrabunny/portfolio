@@ -18,6 +18,10 @@ const { class: extraClass } = Astro.props;
     <a href="#" class="tab" data-target="devlog">Blogs</a>
   </nav>
   
+  <div class="volume-control" data-tab="Music">
+  <input id="volume-slider" type="range" min="0" max="1" step="0.01" value="1" orient="vertical">
+  </div>
+  
   <div class="currently-playing">
 	<img src="tuneup.gif" alt="zurras" class="music-pic" /><br>
     <strong>Currently Playing:</strong>
@@ -26,6 +30,57 @@ const { class: extraClass } = Astro.props;
 </aside>
 
 <style>
+.volume-control {
+  position: fixed;
+  top: 120px; /* above the currently playing */
+  right: -10px;
+  width: 0;            /* collapsed initially */
+  height: 100px;
+  opacity: 0;           /* invisible initially */
+  z-index: 999;
+  pointer-events: none; /* prevent interaction when hidden */
+  transition: width 0.4s ease, opacity 0.4s ease;
+}
+
+.volume-control.active {
+  width: 100px;         /* expanded width for vertical slider */
+  opacity: 1;           /* fully visible */
+  pointer-events: auto; /* enable interaction */
+}
+
+.volume-control input[type="range"] {
+  -webkit-appearance: none;
+  width: 100px;          /* width visually, rotated */
+  height: 12px;          /* slider thickness */
+  transform: rotate(-90deg);
+  transform-origin: center;
+  background: var(--color-2);
+  border-radius: 6px;
+  cursor: pointer;
+  outline: none;
+}
+
+.volume-control input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--color-2);
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid var(--text-dark);
+}
+
+.volume-control input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: var(--color-2);
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #fff;
+}
+
+
 .currently-playing {
   position: fixed;       
   bottom: 5px;          
@@ -59,6 +114,7 @@ const { class: extraClass } = Astro.props;
   margin-bottom: -5px;
   transition: transform 0.3s ease, opacity 0.3s ease;
   filter: brightness(var(--invert));
+  cursor: pointer; /* ← makes it a finger */
 }
 
 /* ----------- BOP ANIMATION FOR MUSIC PIC ----------- */
