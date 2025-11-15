@@ -11,7 +11,7 @@ const musicItems = [
   { src: "serenity.mp3", cover: "serenity.png", title: "Serenity", artist: "ZurraBunny", bpm: 172 },
   { src: "catcoded.mp3", cover: "catcoded.png", title: "Cat-Coded", artist: "ZurraBunny", bpm: 175 },
   { src: "Prideful Prance.mp3", cover: "prideful prance.png", title: "Prideful Prance", artist: "ZurraBunny", bpm: 175 },
-  { src: "Funkiin Arts - Menu Theme.mp3", cover: "funkiin arts.png", title: "Funkiin Arts - Menu", artist: "ZurraBunny", bpm: 180 },
+  { src: "Funkiin Arts - Menu Theme.mp3", cover: "funkiin arts.png", title: "Funkiin Arts - Menu", artist: "ZurraBunny", bpm: 90 },
   { src: "microArp.ogg", cover: "microArp.png", title: "microArp", artist: "ZurraBunny", bpm: 130 },
   { src: "Libel.mp3", cover: "Libel.png", title: "Libel", artist: "ZurraBunny", bpm: 85 },
   { src: "avert.mp3", cover: "avert.png", title: "Avert", artist: "ZurraBunny", bpm: 166 },
@@ -346,6 +346,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ---------- CLICK CURRENTLY-PLAYING TO SWITCH TO MUSIC TAB ----------
   currentlyPlaying.addEventListener("click", () => {
+    const event = new CustomEvent("switchContent", { detail: { target: "work" } });
+    window.dispatchEvent(event);
     const musicTabBtn = document.querySelector('.tabs button[data-tab="Music"]');
     if (musicTabBtn) musicTabBtn.click();
   });
