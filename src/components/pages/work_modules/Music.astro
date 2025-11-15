@@ -61,20 +61,20 @@ const musicItems = [
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(--container, #1b1b1b);
+  background: var(--container);
   color: var(--text-dark);
-  border: 2px solid var(--border-container, #333);
   border-radius: 1rem;
   padding: 1rem;
   width: 100%;
   max-width: 220px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
-  transition: .2s;
+  transition: background .2s, border-color .2s;
+  border: 2px solid var(--border-container);
 }
 
-.music-player:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, .15);
+.music-player.playing {
+  border-color: var(--color-5);
+  transform: translateY(-2px);
+  background: var(--color-6);
 }
 
 .music-cover img {
@@ -270,41 +270,46 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     playBtn.addEventListener("click", () => {
-      if (audio.paused) {
-        // Pause all other players
-        players.forEach(p => {
-          const a = p.querySelector("audio");
-          if (a !== audio) a.pause();
-          p.classList.remove("playing");
-          stopBop(p.querySelector(".music-cover"));
-          const pi = p.querySelector(".play-icon");
-          const paus = p.querySelector(".pause-icon");
-          if (pi && paus) {
-            pi.style.display = "block";
-            paus.style.display = "none";
-          }
-        });
-
-        audio.play();
-        player.classList.add("playing");
-        startBop(cover, bpm);
-        playIcon.style.display = "none";
-        pauseIcon.style.display = "block";
-
-        const title = player.querySelector(".music-info h3").textContent;
-        const artist = player.querySelector(".music-info p").textContent;
-        showCurrentlyPlaying(title, artist, bpm);
-
-        if (volumeSlider) volumeSlider.value = audio.volume;
-      } else {
-        audio.pause();
-        player.classList.remove("playing");
-        stopBop(cover);
-        playIcon.style.display = "block";
-        pauseIcon.style.display = "none";
-        hideCurrentlyPlaying();
+  if (audio.paused) {
+    // Pause all other players and remove highlight
+    players.forEach(p => {
+      const a = p.querySelector("audio");
+      if (a !== audio) a.pause();
+      p.classList.remove("playing");  // <- remove highlight
+      const pi = p.querySelector(".play-icon");
+      const paus = p.querySelector(".pause-icon");
+      if (pi && paus) {
+        pi.style.display = "block";
+        paus.style.display = "none";
       }
+      stopBop(p.querySelector(".music-cover"));
     });
+
+    // Play current audio & highlight
+    audio.play();
+    player.classList.add("playing"); // <- add highlight
+    startBop(cover, bpm);
+
+    playIcon.style.display = "none";
+    pauseIcon.style.display = "block";
+
+    const title = player.querySelector(".music-info h3").textContent;
+    const artist = player.querySelector(".music-info p").textContent;
+    showCurrentlyPlaying(title, artist, bpm);
+
+    if (volumeSlider) volumeSlider.value = audio.volume;
+
+  } else {
+    // Pause current audio & remove highlight
+    audio.pause();
+    player.classList.remove("playing"); // <- remove highlight
+    stopBop(cover);
+    playIcon.style.display = "block";
+    pauseIcon.style.display = "none";
+    hideCurrentlyPlaying();
+  }
+});
+
 
     audio.addEventListener("ended", () => {
       player.classList.remove("playing");

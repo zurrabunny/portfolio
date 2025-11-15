@@ -1,0 +1,110 @@
+---
+// Props
+const { routineData } = Astro.props;
+
+// Provide a default if no data is passed
+const defaultRoutine = [
+  { start: 18, end: 22, label: "Sleep", display: "6PM – 10PM" },
+  { start: 22, end: 23, label: "Wake / Prep", display: "10PM – 11PM" },
+  { start: 23, end: 5, label: "Work Night", display: "11PM – 5AM" },
+  { start: 5, end: 5.5, label: "Nap", display: "5AM – 5:30AM" },
+  { start: 7, end: 15, label: "Work Day", display: "7AM – 3PM" },
+  { start: 12, end: 12.5, label: "Lunch", display: "12PM – 12:30PM" },
+  { start: 15, end: 18, label: "Free Time", display: "3PM – 6PM" }
+];
+
+const data = routineData || defaultRoutine;
+---
+
+<style>
+.routine-table {
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem auto;
+  border-collapse: separate;
+  border-spacing: 0 0.5rem;
+  font-family: inherit;
+}
+
+.routine-table th,
+.routine-table td {
+  border: 2px solid var(--color-5);
+  padding: 0.75rem 1rem;
+  text-align: center;
+  transition: background 0.3s, color 0.3s;
+  border-radius: 10px;
+  background: var(--color-1);
+}
+
+.routine-table th {
+  background: var(--color-5);
+  color: var(--text-light);
+}
+
+.routine-table td.active {
+  background: var(--color-3);
+  color: var(--text-dark);
+  font-weight: bold;
+}
+</style>
+
+<table class="routine-table" id="routineTable">
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Activity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Rows will be generated dynamically -->
+  </tbody>
+</table>
+
+<script is:client:load>
+const routineData = JSON.parse(`<!--@json-->${JSON.stringify(data)}<!--/@json-->`);
+
+function generateRoutineTable() {
+  const tbody = document.querySelector("#routineTable tbody");
+  tbody.innerHTML = "";
+
+  routineData.forEach(activity => {
+    const tr = document.createElement("tr");
+
+    const tdTime = document.createElement("td");
+    tdTime.textContent = activity.display;
+    tdTime.dataset.start = activity.start;
+    tdTime.dataset.end = activity.end;
+
+    const tdLabel = document.createElement("td");
+    tdLabel.textContent = activity.label;
+    tdLabel.dataset.start = activity.start;
+    tdLabel.dataset.end = activity.end;
+
+    tr.appendChild(tdTime);
+    tr.appendChild(tdLabel);
+
+    tbody.appendChild(tr);
+  });
+}
+
+function highlightCurrentRoutine() {
+  const now = new Date();
+  const hour = now.getHours() + now.getMinutes() / 60;
+
+  const tds = document.querySelectorAll("#routineTable tbody td");
+
+  tds.forEach(td => {
+    const start = parseFloat(td.dataset.start);
+    const end = parseFloat(td.dataset.end);
+
+    const isActive = (end < start) ? (hour >= start || hour < end) : (hour >= start && hour < end);
+
+    td.classList.toggle("active", isActive);
+  });
+}
+
+// Initialize table & highlight
+generateRoutineTable();
+highlightCurrentRoutine();
+setInterval(highlightCurrentRoutine, 60 * 1000);
+</script>

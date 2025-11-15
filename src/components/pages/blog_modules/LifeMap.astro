@@ -1,0 +1,531 @@
+---
+import Container from "./src/components/Container.astro";
+---
+
+  <div variant="static" class="flowchart-container">
+
+    <div class="flowchart">
+      {Array.from({ length: 11 }, (_, i) => {
+        const year = 2025 + i;
+        const pct = i / 10;
+        return (
+          <>
+            <div class="timeline-year" style={`top: calc(${pct} * (100% - 250px) + 135px);`}>
+              {year}
+            </div>
+            <div class="timeline-line" style={`top: calc(${pct} * (100% - 250px) + 135px);`}></div>
+          </>
+        );
+      })}
+
+      <!-- Nodes -->
+      <div class="node" id="node1" style="top: 45px;">Life Goals</div>
+      <div class="node" id="node2" style="top: 100px;">Storyboard / Animation</div>
+      <div class="node" id="node3" style="top: 100px;">Side Hustles</div>
+      <div class="node" id="node7" style="top: 500px;">Land a job doing<br>Clean Up Animation</div>
+      <div class="node" id="node8" style="top: 500px;">Land a job as a <br>Storyboard Artist</div>
+      <div class="node" id="node9" style="top: 500px;">Become a<br>Graphic Designer</div>
+      <div class="node" id="node11" style="top: 396px;">Work as a Digital Artist<br>for a Company's<br>Social Media</div>
+      <div class="node" id="node13" style="top: 815px;">Collaborate with<br>other Indie Animators</div>
+      <div class="node" id="node14" style="top: 605px;">Most likely work there for<br>a couple years</div>
+      <div class="node" id="node20" style="top: 710px;">Become a<br>Book Cover Illustrator</div>
+      <div class="node" id="node21" style="top: 1025px;">Become a Concept Artist</div>
+      <div class="node" id="node22" style="top: 1025px;">Become a Composer or<br>Sound Editor</div>
+      <div class="node" id="node16" style="top: 1235px;">Become an part time<br>Animation / Storyboard Instructor</div>
+      <div class="node" id="node17" style="top: 296px;">Learn more about<br>Color Scripting</div>
+
+      <!-- Dropdown-enabled nodes -->
+      <div class="node" id="node4" style="top: 190px;">
+        Study Film Language<br>and Shot Composition
+        <div class="smart-dropdown">
+          <p><b>Specific:</b> <br>I want to learn how to utilize film techniques the experts use for my own films !!</p>
+          <p><b>Measurable:</b> <br>Watch one film analysis weekly and apply it to my own projects</p>
+          <p><b>Achievable:</b> <br>Study and OVERANALYZE a lot of the scenes of the movies / videos i watch..</p>
+          <p><b>Relevant:</b> It <br>improves my shot composition in my storyboards >:]</p>
+          <p><b>Time-Bound:</b> <br>At least less than a year!</p>
+        </div>
+      </div>
+
+      <div class="node" id="node5" style="top: 190px;">
+        Practice more Principles<br>of Animation
+        <div class="smart-dropdown">
+          <p><b>Specific:</b> <br>Focus on mastering each principle of animation !!</p>
+          <p><b>Measurable:</b> <br>Produce at least 2-3 FINISHED animation loops per month</p>
+          <p><b>Achievable:</b> <br>Study and OVERANALYZE a lot of the movement i observe in the real world</p>
+          <p><b>Relevant:</b> <br>Makes my animations more fluid and makes the flow and timing better >:o</p>
+          <p><b>Time-Bound:</b> <br>Make at least 20 in a year..</p>
+        </div>
+      </div>
+
+      <div class="node" id="node6" style="top: 190px;">
+        Keep doing art<br>commissions
+        <div class="smart-dropdown">
+          <p><b>Specific:</b> <br>Continue taking commissions for illustrations / animations</p>
+          <p><b>Measurable:</b> <br>ITS NOT REALLY A PRIORITY BUT Maintain at least 2–3 commissions per month</p>
+          <p><b>Achievable:</b> <br>Advertise and keep posting A LOT on social media..</p>
+          <p><b>Relevant:</b> <br>Improves my art skills by drawing a lot of diverse things >:]</p>
+          <p><b>Time-Bound:</b> <br>Maintain all year long</p>
+        </div>
+      </div>
+
+      <div class="node" id="node10" style="top: 396px;">
+        Make a Short Film
+        <div class="smart-dropdown">
+          <p><b>Specific:</b> <br>Create a 7–9 minute animated short film.</p>
+          <p><b>Measurable:</b> <br>Finish storyboard, animation, and post-production.</p>
+          <p><b>Achievable:</b> <br>Collaborate with peers for backgrounds and sound.</p>
+          <p><b>Relevant:</b> <br>Demonstrates storytelling and production skill.</p>
+          <p><b>Time-Bound:</b> <br>Release before the end of the year.</p>
+        </div>
+      </div>
+
+      <div class="node" id="node12" style="top: 710px;">
+        Open a Patreon<br>or KoFi account
+        <div class="smart-dropdown">
+          <p><b>Specific:</b> <br>Open a Patreon or Ko-Fi for supporters.</p>
+          <p><b>Measurable:</b> <br>Reach 10 patrons within 3 months.</p>
+          <p><b>Achievable:</b> <br>Offer exclusive art, sketches, and updates.</p>
+          <p><b>Relevant:</b> <br>Builds community and steady income.</p>
+          <p><b>Time-Bound:</b> <br>Launch within 2 months.</p>
+        </div>
+      </div>
+
+      <div class="node" id="node15" style="top: 920px;">
+        Join an Indie Animation Studio
+        <div class="smart-dropdown">
+          <p><b>Specific:</b> <br>Join an indie animation studio.</p>
+          <p><b>Measurable:</b> <br>Apply to 3 studios by year end.</p>
+          <p><b>Achievable:</b> <br>Use portfolio and short film as reference.</p>
+          <p><b>Relevant:</b> <br>Gains teamwork experience.</p>
+          <p><b>Time-Bound:</b> <br>Within 1 year.</p>
+        </div>
+      </div>
+
+      <div class="node" id="node18" style="top: 1130px;">
+        Move on to<br>Animation Studios abroad
+        <div class="smart-dropdown">
+          <p><b>Specific:</b> <br>Apply to animation studios abroad.</p>
+          <p><b>Measurable:</b> <br>Submit applications to at least 5 international studios.</p>
+          <p><b>Achievable:</b> <br>Prepare strong reel and portfolio.</p>
+          <p><b>Relevant:</b> <br>Expands global experience.</p>
+          <p><b>Time-Bound:</b> <br>3–5 years.</p>
+        </div>
+      </div>
+
+      <div class="node" id="node19" style="top: 1130px;">
+        Pitch my story<br>idea maybe (?????)
+        <div class="smart-dropdown">
+          <p><b>Specific:</b> <br>Develop and pitch a short story idea.</p>
+          <p><b>Measurable:</b> <br>Finish pitch deck and animatic.</p>
+          <p><b>Achievable:</b> <br>Join online pitch events for feedback.</p>
+          <p><b>Relevant:</b> <br>Can lead to collaborations or productions.</p>
+          <p><b>Time-Bound:</b> <br>Within 2 years.</p>
+        </div>
+      </div>
+
+      <!-- Lines -->
+      {Array.from({ length: 26 }, (_, i) => <div class="line" id={`line${i+1}`}></div>)}
+    </div>
+
+<script type="module">
+document.addEventListener('DOMContentLoaded', () => {
+  // Define your lines with IDs, from/to nodes
+  const lines = [
+    { id: 'line1', from: 'node1', to: 'node2' },
+    { id: 'line2', from: 'node1', to: 'node3' },
+    { id: 'line3', from: 'node2', to: 'node4' },
+    { id: 'line4', from: 'node2', to: 'node5' },
+    { id: 'line5', from: 'node3', to: 'node6' },
+    { id: 'line6', from: 'node4', to: 'node17' },
+    { id: 'line7', from: 'node17', to: 'node10' },
+    { id: 'line8', from: 'node6', to: 'node11' },
+    { id: 'line9', from: 'node10', to: 'node8' },
+    { id: 'line10', from: 'node10', to: 'node7' },
+    { id: 'line11', from: 'node11', to: 'node9' },
+    { id: 'line12', from: 'node9', to: 'node12' },
+    { id: 'line13', from: 'node12', to: 'node13' },
+    { id: 'line14', from: 'node8', to: 'node14' },
+    { id: 'line15', from: 'node7', to: 'node14' },
+    { id: 'line16', from: 'node13', to: 'node15' },
+    { id: 'line17', from: 'node11', to: 'node9' },
+    { id: 'line18', from: 'node14', to: 'node18' },
+    { id: 'line19', from: 'node18', to: 'node16' },
+    { id: 'line20', from: 'node22', to: 'node19' },
+    { id: 'line21', from: 'node19', to: 'node16' },
+    { id: 'line22', from: 'node5', to: 'node17' },
+    { id: 'line23', from: 'node15', to: 'node21' },
+    { id: 'line24', from: 'node15', to: 'node22' },
+    { id: 'line25', from: 'node21', to: 'node19' },
+    { id: 'line26', from: 'node9', to: 'node20' },
+  ];
+
+  // Attach the actual DOM elements to each line
+  lines.forEach(l => {
+    l.line = document.getElementById(l.id);
+  });
+
+  // Build parent and child maps
+  const parents = {}, children = {};
+  lines.forEach(l => {
+    if (!parents[l.to]) parents[l.to] = [];
+    parents[l.to].push(l);
+    if (!children[l.from]) children[l.from] = [];
+    children[l.from].push(l);
+  });
+
+  // Auto-space nodes horizontally
+  function autoSpaceNodes() {
+    const nodes = Array.from(document.querySelectorAll('.node'));
+    const flowchart = document.querySelector('.flowchart');
+    if (!flowchart) return;
+    const chartWidth = flowchart.clientWidth;
+
+    const grouped = {};
+    nodes.forEach(node => {
+      const y = node.style.top || node.offsetTop;
+      if (!grouped[y]) grouped[y] = [];
+      grouped[y].push(node);
+    });
+
+    Object.values(grouped).forEach(group => {
+      const count = group.length;
+      const spacing = chartWidth / (count + 1);
+      group.forEach((node, i) => {
+        node.style.left = `${spacing * (i + 1)}px`;
+      });
+    });
+  }
+
+  // Update line positions between nodes
+  function updateLines() {
+    lines.forEach(l => {
+      if (!l.line) return;
+      const fromNode = document.getElementById(l.from);
+      const toNode = document.getElementById(l.to);
+      if (!fromNode || !toNode) return;
+
+      const x1 = fromNode.offsetLeft + fromNode.offsetWidth / 100;
+      const y1 = fromNode.offsetTop + fromNode.offsetHeight / 100;
+      const x2 = toNode.offsetLeft + toNode.offsetWidth / 100;
+      const y2 = toNode.offsetTop + toNode.offsetHeight / 100;
+
+      const length = Math.hypot(x2 - x1, y2 - y1);
+      const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+
+      l.line.style.width = `${length}px`;
+      l.line.style.top = `${y1}px`;
+      l.line.style.left = `${x1}px`;
+      l.line.style.transform = `rotate(${angle}deg)`;
+      l.line.style.transformOrigin = '0 0';
+    });
+  }
+
+  // Highlight ancestor nodes
+  function highlightAncestors(nodeId, activeNodes = new Set()) {
+    if (!parents[nodeId]) return activeNodes;
+    parents[nodeId].forEach(p => {
+      if (p.line) p.line.classList.add("active");
+      activeNodes.add(p.from);
+      highlightAncestors(p.from, activeNodes);
+    });
+    return activeNodes;
+  }
+
+  // Clear all highlights
+  function clearHighlights() {
+    document.querySelectorAll('.node').forEach(n => {
+      n.style.opacity = '1';
+      n.classList.remove('selected', 'open');
+    });
+    document.querySelectorAll('.line').forEach(l => {
+      l.style.opacity = '1';
+      l.classList.remove("active", "gradient");
+    });
+  }
+
+  // Click sound
+  const clickSound = new Audio('sounds/check.ogg');
+  clickSound.volume = 0.7;
+
+  // Node click logic
+  let activeNode = null;
+  const nodes = document.querySelectorAll('.node');
+  nodes.forEach(node => {
+    node.addEventListener('click', e => {
+      e.stopPropagation();
+      clickSound.currentTime = 0;
+      clickSound.play().catch(() => {});
+
+      const alreadyActive = activeNode === node;
+      clearHighlights();
+      if (alreadyActive) {
+        activeNode = null;
+        return;
+      }
+
+      activeNode = node;
+      node.classList.add('selected');
+
+      const activeNodes = new Set([node.id]);
+      highlightAncestors(node.id, activeNodes);
+
+      if (children[node.id]) children[node.id].forEach(l => l.line?.classList.add("gradient"));
+
+      document.querySelectorAll('.node').forEach(n => n.style.opacity = activeNodes.has(n.id) ? '1' : '0.2');
+      document.querySelectorAll('.line').forEach(l => {
+        l.style.opacity = (l.classList.contains("active") || l.classList.contains("gradient")) ? '1' : '0.2';
+      });
+
+      // Smart dropdown toggle for wide screens
+      if (window.innerWidth > 900) {
+        nodes.forEach(n => n.classList.remove('open'));
+        node.classList.add('open');
+      }
+    });
+  });
+
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', () => {
+    nodes.forEach(n => n.classList.remove('open'));
+    if (activeNode) {
+      activeNode = null;
+      clearHighlights();
+    }
+  });
+
+  // Initialize flowchart
+  autoSpaceNodes();
+  updateLines();
+
+  // Recalculate on window resize
+  window.addEventListener('resize', () => {
+    autoSpaceNodes();
+    updateLines();
+  });
+});
+</script>
+
+
+<style>
+main.content {
+  flex: 1;
+  margin-left: 260px;
+  padding: 2rem;
+  color: var(--text-dark);
+}
+
+.flowchart-container {
+  position: relative;
+}
+
+.flowchart-header {
+  font-size: 1.8rem;
+  color: var(--color-1);
+  margin-bottom: 0.5rem;
+}
+
+.flowchart-description {
+  font-size: 1rem;
+  color: var(--text-main);
+  margin-bottom: 1.5rem;
+}
+
+.flowchart {
+  position: relative;
+  width: 105%;
+  max-width: 900px;
+  height: 1300px;
+  margin: 0rem auto;
+  margin-left: -20px;
+  background: var(--container);
+  padding: 100px;
+  box-sizing: border-box;
+  border: 2px solid var(--color-5);
+  border-radius: 1.2rem;
+}
+
+.timeline-year {
+  position: absolute;
+  left: 0;
+  font-size: 12px;
+  color: var(--color-2);
+  width: 80px;
+  text-align: right;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 100px;
+  right: 100px;
+  height: 1px;
+  background: var(--color-5);
+  z-index: 0;
+}
+
+.line {
+  position: absolute;
+  background: var(--line-dormant);
+  height: 2px;
+  transform-origin: 0 0;
+  z-index: 1;
+  transition: opacity 0.2s ease, background 0.2s ease;
+}
+
+.line.active {
+  background: var(--line-highlight);
+}
+
+.line.gradient {
+  background: linear-gradient(to right, var(--line-highlight), transparent);
+}
+
+/* ---------- Nodes ---------- */
+.node {
+  position: absolute;
+  transform: translate(-50%, -50%) scale(1);
+  padding: 8px 8px;
+  font-size: 0.7rem;
+  background: var(--node);
+  color: var(--text-light);
+  border-radius: 8px;
+  text-align: center;
+  z-index: 2;
+  cursor: pointer;
+  overflow: visible;
+  max-width: 180px;
+  transition: background 0.3s ease, color 0.3s ease, border 0.3s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+}
+
+.node.open,
+.node.selected {
+  background: var(--color-3);
+  color: var(--text-dark);
+  border: 1px solid var(--color-4);
+  border-radius: 4px;
+  z-index: 3;
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+/* ---------- Dropdown ---------- */
+.smart-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  background: var(--color-6);
+  border: 2px solid var(--color-5);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  width: max-content;
+  min-width: 200px;
+  max-width: 250px;
+  padding: 8px 12px;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transform-origin: top center;
+  pointer-events: none;
+  transition: opacity 0.5s ease, max-height 0.35s ease, transform 0.35s ease;
+}
+
+.node.open .smart-dropdown {
+  opacity: 1;
+  max-height: 600px;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.smart-dropdown p {
+  margin: 2px 0;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  text-align: left;
+}
+
+.node.open .smart-dropdown p {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Headings ---------- */
+h1 { font-size: 1.8rem; color: var(--color-1); margin-bottom: 1rem; }
+h2 { font-size: 1.3rem; color: var(--color-2); margin-bottom: 0.5rem; margin-top: -0.5rem; }
+h3 {
+  font-size: 1.3rem;
+  color: var(--color-2);
+  margin-bottom: 0.5rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+}
+h3::after {
+  content: "";
+  flex-grow: 1;
+  height: 2px;
+  background-color: var(--color-5);
+  opacity: 0.5;
+}
+
+/* ---------- Responsive Mobile ---------- */
+@media (max-width: 900px) {
+  .flowchart-header { font-size: 1rem; }
+  .flowchart-description { font-size: 0.65rem; }
+  .flowchart { width: 100%; padding: 20px; margin-left: 0; }
+  .timeline-year { font-size: 7px; width: 40px; left: 0; }
+  .timeline-line { left: 50px; right: 50px; }
+  .node { font-size: 0.45rem; max-width: 50px; padding: 5px 5px; }
+  .smart-dropdown { min-width: 120px; max-width: 160px; padding: 3px 6px; }
+  p, li, span, a { font-size: 0.55rem; margin: 0.5rem; }
+  h2 { font-size: 0.9rem; margin: 0.3rem; }
+  h3 { font-size: 0.8rem; }
+}
+
+/* Goal title line styling */
+.goal-title-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.goal-line {
+  flex: 1;
+  height: 2px;
+  background-color: var(--color-6); /* adjust to visible color */
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Title styling */
+#goal-title {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0;
+  white-space: nowrap;
+  display: flex;
+  justify-content: center;
+}
+
+/* Mobile adjustments */
+@media (max-width: 900px) {
+  #goal-title {
+    font-size: 1.5rem;
+    text-align: center;
+    white-space: normal;
+  }
+  .goal-title-line {
+    gap: 0.5rem;
+  }
+  .goal-line {
+    height: 1px;
+  }
+}
+
+</style>
