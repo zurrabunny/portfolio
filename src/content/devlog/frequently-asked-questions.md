@@ -3,6 +3,7 @@ title: "Frequently Asked Questions"
 date: "2025-11-15"
 description: "Here are some FAQs I listed so you don’t have to message me about them. You can contact me directly about the topic right away!"
 pinned: true
+tags: ["Important"]
 ---
 
 <details>

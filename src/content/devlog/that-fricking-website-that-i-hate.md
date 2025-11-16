@@ -2,6 +2,7 @@
 title: "My thought process on making this website"
 date: "2025-11-15"
 description: "I'm gonna yap about the process of how this website came to be !!"
+tags: ["Process"]
 ---
 
 <h3>storytime >:]</h3>

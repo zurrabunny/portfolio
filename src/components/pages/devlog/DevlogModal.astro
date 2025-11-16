@@ -2,22 +2,23 @@
 ---
 <div id="devlog-modal" class="modal">
   <div class="modal-inner">
-  
+
     <button class="modal-close" aria-label="Close">
-	  <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
-		<line x1="18" y1="6" x2="6" y2="18" />
-		<line x1="6" y1="6" x2="18" y2="18" />
-	  </svg>
-	</button>
+      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
 
     <h2 class="modal-title"></h2>
 
-    <!-- Date with goal title line -->
     <div class="goal-title-line">
       <div class="goal-line"></div>
       <small class="modal-date"></small>
       <div class="goal-line"></div>
     </div>
+
+    <div class="modal-tags"></div>
 
     <div class="modal-content"></div>
   </div>
@@ -30,18 +31,25 @@ const titleEl = modal.querySelector('.modal-title');
 const dateEl = modal.querySelector('.modal-date');
 const contentEl = modal.querySelector('.modal-content');
 const closeBtn = modal.querySelector('.modal-close');
+const modalTags = modal.querySelector('.modal-tags');
 
-// Wait for DOM to have cards
+// Wait until devlog cards exist
 const waitForCards = setInterval(() => {
   const cards = document.querySelectorAll('.devlog-card');
   if (cards.length) {
     clearInterval(waitForCards);
+
     cards.forEach(card => {
       card.addEventListener('click', () => {
         titleEl.innerText = card.dataset.title;
         dateEl.innerText = new Date(card.dataset.date).toDateString();
         contentEl.innerHTML = card.dataset.body;
-        // Show modal with animation
+
+        // Display tags
+        const tags = card.dataset.tags ? card.dataset.tags.split(',') : [];
+        modalTags.innerHTML = tags.map(tag => `<span class="modal-tag">#${tag}</span>`).join(' ');
+
+        // Show modal
         modal.style.display = 'flex';
         requestAnimationFrame(() => modal.classList.add('showing'));
         document.body.style.overflow = 'hidden';
@@ -58,21 +66,19 @@ function closeModal() {
     modal.style.display = 'none';
     modal.classList.remove('hiding');
     document.body.style.overflow = '';
-  }, 250); // match transition duration
+  }, 250);
 }
 
 closeBtn.addEventListener('click', closeModal);
 
-// Close when clicking outside modal-inner
+// Close clicking outside
 modal.addEventListener('click', e => {
-  if (!modalInner.contains(e.target)) {
-    closeModal();
-  }
+  if (!modalInner.contains(e.target)) closeModal();
 });
 </script>
 
 <style>
-/* Goal title line styling */
+
 .goal-title-line {
   display: flex;
   align-items: center;
@@ -85,19 +91,16 @@ modal.addEventListener('click', e => {
   flex: 1;
   height: 2px;
   background-color: var(--color-4);
-  opacity: 1;
 }
 
-/* Modal overlay */
 .modal {
-  display: none; /* hidden initially */
+  display: none;
   position: fixed;
   z-index: 9999;
   top: 0; left: 0;
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.4);
-  -webkit-backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);
   justify-content: center;
   align-items: center;
@@ -106,10 +109,7 @@ modal.addEventListener('click', e => {
   transition: opacity 0.25s ease;
 }
 
-.modal.showing {
-  opacity: 1;
-}
-
+.modal.showing { opacity: 1; }
 .modal-inner {
   background: var(--color-6);
   border-radius: 12px;
@@ -129,33 +129,24 @@ modal.addEventListener('click', e => {
   transition: transform 0.25s ease;
 }
 
-.modal.showing .modal-inner {
-  transform: scale(1);
-}
+.modal.showing .modal-inner { transform: scale(1); }
+.modal.hiding .modal-inner { transform: scale(0.99); }
 
-.modal.hiding .modal-inner {
-  transform: scale(0.99);
-}
-
-/* Close button - thicker */
 .modal-close {
   position: absolute;
   top: 0.5rem;
   right: 1rem;
-  font-size: 2rem; /* thicker */
-  font-weight: bold;
+  font-size: 2rem;
   background: transparent;
   border: none;
   cursor: pointer;
   color: var(--color-2);
 }
 
-/* Modal text */
 .modal-title {
   font-size: 1.8rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
-  margin-top: 0rem;
+  margin: 0 0 0.5rem 0;
   color: var(--color-2);
 }
 
@@ -168,56 +159,21 @@ modal.addEventListener('click', e => {
   margin: 0;
 }
 
-/* Modal content styling */
-.modal-content h1,
-.modal-content h2,
-.modal-content h3 {
+.modal-content h1, .modal-content h2, .modal-content h3 {
   color: var(--color-2);
   margin-top: 0;
   margin-bottom: 0.5rem;
 }
 
-.modal-content p {
-  font-size: 1rem;
-  margin-bottom: 0.8rem;
-}
+.modal-content p { font-size: 1rem; margin-bottom: 0.8rem; }
+.modal-content ul, .modal-content ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+.modal-content li { margin-bottom: 0.5rem; }
+.modal-content a { color: var(--color-5); text-decoration: underline; }
+.modal-content a:hover { color: var(--color-1); }
 
-.modal-content ul,
-.modal-content ol {
-  margin-left: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.modal-content li {
-  margin-bottom: 0.5rem;
-}
-
-.modal-content a {
-  color: var(--color-5);
-  text-decoration: underline;
-}
-
-.modal-content a:hover {
-  color: var(--color-1);
-}
-
-/* Mobile adjustments */
 @media (max-width: 900px) {
-  .goal-title-line {
-    gap: 0.5rem;
-  }
-  .goal-line {
-    height: 1px;
-  }
-  
-  .modal-inner {
-  background: var(--color-6);
-  border-radius: 12px;
-  padding: 2rem;
-  margin-right: 3rem;
-  margin-left: -1rem;
-  max-height: 80vh;
-}
-  
+  .goal-title-line { gap: 0.5rem; }
+  .goal-line { height: 1px; }
+  .modal-inner { margin-right: 3rem; margin-left: -1rem; max-height: 80vh; }
 }
 </style>

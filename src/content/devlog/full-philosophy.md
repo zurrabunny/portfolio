@@ -1,7 +1,8 @@
 ---
 title: "My full philosophy"
-date: "2025-11-16"
+date: "2025-11-15"
 description: "My full, unshortened philosophy"
+tags: ["Misc"]
 ---
 
 <p>The concept of choosing the perfect path to get the perfect life has made me struggle a lot. I've been meaning to be an Engineer, an Astronaut, a Lawyer, or a Doctor in my youth, because those are what people think are perfect. A perfect job with a 6-figure salary. I’ve been meaning to get into sports, technology, and culinary arts because that's what people think are perfect, the perfect talent that can lead to a lot of opportunities.<br><br>

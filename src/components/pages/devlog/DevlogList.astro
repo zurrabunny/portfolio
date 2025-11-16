@@ -4,25 +4,238 @@ import DevlogCard from './DevlogCard.astro';
 
 let entries = await getCollection('devlog');
 
-// Debug log
-console.log("DEVLOG ENTRIES:", entries);
-
-// Sort: pinned first, then by date desc
+// Sort pinned + date
 entries = entries.sort((a, b) => {
-  // If a is pinned and b isn’t → a comes first
   if (a.data.pinned && !b.data.pinned) return -1;
-
-  // If b is pinned and a isn’t → b comes first
   if (!a.data.pinned && b.data.pinned) return 1;
-
-  // If both are pinned OR both not pinned → sort by date (newest first)
   return new Date(b.data.date) - new Date(a.data.date);
 });
+
+// Collect all unique tags
+const allTags = Array.from(
+  new Set(
+    entries
+      .flatMap(e => e.data.tags || [])
+      .map(t => t.trim())
+  )
+);
 ---
+<div class="parent-container">
+  <!-- Keyword search -->
+  <input
+    id="keyword-search"
+    type="text"
+    placeholder="Search blogs..."
+  />
+
+  <!-- Tag dropdown -->
+  <div class="tag-dropdown">
+    <button class="tag-toggle">
+      <span class="label">Filter by Tag</span>
+      <span class="arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </span>
+    </button>
+
+    <div class="tag-menu">
+      <div class="tag-option" data-value="all">All</div>
+      {allTags.map(tag => (
+        <div class="tag-option" data-value={tag}>{tag}</div>
+      ))}
+    </div>
+  </div>
+</div>
 
 <section class="devlog-list">
-  {entries.length === 0 && <p>No devlogs found.</p>}
   {entries.map(entry => (
     <DevlogCard entry={entry} />
   ))}
 </section>
+
+<script client:load>
+const toggle = document.querySelector(".tag-toggle");
+const menu = document.querySelector(".tag-menu");
+const options = document.querySelectorAll(".tag-option");
+const cards = document.querySelectorAll(".devlog-card");
+const searchInput = document.getElementById("keyword-search");
+
+let open = false;
+let selectedTag = "all";
+
+// Tag dropdown toggle
+toggle.addEventListener("click", () => {
+  open = !open;
+  menu.style.maxHeight = open ? menu.scrollHeight + "px" : "0px";
+  menu.style.opacity = open ? "1" : "0";
+  toggle.classList.toggle("open", open);
+});
+
+// Tag selection
+options.forEach(option => {
+  option.addEventListener("click", () => {
+    selectedTag = option.dataset.value;
+    toggle.querySelector(".label").textContent =
+      `Filter: ${selectedTag === "all" ? "All" : selectedTag}`;
+
+    open = false;
+    menu.style.maxHeight = "0px";
+    menu.style.opacity = "0";
+    toggle.classList.remove("open");
+
+    filterCards();
+  });
+});
+
+// Keyword input
+searchInput.addEventListener("input", () => {
+  filterCards();
+});
+
+function filterCards() {
+  const input = searchInput.value.trim().toLowerCase();
+
+  let exactPhrase = null;
+  let keywords = [];
+
+  // Check for quotes
+  const quoteMatch = input.match(/^"(.*)"$/);
+  if (quoteMatch) {
+    exactPhrase = quoteMatch[1]; // search for exact phrase only
+  } else if (input.length > 0) {
+    keywords = input.split(/\s+/); // split into separate words
+  }
+
+  cards.forEach(card => {
+    const tags = card.dataset.tags.split(",");
+    const title = card.dataset.title.toLowerCase();
+    const desc = card.querySelector("p")?.textContent.toLowerCase() || "";
+    const body = card.dataset.body.toLowerCase();
+
+    const matchesTag = selectedTag === "all" || tags.includes(selectedTag);
+
+    let matchesKeyword = true;
+
+    if (exactPhrase) {
+      // exact phrase search
+      matchesKeyword = title.includes(exactPhrase) ||
+                       desc.includes(exactPhrase) ||
+                       body.includes(exactPhrase);
+    } else if (keywords.length > 0) {
+      // normal keyword search (all words must match)
+      matchesKeyword = keywords.every(word =>
+        title.includes(word) || desc.includes(word) || body.includes(word)
+      );
+    }
+
+    card.style.display = matchesTag && matchesKeyword ? "" : "none";
+  });
+}
+</script>
+
+
+<style is:global>
+.parent-container {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center; /* vertically align search + button */
+  margin-bottom: 1rem;
+  position: relative; /* for dropdown layering if needed */
+}
+
+#keyword-search {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.45rem 0.7rem;
+  border-radius: 0.45rem;
+  border: 2px solid var(--color-5);
+  background: var(--color-6);
+  color: var(--text-main);
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.75rem;
+  height: 36px; /* match tag button height */
+  box-sizing: border-box;
+}
+
+/* Tag dropdown wrapper */
+.tag-dropdown {
+  width: 160px;
+  display: flex;
+  flex-direction: column;
+  position: relative; /* menu positioned relative to this */
+  z-index: 1000;
+}
+
+/* Toggle button */
+.tag-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--color-5);
+  border: 2px solid var(--color-5);
+  border-radius: 0.45rem;
+  padding: 0.45rem 0.7rem;
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-3);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  height: 36px; /* same as search input */
+  box-sizing: border-box;
+}
+
+.tag-toggle.open {
+  background: var(--color-3);
+  color: var(--text-main);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.tag-toggle .arrow {
+  display: flex;
+  align-items: center;
+  transition: transform 0.25s ease;
+}
+
+.tag-toggle .arrow svg {
+  width: 16px;
+  height: 16px;
+}
+
+.tag-toggle.open .arrow {
+  transform: rotate(180deg);
+}
+
+/* Dropdown menu floating above content */
+.tag-menu {
+  position: absolute;
+  top: 100%; /* directly below button */
+  left: 0;   /* align left edge with button */
+  width: 97.8%; /* match button width */
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  border: 2px solid var(--color-5);
+  border-top: none;
+  border-radius: 0 0 0.45rem 0.45rem;
+  background: var(--color-6);
+  z-index: 2000; /* above everything */
+  transition: max-height 0.35s ease, opacity 0.3s ease, background-color 0.4s ease, border-color 0.4s ease;
+}
+
+.tag-option {
+  padding: 0.4rem 0.7rem;
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.75rem;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.tag-option:hover {
+  background: var(--color-4);
+}
+</style>

@@ -3,6 +3,7 @@ title: "Website Changelog"
 date: "2025-10-30"
 description: "just a log where i document additions / changes to my website"
 pinned: true
+tags: ["Process"]
 ---
 
 <h3>October 30 2025</h3>
@@ -124,6 +125,17 @@ pinned: true
 <li>added Music Widget
 <li>added Music Volume Slider
 </ul>
+
+<h3>November 16 2025</h3>
+<ul>
+<li>Blogs tab :
+	<ul>
+	<li>added Blog Tagging
+	<li>added Tag Filter
+	<li>added Blog Search Query
+	</ul>
+</ul>
+
 
 <style>
 h3 {
