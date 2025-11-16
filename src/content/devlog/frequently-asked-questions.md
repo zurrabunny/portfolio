@@ -8,66 +8,66 @@ tags: ["Important"]
 
 <details>
   <summary>1. What tools do you usually use?</summary>
-  <p>I mostly use Clip Studio Paint when drawing, making graphics, and animating. Its my go-to program to do everything illustration related :]</p>
+  <pblog>I mostly use Clip Studio Paint when drawing, making graphics, and animating. Its my go-to program to do everything illustration related :]</pblog>
 </details>
 
 <details>
   <summary>2. What kind of art/animation do you specialize in?</summary>
-  <p>I specialize in rough animation and storyboarding, but i can handle clean up animation and coloring! Im really adaptable when it comes to Animation</p>
+  <pblog>I specialize in rough animation and storyboarding, but i can handle clean up animation and coloring! Im really adaptable when it comes to Animation</pblog>
 </details>
 
 <details>
   <summary>3. How long have you been creating art?</summary>
-  <p>Ive been creating digital art since 2019, my art skills really skyrocketed when I enrolled in CIIT for senior high! :o)</p>
+  <pblog>Ive been creating digital art since 2019, my art skills really skyrocketed when I enrolled in CIIT for senior high! :o)</pblog>
 </details>
 
 <details>
   <summary>4. What inspires your style?</summary>
-  <p>I get inspired by art on pinterest, especially the ones that look hand-painted. I really like cute, painterly styles and i use that technique very often, especially when illustrating backgrounds :]</p>
+  <pblog>I get inspired by art on pinterest, especially the ones that look hand-painted. I really like cute, painterly styles and i use that technique very often, especially when illustrating backgrounds :]</pblog>
 </details>
 
 <details>
   <summary>5. Are you open for commissions or collaborations?</summary>
-  <p>I dont take commissions that often, I am open to art trades though! I am very open to collaborations as well! It depends on what the collaboration is about. If you think my work fits the job, feel free to contact me!</p>
+  <pblog>I dont take commissions that often, I am open to art trades though! I am very open to collaborations as well! It depends on what the collaboration is about. If you think my work fits the job, feel free to contact me!</pblog>
 </details>
 
 <details>
   <summary>6. What projects are you currently working on?</summary>
-  <p>Im currently working with the folks on <a href="https://x.com/RainworldMC">Rainworld MC</a>, making 3D models of creatures and machines, as well as animating them.</p>
+  <pblog>Im currently working with the folks on <a href="https://x.com/RainworldMC">Rainworld MC</a>, making 3D models of creatures and machines, as well as animating them.</pblog>
 </details>
 
 <details>
   <summary>7. Do you only do animation work or do you work in other fields too?</summary>
-  <p>My main plans focus on Animation and Illustration, since thats what I want to do for my career. But Im really adaptable and can handle tasks outside my main skills too. kinda like a "jack-of-all-trades" :]</p>
+  <pblog>My main plans focus on Animation and Illustration, since thats what I want to do for my career. But Im really adaptable and can handle tasks outside my main skills too. kinda like a "jack-of-all-trades" :]</pblog>
 </details>
 
 <details>
   <summary>8. What’s your workflow like?</summary>
-  <p>Since I do a lot of things, I've categorized them into their own tab below :o)</p>
+  <pblog>Since I do a lot of things, I've categorized them into their own tab below :o)</pblog>
   
   <details>
   <summary>Illustration</summary>
-  <p>For illustration, i type out my ideas first in a temporary .txt file.<br><br>
+  <pblog>For illustration, i type out my ideas first in a temporary .txt file.<br><br>
   Then i go to Pinterest to find pose references, color palettes, and everything else i need to visualize it better.<br><br>
   I sketch things out in Clip Studio Paint, I do the linework (either on bitmap or vector layers), then i color with
   my brush :o)<br><br>
-  Thats about it</p>
+  Thats about it</pblog>
   </details>
   
   <details>
   <summary>Animation</summary>
-  <p>For animation, i type out my ideas first in a temporary .txt file.<br><br>
+  <pblog>For animation, i type out my ideas first in a temporary .txt file.<br><br>
   Then i go to Pinterest to find pose references, color palettes, and everything else i need to visualize it better.<br><br>
   I sketch out the rough poses, sketch out the inbetweens, correct the frame timing, and i refine it all by drawing slightly cleaner frames layered ontop of the sketch<br><br>
   Then i do the linework in a vector layer, then i color it in a different layer. I also draw color lines in a vector layer to make sure the shadows and highlights move smoothly.<br><br>
   If i want to make an animated video, i export the animation as a PNG sequence, drag it all to Davinci Resolve, tweak the animation speed, and export it as a video.<br><br>
   Then i drag the video to FL Studio and do the sound editing there. after that, i drag the audio to Davinci Resolve and export it again as a video<br><br>
-  Thats about it</p>
+  Thats about it</pblog>
   </details>
   
   <details>
   <summary>3D</summary>
-  <p>For 3D, i type out my ideas first in a temporary .txt file.<br><br>
+  <pblog>For 3D, i type out my ideas first in a temporary .txt file.<br><br>
   Then i go to Pinterest to find pose references, color palettes, and everything else i need to visualize it better.<br><br>
   I make a rough sketch of an object from all lateral perspectives, i color it in, then drag it to Blender.<br><br>
   I trace the sketch using vertices from all angles, then i add faces on it afterwards, i tweak the shape to better match the reference sketch i made<br><br>
@@ -76,61 +76,61 @@ tags: ["Important"]
   
   <details>
   <summary>Storyboard</summary>
-  <p>For Storyboard, i draw tiny squares on a canvas and sketch out the scenes like a little comic strip, then i make a palette for each scene and color it in<br><br>
+  <pblog>For Storyboard, i draw tiny squares on a canvas and sketch out the scenes like a little comic strip, then i make a palette for each scene and color it in<br><br>
   For a 2D storyboard, i mainly use Clip Studio Paint. i usually just make a cleaner sketch of all the scenes and time them properly, I export it from Clip Studio Paint as a video and drag it to FL Studio for sound editing.<br><br>
-  For a 2.5D storyboard (its usually 3D background with 2D elements), i utilize blender's grease pencil. I model the key background features, then i make objects that i can use to move each grease pencil element along the background.</p>
+  For a 2.5D storyboard (its usually 3D background with 2D elements), i utilize blender's grease pencil. I model the key background features, then i make objects that i can use to move each grease pencil element along the background.</pblog>
   </details>
   
   <details>
   <summary>Music</summary>
-  <p>There's no specific workflow i follow to make music, I kinda just go with the flow.<br><br>
+  <pblog>There's no specific workflow i follow to make music, I kinda just go with the flow.<br><br>
   I do take a lot of inspiration from the music i listen to, as well as download project files that suit my needs + get the samples from.
-  </p>
+  </pblog>
   </details>
   
   <details>
   <summary>Website Coding</summary>
-  <p>Whenever i code a website, i usually add colored squares to a screen, sometimes with placeholder text until im contented with the layout<br><br>
+  <pblog>Whenever i code a website, i usually add colored squares to a screen, sometimes with placeholder text until im contented with the layout<br><br>
   Then i decorate it with fonts, animations, visual candy (buttons highlighting when you hover over them)<br><br>
-  Thats about it for the important stuff, JavaScript is kinda its own thing to explain, Im not smart enough to explain it.</p>
+  Thats about it for the important stuff, JavaScript is kinda its own thing to explain, Im not smart enough to explain it.</pblog>
   </details>
 
 </details>
 
 <details>
   <summary>9. What programs do you use for music and sound?</summary>
-  <p>FL Studio! all of the sounds and music i make, as well as the sound effects i add in my videos came from FL Studio.<br><br>
-  I personally think its a versatile tool for me, especially with how spacious its timeline is. makes it easy for me to process things.</p>
+  <pblog>FL Studio! all of the sounds and music i make, as well as the sound effects i add in my videos came from FL Studio.<br><br>
+  I personally think its a versatile tool for me, especially with how spacious its timeline is. makes it easy for me to process things.</pblog>
 </details>
 
 <details>
   <summary>10. Can people contact you for school or research interviews?</summary>
-  <p>Hell yeah! I like talking about myself infront of *small* groups of people, just contant me through discord / email me (preferrably both) if you want to interview me!</p>
+  <pblog>Hell yeah! I like talking about myself infront of *small* groups of people, just contant me through discord / email me (preferrably both) if you want to interview me!</pblog>
 </details>
 
 <details>
   <summary>11. How do you handle deadlines?</summary>
-  <p>As a partial workaholic, I really fixate on getting things done (mostly with solo work). I dont play games that often, so i have a lot of free time working on a task.</p>
+  <pblog>As a partial workaholic, I really fixate on getting things done (mostly with solo work). I dont play games that often, so i have a lot of free time working on a task.</pblog>
 </details>
 
 <details>
   <summary>12. What do you enjoy most about creating?</summary>
-  <p>What i enjoy most about creating things is that you get to put your own twist into it! I dont really follow conventional themes, especially for music. It makes it unique because it has a bit of you mixed in to it :]</p>
+  <pblog>What i enjoy most about creating things is that you get to put your own twist into it! I dont really follow conventional themes, especially for music. It makes it unique because it has a bit of you mixed in to it :]</pblog>
 </details>
 
 <details>
   <summary>13. Do you take feedback well?</summary>
-  <p>Yeah! Constructive criticism is key! I ask for feedback very often when i can, it's how i improve.</p>
+  <pblog>Yeah! Constructive criticism is key! I ask for feedback very often when i can, it's how i improve.</pblog>
 </details>
 
 <details>
   <summary>14. What’s your dream project?</summary>
-  <p>Hopefully when i get enough experience (possibly more people that i can work with), I get to make an animated series! :D<br><br>
+  <pblog>Hopefully when i get enough experience (possibly more people that i can work with), I get to make an animated series! :D<br><br>
   Theres this one story i've always wanted to tell for a few years now. Its a trilogy about the cycle of ancestral sin, How it passes through culture, connections, and habits. It follows humanity's
   (and by extension, other future races/species) struggle with temptation, consequence, and salvation.<br><br>
 
   It takes many inspirations from The Bible, but I plan on not sacralizing everything so that the messages I want to show reaches
-  to all audiences, I want the vibe to lean towards having good morals as a human being instead of being another "reinterpreted religious story".</p>
+  to all audiences, I want the vibe to lean towards having good morals as a human being instead of being another "reinterpreted religious story".</pblog>
 </details>
 
 <script>
