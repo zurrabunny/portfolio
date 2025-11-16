@@ -40,11 +40,19 @@ const allTags = Array.from(
     </button>
 
     <div class="tag-menu">
-      <div class="tag-option" data-value="all">All</div>
-      {allTags.map(tag => (
-        <div class="tag-option" data-value={tag}>{tag}</div>
-      ))}
-    </div>
+  <label class="tag-option">
+    <input type="checkbox" value="all" checked />
+    <span>All</span>
+  </label>
+
+  {allTags.map(tag => (
+    <label class="tag-option">
+      <input type="checkbox" value={tag} />
+      <span>{tag}</span>
+    </label>
+  ))}
+</div>
+
   </div>
 </div>
 
@@ -57,14 +65,13 @@ const allTags = Array.from(
 <script client:load>
 const toggle = document.querySelector(".tag-toggle");
 const menu = document.querySelector(".tag-menu");
-const options = document.querySelectorAll(".tag-option");
+const checkboxes = document.querySelectorAll(".tag-option input");
 const cards = document.querySelectorAll(".devlog-card");
 const searchInput = document.getElementById("keyword-search");
 
 let open = false;
-let selectedTag = "all";
 
-// Tag dropdown toggle
+// Toggle dropdown menu
 toggle.addEventListener("click", () => {
   open = !open;
   menu.style.maxHeight = open ? menu.scrollHeight + "px" : "0px";
@@ -72,40 +79,26 @@ toggle.addEventListener("click", () => {
   toggle.classList.toggle("open", open);
 });
 
-// Tag selection
-options.forEach(option => {
-  option.addEventListener("click", () => {
-    selectedTag = option.dataset.value;
-    toggle.querySelector(".label").textContent =
-      `Filter: ${selectedTag === "all" ? "All" : selectedTag}`;
-
-    open = false;
-    menu.style.maxHeight = "0px";
-    menu.style.opacity = "0";
-    toggle.classList.remove("open");
-
-    filterCards();
-  });
-});
-
-// Keyword input
-searchInput.addEventListener("input", () => {
-  filterCards();
-});
-
+// Filter logic
 function filterCards() {
   const input = searchInput.value.trim().toLowerCase();
 
   let exactPhrase = null;
   let keywords = [];
 
-  // Check for quotes
   const quoteMatch = input.match(/^"(.*)"$/);
   if (quoteMatch) {
-    exactPhrase = quoteMatch[1]; // search for exact phrase only
+    exactPhrase = quoteMatch[1];
   } else if (input.length > 0) {
-    keywords = input.split(/\s+/); // split into separate words
+    keywords = input.split(/\s+/);
   }
+
+  // Collect selected tags
+  const selectedTags = Array.from(checkboxes)
+    .filter(cb => cb.checked && cb.value !== "all")
+    .map(cb => cb.value);
+
+  const useAll = selectedTags.length === 0 || document.querySelector('input[value="all"]').checked;
 
   cards.forEach(card => {
     const tags = card.dataset.tags.split(",");
@@ -113,17 +106,15 @@ function filterCards() {
     const desc = card.querySelector("p")?.textContent.toLowerCase() || "";
     const body = card.dataset.body.toLowerCase();
 
-    const matchesTag = selectedTag === "all" || tags.includes(selectedTag);
+    const matchesTag = useAll || selectedTags.every(tag => tags.includes(tag));
 
     let matchesKeyword = true;
 
     if (exactPhrase) {
-      // exact phrase search
       matchesKeyword = title.includes(exactPhrase) ||
                        desc.includes(exactPhrase) ||
                        body.includes(exactPhrase);
     } else if (keywords.length > 0) {
-      // normal keyword search (all words must match)
       matchesKeyword = keywords.every(word =>
         title.includes(word) || desc.includes(word) || body.includes(word)
       );
@@ -132,7 +123,28 @@ function filterCards() {
     card.style.display = matchesTag && matchesKeyword ? "" : "none";
   });
 }
+
+// Checkbox change events
+checkboxes.forEach(cb => {
+  cb.addEventListener("change", () => {
+    // If 'all' is checked, uncheck others
+    if (cb.value === "all" && cb.checked) {
+      checkboxes.forEach(other => {
+        if (other.value !== "all") other.checked = false;
+      });
+    } else if (cb.value !== "all" && cb.checked) {
+      document.querySelector('input[value="all"]').checked = false;
+    }
+    filterCards();
+  });
+});
+
+// Keyword input
+searchInput.addEventListener("input", () => {
+  filterCards();
+});
 </script>
+
 
 
 <style is:global>
@@ -209,33 +221,87 @@ function filterCards() {
   transform: rotate(180deg);
 }
 
-/* Dropdown menu floating above content */
+/* Tag menu fixes */
 .tag-menu {
   position: absolute;
-  top: 100%; /* directly below button */
-  left: 0;   /* align left edge with button */
-  width: 97.8%; /* match button width */
-  overflow: hidden;
-  max-height: 0;
-  opacity: 0;
+  top: 100%; 
+  left: 0;
+  width: 97.8%; /* same as button */
+  background: var(--color-6);
   border: 2px solid var(--color-5);
   border-top: none;
   border-radius: 0 0 0.45rem 0.45rem;
-  background: var(--color-6);
-  z-index: 2000; /* above everything */
-  transition: max-height 0.35s ease, opacity 0.3s ease, background-color 0.4s ease, border-color 0.4s ease;
+  max-height: 0;
+  opacity: 0;
+  overflow-y: auto; /* scroll if too many items */
+  transition: max-height 0.35s ease, opacity 0.3s ease;
+  z-index: 2000; 
+  display: flex;
+  flex-direction: column;
 }
 
+/* Tag options */
 .tag-option {
-  padding: 0.4rem 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   font-family: "Fredoka", sans-serif;
   font-size: 0.75rem;
   color: var(--text-main);
   cursor: pointer;
-  transition: background 0.2s ease;
+  white-space: nowrap; /* prevent wrapping */
+  padding: 5px 10px;
+  margin-bottom: 2px;
+  margin-top: 2px;
+  border-radius: 6px;
+  user-select: none;
 }
 
-.tag-option:hover {
-  background: var(--color-4);
+/* Hide default checkboxes */
+.tag-option input[type="checkbox"] {
+  display: none;
 }
+
+/* Tag option container */
+.tag-option {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  
+}
+
+/* Highlight on hover */
+.tag-option:hover {
+  color: var(--color-1);
+}
+
+/* Highlight when checked */
+.tag-option input[type="checkbox"]:checked + span {
+  color: var(--color-1);
+}
+
+/* Checkmark box on the left */
+.tag-option span::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--color-2);
+  border-radius: 4px;
+  margin-right: 8px;
+  vertical-align: middle;
+  background-color: var(--color-6);
+  transition: all 0.2s;
+}
+
+/* Show checkmark when checked */
+.tag-option input[type="checkbox"]:checked + span::before {
+  content: "✔";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--color-2);
+}
+
 </style>

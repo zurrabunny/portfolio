@@ -132,8 +132,10 @@ tags: ["Process"]
 	<li>Blogs tab :
 		<ul>
 		<li>added Blog Tagging
-		<li>added Tag Filter
+		<li>added Tag Filter (Checkmarks)
 		<li>added Blog Search Query
+		<li>added Tag Displays
+		<li>added Blog Audio Player
 		</ul>
 	</ul>
 </div>

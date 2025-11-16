@@ -1,11 +1,13 @@
 ---
-title: "Azure Wasteland Pilot Devlog #1"
+title: "Azure Wasteland Pilot Concept #1"
 date: "2025-11-16"
 description: "A short explanation of what it is + an opening track i made for it :]"
+tags: ["Concepts","Lore Yap"]
 ---
 
 <h3>lore yap..</h3>
 
+<pblog>
 Context : Azure Wasteland is one of the 3 stories i've always wanted to tell for a few years now. The trilogy is about the
 cycle of ancestral sin, How it passes through culture, connections, and habits. It follows humanity's
 (and by extension, other future races/species) struggle with temptation, consequence, and salvation.<br><br>
@@ -15,3 +17,6 @@ to all audiences, I want the vibe to lean towards having good morals as a human 
 
 Anywho, Azure Wasteland follows Azzurra and a few others adventure where they must seek redemption / salvation and fight to (try) and break the cycle of sin
 that plagued the world. It's set in a Lush, Apocalyptic Wasteland where the world is warped and has evolved far beyond when humans walked the earth.
+</pblog>
+
+<devlog-music-player data-src="devlog/music/azure.mp3" data-title="Azure Wasteland - Opening Track Concept #1"></devlog-music-player>

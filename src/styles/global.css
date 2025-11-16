@@ -401,3 +401,73 @@ pblog {
   padding: 4px;                     /* optional inner spacing */
   display: block;                   /* block so it fits container */
 }
+
+.custom-player {
+  background: var(--color-6);
+  border: 3px solid var(--border-sidebar);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-family: "Fredoka", sans-serif;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  color: var(--text-main);
+}
+
+.custom-player strong {
+  font-size: 1rem;
+}
+
+.custom-player .controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.custom-player .play-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+}
+
+.custom-player .play-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.custom-player .progress {
+  flex: 1;
+  cursor: pointer;
+  -webkit-appearance: none;
+  height: 6px;
+  background: var(--border-sidebar);
+  border-radius: 3px;
+  overflow: hidden;
+  transition: background 0.2s linear; /* smooth fill */
+}
+
+/* Remove slider thumb */
+.custom-player .progress::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 0;
+  height: 0;
+}
+.custom-player .progress::-moz-range-thumb {
+  width: 0;
+  height: 0;
+  border: none;
+}
+
+
+.custom-player .time {
+  font-size: 0.8rem;
+  white-space: nowrap;
+  min-width: 80px;
+  text-align: right;
+}
