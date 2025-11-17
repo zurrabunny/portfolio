@@ -149,4 +149,91 @@ document.querySelectorAll("details").forEach(d => {
 a {
   color: var(--line-highlight);
 }
+
+details {
+  margin-bottom: 1rem;
+  border: 2px solid var(--border-sidebar);
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  background: var(--color-6);
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
+  
+  overflow: hidden;
+}
+
+/* Hover highlight + slight animation */
+details:hover {
+  border-color: var(--line-highlight);
+}
+
+/* When opened, glow slightly */
+details[open] {
+  border-color: var(--line-highlight);
+  background: var(--line-dormant);
+}
+
+/* Summary text */
+summary {
+  position: relative;
+  padding-bottom: 0.6rem;
+  color: var(--text-dark); 
+  font-size: 1rem; font-weight: 600; 
+  cursor: pointer; 
+  list-style: none;
+}
+
+summary::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.3rem;
+  height: 0px;
+  background: var(--border-sidebar);
+  border-radius: 999px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+details[open] summary::after {
+  background: var(--color-5);
+  opacity: 1;
+  height: 2px;
+}
+
+pfaq {
+  display: block;
+  margin: 1rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  color: var(--text-dark);
+  font-size: 1rem;
+  transition: opacity 0.2s ease;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Smooth slide open animation */
+details[open] pfaq {
+  animation: slideDown 0.25s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 </style>
