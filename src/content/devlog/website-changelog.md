@@ -143,6 +143,21 @@ tags: ["Process"]
 	<ul>
 	<li>added Google Analytics Tracker
 	</ul>
+	
+	<h3>November 20 2025</h3>
+	<ul>
+	<li>Work Tab :
+		<ul>
+		<li>reworked Music Tab
+		</ul>
+	
+	<li>Goal Tab :
+		<ul>
+		<li>reorganized SMART dropdowns
+		</ul>
+	</ul>
+	
+	
 </div>
 
 <style>
