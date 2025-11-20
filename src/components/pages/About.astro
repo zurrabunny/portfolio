@@ -28,6 +28,43 @@ import Container from "/src/components/Container.astro";
       <div class="accordion">
 		<div class="accordion-item">
 		  <button class="accordion-header">
+			Personal Bio
+			<span class="arrow">
+			  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+				<path fill="currentColor" d="M7 10l5 5 5-5H7z" />
+			  </svg>
+			</span>
+		  </button>
+		  <div class="accordion-body">
+			<div class="bio-card">
+				<h4>Who I am</h4>
+					  <p>
+					  Preferred Names : Azure / Azzurra / Zurra<br>
+					  Gender : She / They - Transfem<br>
+					  Sexual Orientation : Pansexual<br>
+					  Birthday : January 24 2007
+					  </p>
+					  
+					  <h4>What I'm Like</h4>
+					  <p>
+					  I'm pretty quiet on casual confrontations, but I am a good listener! I dont mind people venting towards me.
+					  Im also comfortable with any topic, but I'll let you know when you stray too far from my comfort zone.<br><br>
+					  I'm all about respecting others' opinions as long as it's not harmful. I enjoy engaging with my closest 
+					  friends, and somehow, I end up making situations interesting just by being myself (whether I intend to or not q3q)
+					  </p>
+					  
+					  <h4>Main Interests</h4>
+					  <p>Minecraft, Rainworld, Dandy's World (Roblox), Grace (Roblox)</p>
+					  
+					  <h4>Side Interests</h4>
+					  <p>FNF, FNAF, Baldi's Basics, Hello Neighbor, DDLC, Undertale / Deltarune, Adventure Time / Fionna and Cake, The Amazing Digital Circus, Documentaries, Video Essays, Sitcoms</p>
+					  
+			  </div>
+		  </div>
+		</div>
+		
+		<div class="accordion-item">
+		  <button class="accordion-header">
 			My Mission and Vision
 			<span class="arrow">
 			  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -52,7 +89,7 @@ import Container from "/src/components/Container.astro";
 			  </div>
 			</section>
 		  </div>
-</div>
+		</div>
 
         <div class="accordion-item">
           <button class="accordion-header">
@@ -416,6 +453,35 @@ h3::after {
   opacity: 0.5;
 }
 
+h4 {
+  font-size: 1.1rem;
+  color: var(--color-2);
+  margin-bottom: -0.5rem;
+  margin-top: 1rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-weight: 600;
+}
+
+.bio-card p {
+  font-size: 0.9rem;
+  color: var(--text-dark);
+}
+
+p, ul, li {
+color: var(--text-dark);
+}
+
+h4::after {
+  content: "";
+  flex-grow: 1;
+  height: 2px;
+  background-color: var(--color-5);
+  opacity: 0.5;
+}
+
 /* ---------- Card ---------- */
 .card {
   margin-top: 1.5rem;
@@ -617,7 +683,7 @@ feedback-role {
   line-height: 1.6;
   background: var(--line-dormant);
   margin: 0rem;
-  color: var(--text-main);
+  color: var(--text-dark);
   border-left: 4px solid var(--color-2);
   padding: 0.55rem 1rem;
   border-radius: 0.5rem;

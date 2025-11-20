@@ -146,6 +146,12 @@ tags: ["Process"]
 	
 	<h3>November 20 2025</h3>
 	<ul>
+	<li>added Visitor's Lounge Tab
+	<li>About Tab :
+		<ul>
+		<li>added Personal Bio
+		</ul>
+		
 	<li>Work Tab :
 		<ul>
 		<li>reworked Music Tab
