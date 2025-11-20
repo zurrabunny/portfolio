@@ -3,33 +3,75 @@ import Container from "/src/components/Container.astro";
 import Drawbox from "./visitor_lounge/drawbox.astro";
 import Textbox from "./visitor_lounge/textbox.astro";
 ---
-
 <main class="content">
   <Container variant="static" class="container-with-bg">
-    <div class="background-clip">
-    </div>
+    <div class="background-clip"></div>
 
     <div class="title-divider">
       <div class="line"></div>
-      <h1 id="tab-title">
-        Visitor's Lounge
-      </h1>
+      <h1 id="tab-title">Visitor's Lounge</h1>
       <div class="line"></div>
     </div>
-	
-	<p class="intro">
-        This section is currently in progress! Come back later!
+
+    <p class="intro">
+      Thanks for stopping by my website! You can drop your drawings or messages here, and they’ll show up automatically. Just be cool and respectful, anything inappropriate will be taken down.
     </p>
-	
-	<Drawbox />
-	<Textbox />
-	
+
+    <!-- TAB BUTTONS -->
+    <div class="visitor-tab">
+      <button class="tab-btn active" data-tab="drawbox">Drawbox</button>
+      <button class="tab-btn" data-tab="textbox">Textbox</button>
+    </div>
+
+    <!-- TAB CONTENT -->
+    <div class="tab-content">
+      <div id="drawbox" class="tab-panel active">
+        <Drawbox />
+      </div>
+
+      <div id="textbox" class="tab-panel">
+        <Textbox />
+      </div>
+    </div>
+
   </Container>
 </main>
 
 <style>
+/* -------- TAB STYLES -------- */
+.visitor-tab {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.visitor-tab .tab-btn {
+  padding: 0.5rem 1rem;
+  background: var(--color-4);
+  border: 2px solid var(--color-4);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  color: var(--text-dark);
+  transition: 0.2s;
+}
+
+.visitor-tab .tab-btn.active {
+  background: var(--color-6);
+}
+
+/* -------- TAB PANELS -------- */
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+/* GENERAL STYLING (your existing styles unchanged) */
 p, ul, li {
-color: var(--text-dark);
+  color: var(--text-dark);
 }
 
 main.content {
@@ -41,44 +83,13 @@ main.content {
   position: relative;
   z-index: 1;
 }
-h1 { font-size: 1.8rem; margin-bottom: 1rem; color: var(--color-1); }
-h2 { font-size: 1.3rem; color: var(--color-2); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.75rem; font-weight: 600; position: relative; }
-h2::before, h2::after { content: ""; flex-grow: 1; height: 2px; background-color: var(--color-5); opacity: 0.5; }
-h2::before { margin-right: 0.75rem; }
-h2::after { margin-left: 0.75rem; }
 
-/* Mobile adjustments */
-@media (max-width: 900px) {
-  main.content {
-    margin-left: 0;          /* Remove sidebar offset */
-    padding: 1rem;           /* Reduce padding */
-  }
-
-  .contact-card {
-    max-width: 100%;          /* Fill screen width */
-    padding: 1rem;            /* Reduce padding */
-    margin-inline: 0.5rem;    /* Small side margins */
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05); /* lighter shadow for small screens */
-  }
-
-  h1 {
-    font-size: 1rem;
-    margin-bottom: 0.75rem;
-	text-align: center;
-  }
-
-  h2 {
-    font-size: 1rem;
-    gap: 0.5rem;
-  }
-
-  .intro {
-    font-size: 0.95rem;
-    line-height: 1.5;
-  }
+h1 { 
+  font-size: 1.8rem; 
+  margin-bottom: 1rem; 
+  color: var(--color-1); 
 }
 
-/* Title divider styling */
 .title-divider {
   display: flex;
   align-items: center;
@@ -86,6 +97,7 @@ h2::after { margin-left: 0.75rem; }
   margin-bottom: 1rem;
   gap: 1rem;
 }
+
 .title-divider .line {
   flex: 1;
   height: 2px;
@@ -94,33 +106,32 @@ h2::after { margin-left: 0.75rem; }
   transform: scaleX(0);
   transform-origin: center;
 }
-#tab-title {
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  margin: 0;
-  white-space: nowrap;
-  display: flex;
-  justify-content: center;
-}
-#tab-title span {
-  display: inline-block;
-  opacity: 0;
-}
 
-/* Mobile adjustments */
+/* Mobile */
 @media (max-width: 900px) {
-  #tab-title {
-    font-size: 1.5rem;
+  main.content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1rem;
     text-align: center;
-    white-space: normal;
-  }
-  .title-divider {
-    gap: 0.5rem;
-  }
-  .title-divider .line {
-    height: 1px;
   }
 }
-
 </style>
+
+<!-- TAB LOGIC -->
+<script>
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    // remove old actives
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+
+    // set new active
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+  });
+});
+</script>

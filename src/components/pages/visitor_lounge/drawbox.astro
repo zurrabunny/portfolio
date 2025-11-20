@@ -84,31 +84,37 @@ input[type="range"] {
 #gallery {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.5rem; /* smaller gap between images */
   margin-top: 1rem;
+  justify-content: center; /* center gallery items */
 }
 
 .image-container {
   border: 2px solid var(--color-5);
   border-radius: 0.8rem;
-  padding: 0.75rem;
-  max-width: 200px;
+  padding: 0.5rem; /* smaller padding */
+  max-width: 120px; /* smaller width */
   text-align: center;
   background: var(--color-6);
   transition: all 0.3s ease;
+  font-size: 0.8rem; /* smaller text */
 }
 
 .image-container:hover {
   border-color: var(--color-2);
-  box-shadow: 0 0 10px rgba(0,0,0,0.15);
+  box-shadow: 0 0 5px rgba(0,0,0,0.1); /* smaller shadow */
 }
 
 .image-container img {
   max-width: 100%;
+  max-height: 80px; /* limit image height */
+  width: auto;
   height: auto;
   display: block;
-  border-radius: 0.5rem;
+  border-radius: 0.4rem;
+  object-fit: contain; /* maintain aspect ratio */
 }
+
 
 /* ---------- Heading ---------- */
 h1 {
@@ -312,7 +318,24 @@ async function fetchImages() {
       if (imgUrl.startsWith("http")) {
         const div = document.createElement("div");
         div.classList.add("image-container");
-        div.innerHTML = `<img src="${imgUrl}" alt="drawing"><p>${timestamp}</p>`;
+
+        // Create image element
+        const img = document.createElement("img");
+        img.src = imgUrl;
+        img.alt = "drawing";
+
+        // Make the image itself small
+        img.style.width = "200px";    // small width
+        img.style.height = "200px";   // small height
+        img.style.objectFit = "contain"; // preserve aspect ratio
+
+        // Create timestamp element
+        const p = document.createElement("p");
+        p.textContent = timestamp;
+        p.style.fontSize = "0.7rem"; // optional: smaller text
+
+        div.appendChild(img);
+        div.appendChild(p);
         gallery.appendChild(div);
       }
     });
@@ -323,4 +346,5 @@ async function fetchImages() {
 }
 
 fetchImages();
+
 </script>

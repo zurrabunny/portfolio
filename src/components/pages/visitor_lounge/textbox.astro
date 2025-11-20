@@ -1,138 +1,250 @@
 <style>
-#textcanvas {
-  border: 2px solid var(--color-5, #444);
+/* ---------- Split layout ---------- */
+#main-wrapper {
+  display: flex;
+  gap: 1rem;
+  max-width: 1000px;
+  margin: 1rem auto;
+  height: 600px; /* adjust as needed */
+  background: transparent;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+/* ---------- Left: Textbox area ---------- */
+#textbox-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: transparent;
+  padding: 1rem;
+  box-sizing: border-box;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+/* Username input */
+#username {
   border-radius: 0.8rem;
-  background: var(--color-6, #eee);
+  background: var(--color-6);
+  padding: 0.6rem;
+  width: 95%;
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+  border: 2px solid var(--color-6);
+}
+
+/* Text input canvas */
+#textcanvas {
+  border-color: var(--color-6);
+  border-radius: 0.8rem;
+  background: var(--color-6);
   padding: 1rem;
   min-height: 200px;
-  max-width: 500px;
-  margin: 1rem auto;
-  overflow-y: auto;
-  white-space: pre-wrap;
-  outline: none;
-  font-size: 16px;
-  color: var(--text-main, #000);
   width: 100%;
   box-sizing: border-box;
   resize: vertical;
+  font-size: 16px;
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+  font-family: inherit;
 }
 
-#controls {
+/* Controls */
+#text-controls {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
   margin-bottom: 1rem;
+  flex-wrap: wrap;
 }
 
-button {
-  background: var(--color-5, #444);
-  color: var(--color-3, #fff);
-  border: 2px solid var(--color-5, #444);
+.text-button {
+  background: var(--color-6);
+  color: var(--text-dark);
+  border: 2px solid var(--color-6);
   border-radius: 0.8rem;
   padding: 0.6rem 1rem;
   cursor: pointer;
+  transition: 0.2s;
+  font-family: inherit;
 }
-button:hover {
-  background: var(--color-3, #fff);
-  color: var(--color-1, #000);
-  border-color: var(--color-2, #f00);
+.text-button:hover {
+  background: var(--color-4);
+  border-color: var(--text-dark);
 }
 
-#gallery {
+/* Status */
+#text-status {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+  font-family: inherit;
+}
+
+/* ---------- Right: Messages area ---------- */
+#text-gallery-wrapper {
+  flex: 1;
+  background: var(--color-6);
+  border-left: 2px solid var(--color-6);
+  border-radius: 0.8rem;
+  overflow-y: auto;
+  padding: 1rem;
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  flex-direction: column; /* top latest, bottom oldest */
   margin-top: 1rem;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
+  gap: 0.75rem;
 }
 
+/* Each message */
 .text-container {
-  border: 2px solid var(--color-5, #444);
+  border: 2px solid #444;
   border-radius: 0.8rem;
   padding: 0.75rem;
-  background: var(--color-6, #eee);
+  background: #eee;
+  color: #000;
   white-space: pre-wrap;
-  color: var(--text-main, #000);
+  font-family: inherit;
+}
+
+/* Timestamp */
+.text-timestamp {
+  font-size: 0.8rem;
+  color: #555;
+  margin-top: 0.4rem;
+  font-family: inherit;
 }
 </style>
 
-<textarea id="textcanvas" placeholder="Type your text here..."></textarea>
-<div id="controls">
-  <button id="submit">Submit Text</button>
+<div id="main-wrapper">
+  <!-- Left side: Textbox -->
+  <div id="textbox-wrapper">
+    <input id="username" placeholder="Enter your name...">
+    <textarea id="textcanvas" placeholder="Type your text here..."></textarea>
+    <div id="text-controls">
+      <button id="text-submit" class="text-button">Submit Text</button>
+    </div>
+    <div id="text-status"></div>
+  </div>
+
+  <!-- Right side: Messages -->
+  <div id="text-gallery-wrapper">
+    <div id="text-gallery">Loading texts...</div>
+  </div>
 </div>
 
-<div id="status"></div>
-<div id="gallery">Loading texts...</div>
-
 <script>
-const textCanvas = document.getElementById("textcanvas");
-const statusText = document.getElementById("status");
-
-// Google Form config
-const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdljLgmcLVCqx9Hwf2D49ZgDRYDEXkTV8w-7WyW1SLkTkMcdw/formResponse";
+// CONFIG
+const GOOGLE_FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSdljLgmcLVCqx9Hwf2D49ZgDRYDEXkTV8w-7WyW1SLkTkMcdw/formResponse";
 const ENTRY_ID = "entry.1206257935";
+const GOOGLE_SHEET_CSV =
+  "https://docs.google.com/spreadsheets/d/1cHqp4SpzJ-yAYaDDxwvrQvH0XYV1K09Tdcc-aXd7-gs/export?format=csv";
 
-// Google Sheet CSV URL
-const GOOGLE_SHEET_CSV = "https://docs.google.com/spreadsheets/d/1cHqp4SpzJ-yAYaDDxwvrQvH0XYV1K09Tdcc-aXd7-gs/export?format=csv";
+const textCanvas = document.getElementById("textcanvas");
+const statusText = document.getElementById("text-status");
+const gallery = document.getElementById("text-gallery");
 
-// Submit text
-document.getElementById("submit").addEventListener("click", async () => {
+// FORMAT TIMESTAMP
+function formatTimestamp(date) {
+  const d = date || new Date();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  const yyyy = d.getFullYear();
+  const hh = String(d.getHours()).padStart(2, "0");
+  const min = String(d.getMinutes()).padStart(2, "0");
+  return `${mm}/${dd}/${yyyy} – ${hh}:${min}`;
+}
+
+function addTextToGallery(name, text, timestamp) {
+  const container = document.createElement("div");
+  container.className = "text-container";
+
+  const message = document.createElement("div");
+  message.textContent = `${name}: ${text}`;
+
+  const time = document.createElement("div");
+  time.className = "text-timestamp";
+  time.textContent = timestamp || formatTimestamp();
+
+  container.appendChild(message);
+  container.appendChild(time);
+
+  gallery.appendChild(container);
+
+  // Add a divider after each message
+  const divider = document.createElement("hr");
+  divider.style.border = "0";
+  divider.style.height = "1px";
+  divider.style.background = "var(--color-4)";
+  divider.style.margin = "0.5rem 0";
+  gallery.appendChild(divider);
+}
+
+
+// SUBMIT HANDLER
+document.getElementById("text-submit").addEventListener("click", async () => {
+  const name = document.getElementById("username").value.trim();
   const text = textCanvas.value.trim();
+
+  if (!name) { statusText.textContent = "Please enter your name first."; return; }
   if (!text) return;
 
+  const timestamp = formatTimestamp();
+  const combined = `${name}: ${text} || ${timestamp}`;
+
   statusText.textContent = "Submitting...";
+
   const formData = new FormData();
-  formData.append(ENTRY_ID, text);
+  formData.append(ENTRY_ID, combined);
 
   try {
-    await fetch(GOOGLE_FORM_URL, {
-      method: "POST",
-      body: formData,
-      mode: "no-cors"
-    });
-
-    // Add to gallery locally
-    addTextToGallery(text);
+    await fetch(GOOGLE_FORM_URL, { method: "POST", body: formData, mode: "no-cors" });
+    addTextToGallery(name, text, timestamp);
     textCanvas.value = "";
     statusText.textContent = "Submitted successfully!";
+    gallery.scrollTop = gallery.scrollHeight; // scroll to bottom
   } catch (err) {
-    console.error(err);
     statusText.textContent = "Error submitting text.";
   }
 });
 
-// Helper to add text to gallery
-function addTextToGallery(text) {
-  const gallery = document.getElementById("gallery");
-  const div = document.createElement("div");
-  div.classList.add("text-container");
-  div.innerText = text;
-  gallery.prepend(div);
-}
-
-// Fetch previous submissions from Google Sheet CSV
+// FETCH EXISTING TEXTS
 async function fetchTexts() {
   try {
     const response = await fetch(GOOGLE_SHEET_CSV);
     const csvText = await response.text();
-    const rows = csvText.split("\n").slice(1); // skip header
-    const gallery = document.getElementById("gallery");
-    gallery.innerHTML = ""; // clear placeholder
+    const rows = csvText.split("\n").slice(1);
 
-    rows.reverse().forEach(row => {
+    gallery.innerHTML = "";
+
+    rows.forEach(row => {
       const columns = row.split(",");
       if (columns.length < 2) return;
-      const text = columns[1].replace(/"/g, ""); // second column is text
-      if (text) addTextToGallery(text);
+
+      let raw = columns[1].replace(/"/g, "").trim();
+      if (!raw) return;
+
+      let [mainText, timestamp] = raw.split("||");
+      if (!mainText || mainText.trim() === "") return;
+
+      timestamp = timestamp ? timestamp.trim() : formatTimestamp();
+      const name = mainText.split(":")[0] || "Anonymous";
+      const messageText = mainText.split(":").slice(1).join(":").trim();
+      if (!messageText) return;
+
+      addTextToGallery(name, messageText, timestamp);
     });
+
+    // Scroll to bottom (oldest message visible at bottom)
+    gallery.scrollTop = gallery.scrollHeight;
+
   } catch (err) {
-    console.error("Error fetching texts:", err);
-    document.getElementById("gallery").textContent = "Failed to load texts.";
+    gallery.textContent = "Failed to load texts.";
   }
 }
 
-// Load texts on page load
 fetchTexts();
 </script>

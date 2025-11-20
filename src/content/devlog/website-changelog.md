@@ -163,6 +163,14 @@ tags: ["Process"]
 		</ul>
 	</ul>
 	
+	<h3>November 21 2025</h3>
+	<ul>
+	<li>Visitor's Lounge Tab :
+		<ul>
+		<li>added DrawBox submissions
+		<li>added Text submissions
+		</ul>
+	</ul>
 	
 </div>
 
