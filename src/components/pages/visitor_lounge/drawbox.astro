@@ -1,97 +1,164 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DRAWBOX</title>
-    <style>
-        * {box-sizing: border-box;}
-        canvas {
-            border: 1px solid black;
-            cursor: crosshair;
-        }
-        #gallery {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .image-container {
-            border: 1px solid #ccc;
-            padding: 5px;
-            max-width: 200px;
-            text-align: center;
-        }
-        .image-container img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
+<style>
 
-    </style>
-</head>
-<body>
-    <h1>DRAWBOX</h1>
-    <canvas id="drawboxcanvas" width="500" height="500"></canvas>
-    <br>
-    <div onclick="change_color(this)" style="background:red" class="stroke-color"></div>
-    <div onclick="change_color(this)" style="background:blue" class="stroke-color"></div>
-    
-    <button onclick="Restore()">Undo</button>
-    <button onclick="Clear()">Clear</button>
-    
-    <input type="color" oninput="stroke_color = this.value">
-    <input type="range" min="1" max="100" oninput="stroke_width = this.value">
-    
+/* Center all controls */
+#controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* center horizontally */
+    align-items: center;     /* center vertically if needed */
+    gap: 0.5rem;             /* spacing between items */
+    margin-bottom: 1rem;     /* space below controls */
+}
+
+
+/* ---------- Canvas ---------- */
+#drawboxcanvas {
+  border: 2px solid var(--color-5);
+  border-radius: 0.8rem;
+  background: var(--color-6);
+  cursor: crosshair;
+  display: block;
+  margin: 1rem auto;
+}
+
+/* ---------- Stroke color selector ---------- */
+.stroke-color {
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--color-5);
+  border-radius: 0.5rem;
+  display: inline-block;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.stroke-color:hover {
+  border-color: var(--color-2);
+  transform: scale(1.1);
+}
+
+/* ---------- Buttons ---------- */
+button {
+  background: var(--color-5);
+  color: var(--color-3);
+  border: 2px solid var(--color-5);
+  border-radius: 0.8rem;
+  padding: 0.6rem 1rem;
+  margin: 0.5rem 0.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+button:hover {
+  background: var(--color-3);
+  color: var(--text-main);
+  border-color: var(--color-2);
+}
+
+/* ---------- Inputs ---------- */
+input[type="color"],
+input[type="range"] {
+  margin: 0.5rem 0.25rem;
+  border-radius: 0.5rem;
+  border: 2px solid var(--color-5);
+  background: var(--color-6);
+  cursor: pointer;
+}
+
+/* Range styling for modern look */
+input[type="range"] {
+  height: 8px;
+  accent-color: var(--color-2);
+}
+
+/* ---------- Status Text ---------- */
+#status {
+  font-size: 0.95rem;
+  color: var(--color-2);
+  margin-top: 0.5rem;
+}
+
+/* ---------- Gallery ---------- */
+#gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.image-container {
+  border: 2px solid var(--color-5);
+  border-radius: 0.8rem;
+  padding: 0.75rem;
+  max-width: 200px;
+  text-align: center;
+  background: var(--color-6);
+  transition: all 0.3s ease;
+}
+
+.image-container:hover {
+  border-color: var(--color-2);
+  box-shadow: 0 0 10px rgba(0,0,0,0.15);
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 0.5rem;
+}
+
+/* ---------- Heading ---------- */
+h1 {
+  font-size: 1.8rem;
+  color: var(--color-1);
+  margin-top: 2rem;
+  text-align: center;
+}
+</style>
+
+<canvas id="drawboxcanvas" width="500" height="500"></canvas>
+<br>
+
+<!-- Controls container -->
+<div id="controls">
+    <input id="color-picker" type="color" value="#000000">
+    <input id="stroke-width" type="range" min="1" max="100" value="2">
+    <button id="undo">Undo</button>
+    <button id="clear">Clear</button>
     <button id="submit">Submit drawing</button>
-    <p id="status"></p>
+</div>
 
-	
-    <h1>Submitted Drawings ☻</h1>
-    <div id="gallery">Loading images...</div>
+<p id="status"></p>
 
-</body>
-</html>
+<h1>Submitted Drawings !!</h1>
+<div id="gallery">Loading images...</div>
 
 <script>
-/*
-        
-        FILL IN THESE VARIABLES BASED ON THE GUIDE AT https://drawbox.nekoweb.org
-        
-        
-				      /`·.¸
-				     /¸...¸`:·
-				 ¸.·´  ¸   `·.¸.·´)
-				: © ):´;      ¸  {
-				 `·.¸ `·  ¸.·´\`·¸)
-				     `\\´´\¸.·´
-        
-*/
+/* -------------------- CONFIG -------------------- */
 const GOOGLE_FORM_ID = "1FAIpQLSe3PhmUxhX1yPQuCMdNnKeY1jyitslfUYSrmHWEUyQv9XDWBQ";
 const ENTRY_ID = "entry.1608675754";
 const GOOGLE_SHEET_ID = "1dPzjW19MCo1EMnOt-xCu7LEwwIfC4b5rli6Sbii8_4I";
 const DISPLAY_IMAGES = true;
-
-/*
-        
-        DONT EDIT BELOW THIS POINT IF YOU DONT KNOW WHAT YOU ARE DOING.
-        
-*/
-
 const CLIENT_ID = "b4fb95e0edc434c";
-const GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/" + GOOGLE_SHEET_ID + "/export?format=csv";
-const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/" + GOOGLE_FORM_ID + "/formResponse";
+const GOOGLE_SHEET_URL = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/export?format=csv`;
+const GOOGLE_FORM_URL = `https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/formResponse`;
 
-let canvas = document.getElementById("drawboxcanvas");
-let context = canvas.getContext("2d");
+/* -------------------- CANVAS SETUP -------------------- */
+const canvas = document.getElementById("drawboxcanvas");
+const context = canvas.getContext("2d");
 context.fillStyle = "white";
 context.fillRect(0, 0, canvas.width, canvas.height);
 
 let restore_array = [];
 let start_index = -1;
 let stroke_color = "black";
-let stroke_width = "2";
+let stroke_width = 2;
 let is_drawing = false;
 
+/* -------------------- DRAWING FUNCTIONS -------------------- */
 function change_color(element) {
   stroke_color = element.style.background;
 }
@@ -125,17 +192,16 @@ function stop(event) {
 }
 
 function getX(event) {
-  return event.pageX
-    ? event.pageX - canvas.offsetLeft
-    : event.targetTouches[0].pageX - canvas.offsetLeft;
+  const rect = canvas.getBoundingClientRect();
+  return event.touches ? event.touches[0].clientX - rect.left : event.clientX - rect.left;
 }
 
 function getY(event) {
-  return event.pageY
-    ? event.pageY - canvas.offsetTop
-    : event.targetTouches[0].pageY - canvas.offsetTop;
+  const rect = canvas.getBoundingClientRect();
+  return event.touches ? event.touches[0].clientY - rect.top : event.clientY - rect.top;
 }
 
+/* -------------------- EVENT LISTENERS -------------------- */
 canvas.addEventListener("touchstart", start, false);
 canvas.addEventListener("touchmove", draw, false);
 canvas.addEventListener("touchend", stop, false);
@@ -144,6 +210,7 @@ canvas.addEventListener("mousemove", draw, false);
 canvas.addEventListener("mouseup", stop, false);
 canvas.addEventListener("mouseout", stop, false);
 
+/* -------------------- UNDO / CLEAR -------------------- */
 function Restore() {
   if (start_index <= 0) {
     Clear();
@@ -162,11 +229,8 @@ function Clear() {
   start_index = -1;
 }
 
-context.drawImage = function() {
-	console.warn("noo >:(");
-};
-
-document.getElementById("submit").addEventListener("click", async function () {
+/* -------------------- UI BUTTONS -------------------- */
+document.querySelector('#submit')?.addEventListener('click', async function () {
   const submitButton = document.getElementById("submit");
   const statusText = document.getElementById("status");
 
@@ -184,12 +248,10 @@ document.getElementById("submit").addEventListener("click", async function () {
       headers: { Authorization: `Client-ID ${CLIENT_ID}` },
       body: formData,
     });
-
     const data = await response.json();
     if (!data.success) throw new Error("Imgur upload failed");
 
     const imageUrl = data.data.link;
-    console.log("Uploaded image URL:", imageUrl);
 
     const googleFormData = new FormData();
     googleFormData.append(ENTRY_ID, imageUrl);
@@ -212,12 +274,29 @@ document.getElementById("submit").addEventListener("click", async function () {
   }
 });
 
-async function fetchImages() {
-  if (!DISPLAY_IMAGES) {
-    console.log("Image display is disabled.");
-    return;
-  }
+/* Undo / Clear Buttons */
+document.querySelector('#undo')?.addEventListener('click', Restore);
+document.querySelector('#clear')?.addEventListener('click', Clear);
 
+/* Stroke color squares */
+document.querySelectorAll('.stroke-color').forEach((el) => {
+  el.addEventListener('click', () => change_color(el));
+});
+
+// Stroke color picker
+document.getElementById('color-picker')?.addEventListener('input', (e) => {
+  stroke_color = e.target.value;
+});
+
+// Stroke width slider
+document.getElementById('stroke-width')?.addEventListener('input', (e) => {
+  stroke_width = parseInt(e.target.value); // ensure it's a number
+});
+
+
+/* -------------------- FETCH IMAGES -------------------- */
+async function fetchImages() {
+  if (!DISPLAY_IMAGES) return;
   try {
     const response = await fetch(GOOGLE_SHEET_URL);
     const csvText = await response.text();
@@ -228,18 +307,12 @@ async function fetchImages() {
     rows.reverse().forEach((row) => {
       const columns = row.split(",");
       if (columns.length < 2) return;
-
       const timestamp = columns[0].trim();
       const imgUrl = columns[1].trim().replace(/"/g, "");
-
       if (imgUrl.startsWith("http")) {
         const div = document.createElement("div");
         div.classList.add("image-container");
-
-        div.innerHTML = `
-                    <img src="${imgUrl}" alt="drawing">
-                    <p>${timestamp}</p>
-                `;
+        div.innerHTML = `<img src="${imgUrl}" alt="drawing"><p>${timestamp}</p>`;
         gallery.appendChild(div);
       }
     });
