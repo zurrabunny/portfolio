@@ -269,8 +269,8 @@ let loopMode = "none"; // "none", "track", "playlist"
 if (loopBtn) {
   loopBtn.addEventListener("click", () => {
     // Cycle through the three modes
-    if (loopMode === "none") loopMode = "track";
-    else if (loopMode === "track") loopMode = "playlist";
+    if (loopMode === "none") loopMode = "playlist";
+    else if (loopMode === "playlist") loopMode = "track";
     else loopMode = "none";
 
     // Update icon
