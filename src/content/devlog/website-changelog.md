@@ -172,6 +172,15 @@ tags: ["Process"]
 		</ul>
 	</ul>
 	
+	<h3>November 22 2025</h3>
+	<ul>
+	<li>added Mobile Adjustments ( it wasnt fun )
+	<li>Work Tab :
+		<ul>
+		<li>added Music Loop Button
+		</ul>
+	</ul>
+	
 </div>
 
 <style>

@@ -116,6 +116,66 @@
   margin-top: 0.4rem;
   font-family: inherit;
 }
+
+/* ---------- MOBILE (900px and below) ---------- */
+@media (max-width: 900px) {
+
+  /* Make layout vertical */
+  #main-wrapper {
+    flex-direction: column;
+    height: auto;
+    max-width: 100%;
+  }
+
+  /* Textbox full-width */
+  #textbox-wrapper {
+    width: 100%;
+    padding: 0.75rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  #username {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  #textcanvas {
+    min-height: 150px;
+    width: 100%;
+    font-size: 15px;
+  }
+
+  #text-controls {
+    gap: 0.4rem;
+  }
+
+  .text-button {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  /* Messages area full-width + scrollable */
+  #text-gallery-wrapper {
+    width: 100%;
+    height: 350px;
+    margin-top: 0.5rem;
+    border-left: none;
+    border-top: 2px solid var(--color-6);
+    padding: 0.75rem;
+  }
+
+  .text-container {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  .text-timestamp {
+    font-size: 0.75rem;
+  }
+}
+
+
 </style>
 
 <div id="main-wrapper">

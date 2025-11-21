@@ -123,6 +123,35 @@ h1 {
   margin-top: 2rem;
   text-align: center;
 }
+
+/* Remove horizontal offset on mobile */
+@media (max-width: 900px) {
+
+  html, body {
+    overflow-x: hidden;
+  }
+
+  /* Make canvas fluid */
+  #drawboxcanvas {
+    width: 100% !important;
+    max-width: 100%;
+    height: auto; /* keeps aspect ratio */
+    display: block;
+    margin: 1rem auto;
+  }
+
+  /* Center controls properly */
+  #controls {
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto 1rem auto;
+    padding: 0 0.5rem;
+  }
+}
+
+
+}
+
 </style>
 
 <canvas id="drawboxcanvas" width="500" height="500"></canvas>
@@ -298,6 +327,30 @@ document.getElementById('color-picker')?.addEventListener('input', (e) => {
 document.getElementById('stroke-width')?.addEventListener('input', (e) => {
   stroke_width = parseInt(e.target.value); // ensure it's a number
 });
+
+// Resize canvas visually (CSS) but keep proper drawing scale
+function resizeCanvasForMobile() {
+  if (window.innerWidth <= 900) {
+    const scale = canvas.width / canvas.offsetWidth;
+    canvas.style.touchAction = "none"; // prevent scroll while drawing
+
+    // adjust touch coordinates scaling
+    getX = (event) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = (event.touches ? event.touches[0].clientX : event.clientX) - rect.left;
+      return x * scale;
+    };
+
+    getY = (event) => {
+      const rect = canvas.getBoundingClientRect();
+      const y = (event.touches ? event.touches[0].clientY : event.clientY) - rect.top;
+      return y * scale;
+    };
+  }
+}
+
+resizeCanvasForMobile();
+window.addEventListener("resize", resizeCanvasForMobile);
 
 
 /* -------------------- FETCH IMAGES -------------------- */
