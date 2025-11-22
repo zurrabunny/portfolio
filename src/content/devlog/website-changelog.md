@@ -189,6 +189,7 @@ tags: ["Process"]
 	
 	<h3>November 23 2025</h3>
 	<ul>
+	<li>added OC Compendium Tab
 	<li>Visitor's Lounge Tab :
 		<ul>
 		<li>implemented Reserved Name Protection
