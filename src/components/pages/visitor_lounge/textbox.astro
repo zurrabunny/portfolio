@@ -5,7 +5,7 @@
   gap: 1rem;
   max-width: 1000px;
   margin: 1rem auto;
-  height: 600px; /* adjust as needed */
+  height: 600px;
   background: transparent;
   border-radius: 1rem;
   overflow: hidden;
@@ -25,7 +25,6 @@
   overflow: hidden;
 }
 
-/* Username input */
 #username {
   border-radius: 0.8rem;
   background: var(--color-6);
@@ -36,7 +35,6 @@
   border: 2px solid var(--color-6);
 }
 
-/* Text input canvas */
 #textcanvas {
   border-color: var(--color-6);
   border-radius: 0.8rem;
@@ -52,7 +50,6 @@
   font-family: inherit;
 }
 
-/* Controls */
 #text-controls {
   display: flex;
   justify-content: center;
@@ -76,7 +73,6 @@
   border-color: var(--text-dark);
 }
 
-/* Status */
 #text-status {
   font-size: 0.9rem;
   color: #555;
@@ -98,7 +94,6 @@
   gap: 0.75rem;
 }
 
-/* Each message */
 .text-container {
   border: 2px solid #444;
   border-radius: 0.8rem;
@@ -109,77 +104,27 @@
   font-family: inherit;
 }
 
-/* Timestamp */
 .text-timestamp {
   font-size: 0.8rem;
   color: #555;
   margin-top: 0.4rem;
   font-family: inherit;
 }
-
-/* ---------- MOBILE (900px and below) ---------- */
+/* MOBILE */
 @media (max-width: 900px) {
-
-  /* Make layout vertical */
-  #main-wrapper {
-    flex-direction: column;
-    height: auto;
-    max-width: 100%;
-  }
-
-  /* Textbox full-width */
-  #textbox-wrapper {
-    width: 100%;
-    padding: 0.75rem;
-    align-items: center;
-    text-align: center;
-  }
-
-  #username {
-    width: 100%;
-    font-size: 1rem;
-  }
-
-  #textcanvas {
-    min-height: 150px;
-    width: 100%;
-    font-size: 15px;
-  }
-
-  #text-controls {
-    gap: 0.4rem;
-  }
-
-  .text-button {
-    padding: 0.5rem 0.8rem;
-    font-size: 0.9rem;
-  }
-
-  /* Messages area full-width + scrollable */
-  #text-gallery-wrapper {
-    width: 100%;
-    height: 350px;
-    margin-top: 0.5rem;
-    border-left: none;
-    border-top: 2px solid var(--color-6);
-    padding: 0.75rem;
-  }
-
-  .text-container {
-    padding: 0.6rem;
-    font-size: 0.9rem;
-  }
-
-  .text-timestamp {
-    font-size: 0.75rem;
-  }
+  #main-wrapper { flex-direction: column; height: auto; max-width: 100%; }
+  #textbox-wrapper { width: 100%; padding: 0.75rem; }
+  #username { width: 100%; font-size: 1rem; }
+  #textcanvas { min-height: 150px; width: 100%; font-size: 15px; }
+  #text-controls { gap: 0.4rem; }
+  .text-button { padding: 0.5rem 0.8rem; font-size: 0.9rem; }
+  #text-gallery-wrapper { width: 100%; height: 350px; margin-top: 0.5rem; border-left: none; border-top: 2px solid var(--color-6); padding: 0.75rem; }
+  .text-container { padding: 0.6rem; font-size: 0.9rem; }
+  .text-timestamp { font-size: 0.75rem; }
 }
-
-
 </style>
 
 <div id="main-wrapper">
-  <!-- Left side: Textbox -->
   <div id="textbox-wrapper">
     <input id="username" placeholder="Enter your name...">
     <textarea id="textcanvas" placeholder="Type your text here..."></textarea>
@@ -189,7 +134,6 @@
     <div id="text-status"></div>
   </div>
 
-  <!-- Right side: Messages -->
   <div id="text-gallery-wrapper">
     <div id="text-gallery">Loading texts...</div>
   </div>
@@ -197,29 +141,24 @@
 
 <script>
 // CONFIG
-const GOOGLE_FORM_URL =
-  "https://docs.google.com/forms/d/e/1FAIpQLSdljLgmcLVCqx9Hwf2D49ZgDRYDEXkTV8w-7WyW1SLkTkMcdw/formResponse";
+const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdljLgmcLVCqx9Hwf2D49ZgDRYDEXkTV8w-7WyW1SLkTkMcdw/formResponse";
 const ENTRY_ID = "entry.1206257935";
-const GOOGLE_SHEET_CSV =
-  "https://docs.google.com/spreadsheets/d/1cHqp4SpzJ-yAYaDDxwvrQvH0XYV1K09Tdcc-aXd7-gs/export?format=csv";
+const GOOGLE_SHEET_CSV = "https://docs.google.com/spreadsheets/d/1cHqp4SpzJ-yAYaDDxwvrQvH0XYV1K09Tdcc-aXd7-gs/export?format=csv";
 
 const textCanvas = document.getElementById("textcanvas");
 const statusText = document.getElementById("text-status");
 const gallery = document.getElementById("text-gallery");
 
-// FORMAT TIMESTAMP
 function formatTimestamp(date) {
   const d = date || new Date();
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const dd = String(d.getDate()).padStart(2, "0");
-  const yyyy = d.getFullYear();
-  const hh = String(d.getHours()).padStart(2, "0");
-  const min = String(d.getMinutes()).padStart(2, "0");
-  return `${mm}/${dd}/${yyyy} – ${hh}:${min}`;
+  return `${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}/${d.getFullYear()} – ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
 }
 
-// ADD MESSAGE
-function addTextToGallery(name, text, timestamp) {
+function addTextToGallery(name, text, timestamp, liked = false) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "text-container-wrapper";
+  wrapper.style.position = "relative"; // ensure relative positioning
+
   const container = document.createElement("div");
   container.className = "text-container";
 
@@ -232,10 +171,48 @@ function addTextToGallery(name, text, timestamp) {
 
   container.appendChild(message);
   container.appendChild(time);
+  wrapper.appendChild(container);
 
-  gallery.appendChild(container);
+  // Add heart if liked
+  if (liked) {
+    const heart = document.createElement("img");
+    heart.src = "heart.svg"; // path to your heart SVG
+    heart.style.position = "absolute";
+    heart.style.top = "-4px";     
+    heart.style.right = "-10px";   
+    heart.style.width = "30px";    
+    heart.style.height = "30px";   
+    heart.style.cursor = "pointer";
+    heart.style.pointerEvents = "auto"; 
+    heart.style.zIndex = "10";
 
-  // Divider
+    // Create hover bubble
+    const bubble = document.createElement("div");
+    bubble.textContent = "Liked by Zurrabunny!";
+    bubble.style.position = "absolute";
+    bubble.style.bottom = "100%";
+    bubble.style.right = "50%";
+    bubble.style.transform = "translateX(50%)";
+    bubble.style.background = "var(--color-5)";
+    bubble.style.color = "white";
+    bubble.style.padding = "4px 8px";
+    bubble.style.borderRadius = "6px";
+    bubble.style.fontSize = "0.7rem";
+    bubble.style.whiteSpace = "nowrap";
+    bubble.style.pointerEvents = "none";
+    bubble.style.opacity = "0";
+    bubble.style.transition = "opacity 0.2s";
+
+    // Show bubble on hover
+    heart.addEventListener("mouseenter", () => bubble.style.opacity = "1");
+    heart.addEventListener("mouseleave", () => bubble.style.opacity = "0");
+
+    wrapper.appendChild(heart);
+    wrapper.appendChild(bubble);
+  }
+
+  gallery.appendChild(wrapper);
+
   const divider = document.createElement("hr");
   divider.style.border = "0";
   divider.style.height = "1px";
@@ -243,21 +220,20 @@ function addTextToGallery(name, text, timestamp) {
   divider.style.margin = "0.5rem 0";
   gallery.appendChild(divider);
 
-  // Scroll to bottom
   gallery.scrollTop = gallery.scrollHeight;
 }
+
+
 
 // SUBMIT HANDLER
 document.getElementById("text-submit").addEventListener("click", async () => {
   const name = document.getElementById("username").value.trim();
   const text = textCanvas.value.trim();
-
   if (!name) { statusText.textContent = "Please enter your name first."; return; }
   if (!text) return;
 
   const timestamp = formatTimestamp();
   const combined = `${name}: ${text} || ${timestamp}`;
-
   statusText.textContent = "Submitting...";
 
   const formData = new FormData();
@@ -279,28 +255,27 @@ async function fetchTexts() {
     const response = await fetch(GOOGLE_SHEET_CSV);
     const csvText = await response.text();
     const rows = csvText.split("\n").slice(1);
-
     gallery.innerHTML = "";
 
     rows.forEach(row => {
       const columns = row.split(",");
       if (columns.length < 2) return;
 
-      let raw = columns[1].replace(/"/g, "").trim();
+      let raw = columns[1].replace(/"/g,"").trim();
       if (!raw) return;
 
       let [mainText, timestamp] = raw.split("||");
       if (!mainText || mainText.trim() === "") return;
 
-      timestamp = timestamp ? timestamp.trim() : formatTimestamp();
       const name = mainText.split(":")[0] || "Anonymous";
       const messageText = mainText.split(":").slice(1).join(":").trim();
       if (!messageText) return;
 
-      addTextToGallery(name, messageText, timestamp);
+      const liked = columns[2] && columns[2].trim().toLowerCase() === "true";
+
+      addTextToGallery(name, messageText, timestamp, liked);
     });
 
-    // Scroll to bottom after all messages loaded
     gallery.scrollTop = gallery.scrollHeight;
 
   } catch (err) {

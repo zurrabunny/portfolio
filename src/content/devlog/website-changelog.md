@@ -179,6 +179,12 @@ tags: ["Process"]
 		<ul>
 		<li>added Music Loop Button
 		</ul>
+	
+	<li>Visitor's Lounge Tab :
+		<ul>
+		<li>added "Liked by ZurraBunny" indicator <:D
+		</ul>
+	
 	</ul>
 	
 </div>

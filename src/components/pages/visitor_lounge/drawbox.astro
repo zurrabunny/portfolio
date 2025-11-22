@@ -152,6 +152,43 @@ h1 {
 
 }
 
+/* ---------- Like Heart Bubble ---------- */
+.like-wrapper {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}
+
+.like-heart {
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+}
+
+.like-bubble {
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-6);
+  color: var(--text-dark);
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.5rem;
+  font-size: 0.7rem;
+  border: 1px solid var(--color-5);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.like-wrapper:hover .like-bubble {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-3px);
+}
+
+
 </style>
 
 <canvas id="drawboxcanvas" width="500" height="500"></canvas>
@@ -325,16 +362,15 @@ document.getElementById('color-picker')?.addEventListener('input', (e) => {
 
 // Stroke width slider
 document.getElementById('stroke-width')?.addEventListener('input', (e) => {
-  stroke_width = parseInt(e.target.value); // ensure it's a number
+  stroke_width = parseInt(e.target.value);
 });
 
-// Resize canvas visually (CSS) but keep proper drawing scale
+/* -------------------- MOBILE CANVAS RESIZE -------------------- */
 function resizeCanvasForMobile() {
   if (window.innerWidth <= 900) {
     const scale = canvas.width / canvas.offsetWidth;
-    canvas.style.touchAction = "none"; // prevent scroll while drawing
+    canvas.style.touchAction = "none";
 
-    // adjust touch coordinates scaling
     getX = (event) => {
       const rect = canvas.getBoundingClientRect();
       const x = (event.touches ? event.touches[0].clientX : event.clientX) - rect.left;
@@ -352,7 +388,6 @@ function resizeCanvasForMobile() {
 resizeCanvasForMobile();
 window.addEventListener("resize", resizeCanvasForMobile);
 
-
 /* -------------------- FETCH IMAGES -------------------- */
 async function fetchImages() {
   if (!DISPLAY_IMAGES) return;
@@ -363,29 +398,75 @@ async function fetchImages() {
 
     const gallery = document.getElementById("gallery");
     gallery.innerHTML = "";
+
     rows.reverse().forEach((row) => {
       const columns = row.split(",");
       if (columns.length < 2) return;
+
       const timestamp = columns[0].trim();
       const imgUrl = columns[1].trim().replace(/"/g, "");
+      const isLiked = columns[2]?.trim().toLowerCase() === "true"; // ← NEW
+
       if (imgUrl.startsWith("http")) {
         const div = document.createElement("div");
         div.classList.add("image-container");
+        div.style.position = "relative"; // required for heart
 
-        // Create image element
+        // ❤️ Add heart if liked
+if (isLiked) {
+  const heart = document.createElement("img");
+  heart.src = "heart.svg"; // path to your SVG file
+  heart.style.position = "absolute";
+  heart.style.top = "4px"; // slightly above the container
+  heart.style.right = "4px"; // slightly outside
+  heart.style.width = "30px";
+  heart.style.height = "30px";
+  heart.style.cursor = "pointer";
+  heart.style.pointerEvents = "auto"; // allow hover
+
+  // Create bubble element
+  const bubble = document.createElement("div");
+  bubble.textContent = "Liked by Zurrabunny!";
+  bubble.style.position = "absolute";
+  bubble.style.bottom = "87%"; // above the heart
+  bubble.style.right = "58%";
+  bubble.style.transform = "translateX(50%)";
+  bubble.style.background = "var(--color-5)";
+  bubble.style.color = "white";
+  bubble.style.padding = "4px 8px";
+  bubble.style.borderRadius = "6px";
+  bubble.style.fontSize = "0.7rem";
+  bubble.style.whiteSpace = "nowrap";
+  bubble.style.pointerEvents = "none";
+  bubble.style.opacity = "0";
+  bubble.style.transition = "opacity 0.2s";
+
+  // Show bubble on hover
+  heart.addEventListener("mouseenter", () => {
+    bubble.style.opacity = "1";
+  });
+  heart.addEventListener("mouseleave", () => {
+    bubble.style.opacity = "0";
+  });
+
+  div.appendChild(heart);
+  div.appendChild(bubble);
+}
+
+
+
         const img = document.createElement("img");
         img.src = imgUrl;
         img.alt = "drawing";
+        img.style.width = "200px";
+        img.style.height = "200px";
+        img.style.border = "4px solid var(--color-5)";
+        img.style.borderRadius = "4px";
+        img.style.objectFit = "contain";
 
-        // Make the image itself small
-        img.style.width = "200px";    // small width
-        img.style.height = "200px";   // small height
-        img.style.objectFit = "contain"; // preserve aspect ratio
-
-        // Create timestamp element
         const p = document.createElement("p");
         p.textContent = timestamp;
-        p.style.fontSize = "0.7rem"; // optional: smaller text
+        p.style.fontSize = "0.7rem";
 
         div.appendChild(img);
         div.appendChild(p);
