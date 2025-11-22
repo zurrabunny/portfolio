@@ -1,0 +1,548 @@
+---
+import WideContainer from '/src/components/WideContainer.astro';
+
+const modules = import.meta.glob('/src/content/oc/*.md', { eager: true });
+
+const characters = Object.values(modules).map(mod => {
+  let tags = mod.frontmatter.tags;
+  if (!tags) tags = [];
+  else if (!Array.isArray(tags)) tags = [tags];
+
+  return {
+    name: mod.frontmatter.name,
+    image: mod.frontmatter.image,
+    tags,
+    Component: mod.default
+  };
+});
+
+const priorityOrder = ["Lore OC", "First Generation", "Second Generation", "Third Generation" ,"Protagonist", "Antagonist"];
+
+const allTags = [
+  ...priorityOrder,
+  ...[...new Set(characters.flatMap(c => c.tags))]
+    .filter(tag => !priorityOrder.includes(tag))
+    .sort()
+];
+
+---
+
+<main class="content">
+  <WideContainer variant="static">
+    <div class="character-title-line">
+      <div class="character-line"></div>
+      <h1 id="character-title">OC Compendium</h1>
+      <div class="character-line"></div>
+    </div>
+	
+	<p>
+	This section is still a WIP! come back later :0
+	</p>
+
+    <div class="compendium-wrapper">
+      <!-- Left sidebar -->
+      <aside class="char-list">
+        <!-- Animated dropdown -->
+        <div class="tag-dropdown" id="char-tag-dropdown">
+          <button class="tag-toggle">
+            <span class="label">Filter by Tag</span>
+            <span class="arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </span>
+          </button>
+          <div class="tag-menu">
+            <label class="tag-option">
+              <input type="checkbox" value="all" checked />
+              <span>All Characters</span>
+            </label>
+            {allTags.map(tag => (
+              <label class="tag-option">
+                <input type="checkbox" value={tag} />
+                <span>{tag}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <ul id="char-list">
+          {characters.map((char, i) => (
+            <li
+              data-index={i}
+              data-tags={char.tags.join(',')}
+              class={i === 0 ? 'active' : ''}
+            >
+              {char.name}
+            </li>
+          ))}
+        </ul>
+      </aside>
+
+      <!-- Right info panel -->
+      <section class="char-info">
+        <div class="text-area">
+		  {characters.map((char, i) => (
+			<div class="char-desc" data-index={i} style={`display: ${i === 0 ? 'block' : 'none'};`}>
+			  
+			  <div class="name-row">
+				<h2>{char.name}</h2>
+
+				{char.tags.length > 0 && (
+				  <div class="inline-tags">
+					{char.tags.map(tag => (
+					  <span class="modal-tag">{tag}</span>
+					))}
+				  </div>
+				)}
+			  </div>
+
+			  <h3>{char.role}</h3>
+
+			  <char.Component />
+			</div>
+		  ))}
+		</div>
+
+
+        {characters.map((char, i) => (
+          <img
+            class="char-image"
+            data-index={i}
+            src={char.image}
+            alt={char.name}
+            style={`display: ${i === 0 ? 'block' : 'none'};`}
+          />
+        ))}
+      </section>
+    </div>
+  </WideContainer>
+</main>
+
+<script type="module">
+document.addEventListener("DOMContentLoaded", () => {
+  const listItems = document.querySelectorAll('#char-list li');
+  const descs = document.querySelectorAll('.char-desc');
+  const images = document.querySelectorAll('.char-image');
+
+  // Character selection
+  function selectCharacter(index) {
+    listItems.forEach(item => item.classList.remove('active'));
+    listItems[index].classList.add('active');
+    descs.forEach(d => (d.style.display = 'none'));
+    descs[index].style.display = 'block';
+    images.forEach(img => (img.style.display = 'none'));
+    images[index].style.display = 'block';
+  }
+
+  listItems.forEach((li, i) => li.addEventListener('click', () => selectCharacter(i)));
+
+const dropdown = document.getElementById("char-tag-dropdown");
+const toggle = dropdown.querySelector(".tag-toggle");
+const menu = dropdown.querySelector(".tag-menu");
+const checkboxes = dropdown.querySelectorAll(".tag-option input");
+let open = false;
+
+toggle.addEventListener("click", e => {
+  e.stopPropagation();
+  open = !open;
+  if(open){
+    menu.style.maxHeight = menu.scrollHeight + "px";
+    menu.style.opacity = "1";
+    menu.style.pointerEvents = "auto";
+  } else {
+    menu.style.maxHeight = "0px";
+    menu.style.opacity = "0";
+    menu.style.pointerEvents = "none";
+  }
+  toggle.classList.toggle("open", open);
+});
+
+// NEW: prevent dropdown from closing when clicking inside
+menu.addEventListener("click", e => e.stopPropagation());
+
+checkboxes.forEach(cb => {
+  cb.addEventListener("change", () => {
+    if(cb.value === "all" && cb.checked){
+      checkboxes.forEach(c => { if(c.value!=="all") c.checked=false; });
+    } else if(cb.value!=="all" && cb.checked){
+      dropdown.querySelector('input[value="all"]').checked=false;
+    }
+
+    const selectedTags = Array.from(checkboxes).filter(c=>c.checked && c.value!=="all").map(c=>c.value);
+    const useAll = selectedTags.length===0 || dropdown.querySelector('input[value="all"]').checked;
+
+    listItems.forEach(li=>{
+      const tags = li.dataset.tags ? li.dataset.tags.split(',').map(t=>t.trim()) : [];
+      li.style.display = useAll || selectedTags.every(tag=>tags.includes(tag)) ? '' : 'none';
+    });
+
+    const firstVisible = [...listItems].findIndex(li => li.style.display !== 'none');
+    if(firstVisible !== -1) selectCharacter(firstVisible);
+  });
+});
+
+
+  // Close dropdown on outside click
+  document.addEventListener("click", () => {
+    if(open){
+      open=false;
+      menu.style.maxHeight="0px";
+      menu.style.opacity="0";
+      menu.style.pointerEvents="none";
+      toggle.classList.remove("open");
+    }
+  });
+});
+</script>
+
+<style>
+
+h1 { font-size: 1.8rem; color: var(--color-1); margin-bottom: 1rem; }
+
+p, ul, li {
+color: var(--text-dark);
+}
+
+/* character title line styling */
+.character-title-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.character-line {
+  flex: 1;
+  height: 2px;
+  background-color: var(--color-6); /* adjust to visible color */
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Title styling */
+#character-title {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin: 0;
+  white-space: nowrap;
+  display: flex;
+  justify-content: center;
+}
+
+main.content {
+  flex: 1;
+  margin-left: 260px;
+  padding: 2rem;
+  color: var(--text-dark);
+}
+
+.compendium-wrapper {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Character List */
+.char-list {
+  width: 240px;
+  flex-shrink: 0;
+  border-right: 2px solid var(--color-4);
+  padding-right: 1rem;
+}
+
+.char-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 700px; /* adjust as needed */
+  overflow-y: auto;  /* enables vertical scrolling */
+  padding-right: 0.5rem;
+}
+
+/* Scrollbar styling for Webkit (Chrome, Edge, Safari) */
+.char-list ul::-webkit-scrollbar {
+  width: 8px;
+}
+
+.char-list ul::-webkit-scrollbar-thumb {
+  background-color: var(--color-1); /* visible color */
+  border-radius: 4px;
+}
+
+.char-list ul::-webkit-scrollbar-track {
+  background: var(--color-6); /* match sidebar bg */
+  border-radius: 4px;
+}
+
+/* Firefox scrollbar */
+.char-list ul {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-1) transparent;
+}
+
+.char-list li {
+  margin-bottom: 0.3rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  background: transparent;
+  color: var(--text-dark);
+  border-left: 3px solid transparent;
+}
+
+.char-list li:hover,
+.char-list li.active {
+  background: var(--color-6);
+  color: white;
+  font-weight: 600;
+  border-left: 3px solid var(--color-1);
+}
+
+/* Tag Dropdown */
+.tag-dropdown {
+  width: 100%;
+  position: relative;
+  margin-bottom: 1rem;
+  z-index: 1000;
+}
+
+.tag-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.45rem 0.7rem;
+  cursor: pointer;
+  border-radius: 0.45rem;
+  border: 2px solid var(--color-5);
+  background: var(--color-5);
+  font-weight: 600;
+  transition: all 0.25s ease;
+  height: 36px;
+  box-sizing: border-box;
+}
+
+.tag-toggle.open {
+  background: var(--color-3);
+  color: var(--text-main);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.tag-toggle .arrow {
+  transition: transform 0.25s ease;
+}
+
+.tag-toggle.open .arrow {
+  transform: rotate(180deg);
+}
+
+.tag-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 99%;
+  background: var(--color-6);
+  border: 2px solid var(--color-5);
+  border-top: none;
+  border-radius: 0 0 0.45rem 0.45rem;
+  max-height: 0;
+  opacity: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  transition: max-height 0.35s ease, opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 2000;
+}
+
+.tag-option {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: var(--text-main);
+  padding: 5px 10px;
+  border-radius: 6px;
+  user-select: none;
+}
+
+.tag-option input[type="checkbox"] {
+  display: none;
+}
+
+.tag-option span::before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--color-2);
+  border-radius: 4px;
+  margin-right: 8px;
+  display: inline-block;
+  background: var(--color-6);
+}
+
+.tag-option input:checked + span::before {
+  content: "✔";
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  color: var(--color-2);
+}
+
+.tag-option:hover {
+  color: var(--color-1);
+}
+
+/* Character Info */
+.char-info {
+  flex: 1;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  background: var(--color-6);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 2px solid var(--color-2);
+}
+
+.char-info .text-area {
+  flex: 1;
+}
+
+.char-info img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  border: 2px solid var(--color-2);
+}
+
+.char-info h2 {
+  margin: 0 0 0.3rem 0;
+  font-size: 1.6rem;
+  color: var(--color-1);
+}
+
+.char-info h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-dark);
+}
+
+.card-tags {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.name-row {
+  display: flex;
+  align-items: baseline; /* align tags to text baseline instead of center */
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.inline-tags .modal-tag {
+  display: inline-flex;       /* keep it nicely aligned */
+  align-items: center;
+  transform: translateY(-4px); /* adjust value: -2px..-6px */
+}
+
+.modal-tag {
+  background-color: var(--color-5);
+  color: var(--text-main);
+  font-size: 0.75rem;
+  margin-right: 0.8rem;
+  font-weight: 500;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .compendium-wrapper {
+    flex-direction: column;
+  }
+  
+  .char-info {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .char-info img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .char-list {
+    width: 100%;
+    border-right: none;
+    padding-right: 0;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .compendium-wrapper {
+    flex-direction: column;
+  }
+  
+  .char-info {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .char-info img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .char-list {
+    width: 100%;
+    border-right: none;
+    padding-right: 0;
+    margin-bottom: 1rem;
+    max-height: 300px; /* adjust as needed */
+    overflow-y: auto;  /* enable scrolling */
+  }
+
+  /* optional: make scrollbar visible on mobile */
+  .char-list::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .char-list::-webkit-scrollbar-thumb {
+    background-color: var(--color-1);
+    border-radius: 3px;
+  }
+  
+  .char-list::-webkit-scrollbar-track {
+    background: var(--color-6);
+  }
+  
+  /* Firefox */
+  .char-list {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-1) var(--color-6);
+  }
+  
+  main.content {
+  flex: 1;
+  margin: 1px;
+  padding: 0.5rem;
+  color: var(--text-dark);
+  }
+}
+
+</style>
+

@@ -5,6 +5,7 @@ import Blog from './pages/Blog.astro';
 import Contact from './pages/Contact.astro';
 import Devlog from './pages/Devlog.astro';
 import VisitorLounge from './pages/VisitorLounge.astro';
+import CharacterList from './pages/CharacterList.astro';
 ---
 
 <div id="about-container" class="fade-section show">
@@ -29,6 +30,10 @@ import VisitorLounge from './pages/VisitorLounge.astro';
 
 <div id="visitor-container" class="fade-section">
   <VisitorLounge />
+</div>
+
+<div id="oc-container" class="fade-section">
+  <CharacterList />
 </div>
 
 <style>
@@ -66,7 +71,8 @@ const sections = {
   blog: document.getElementById('blog-container'),
   contact: document.getElementById('contact-container'),
   devlog: document.getElementById('devlog-container'),
-  visitor: document.getElementById('visitor-container')
+  visitor: document.getElementById('visitor-container'),
+  oc: document.getElementById('oc-container')
 };
 
 const navTabs = document.querySelectorAll('.sidebar .tab');
