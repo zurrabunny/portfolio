@@ -47,7 +47,6 @@ html, body {
   Color Palette & Dark Mode
 ==========================*/
 :root {
-  /* Pink-Red Palette */
   --color-1: #c62e3f;
   --color-2: #cf3c4d;
   --color-3: #d85868;
@@ -85,7 +84,6 @@ html, body {
 }
 
 :root.dark-mode {
-  /* Deep, moody accent colors */
   --color-1: #B84B68;
   --color-2: #BF5A68;
   --color-3: #421E24;
