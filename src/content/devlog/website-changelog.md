@@ -187,6 +187,18 @@ tags: ["Process"]
 	
 	</ul>
 	
+	<h3>November 23 2025</h3>
+	<ul>
+	<li>Visitor's Lounge Tab :
+		<ul>
+		<li>implemented Reserved Name Protection
+			<ul>
+			<li>you cant go as "zurrabunny" in the message board :^
+			</ul>
+		</ul>
+	
+	</ul>
+	
 </div>
 
 <style>

@@ -1,0 +1,35 @@
+---
+const { variant = "fixed", class: extraClass } = Astro.props;
+const classes = `wide-container ${variant === "static" ? "container--static" : "container--fixed"} ${extraClass ?? ""}`.trim();
+import "../styles/global.css";
+---
+
+<div class={classes}>
+  <slot />
+</div>
+
+<style>
+.wide-container {
+  box-sizing: border-box;
+  border: 2px solid var(--border-sidebar);
+
+  /* Make container wider */
+  max-width: 1400px;  /* or more if you want */
+  width: 95%;         /* fill most of viewport */
+  margin-inline: auto; /* center horizontally */
+  padding: 2rem;      /* inner spacing */
+}
+
+/* Fade transitions for static container */
+.fade-enter {
+  opacity: 0;
+}
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+</style>

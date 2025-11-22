@@ -229,8 +229,20 @@ function addTextToGallery(name, text, timestamp, liked = false) {
 document.getElementById("text-submit").addEventListener("click", async () => {
   const name = document.getElementById("username").value.trim();
   const text = textCanvas.value.trim();
-  if (!name) { statusText.textContent = "Please enter your name first."; return; }
+
+  if (!name) {
+    statusText.textContent = "Please enter your name first.";
+    return;
+  }
+
+  // ❌ Block sending when the name is "ZurraBunny"
+  if (name.toLowerCase() === "zurrabunny") {
+    statusText.textContent = "You cant use my name! >:^";
+    return;
+  }
+
   if (!text) return;
+
 
   const timestamp = formatTimestamp();
   const combined = `${name}: ${text} || ${timestamp}`;
