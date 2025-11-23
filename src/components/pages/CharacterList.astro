@@ -11,6 +11,11 @@ const characters = Object.values(modules).map(mod => {
   return {
     name: mod.frontmatter.name,
     image: mod.frontmatter.image,
+    role: mod.frontmatter.role || "",
+    age: mod.frontmatter.age || "",           // ← ADDED
+    height: mod.frontmatter.height || "",     // ← ADDED
+    gender: mod.frontmatter.gender || "",     // ← ADDED
+    pronouns: mod.frontmatter.pronouns || "", // ← ADDED
     tags,
     Component: mod.default
   };
@@ -24,7 +29,6 @@ const allTags = [
     .filter(tag => !priorityOrder.includes(tag))
     .sort()
 ];
-
 ---
 
 <main class="content">
@@ -47,10 +51,10 @@ const allTags = [
           <button class="tag-toggle">
             <span class="label">Filter by Tag</span>
             <span class="arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M6 9l6 6 6-6" />
-        </svg>
-      </span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </span>
           </button>
           <div class="tag-menu">
             <label class="tag-option">
@@ -106,13 +110,26 @@ const allTags = [
 
 
         {characters.map((char, i) => (
-          <img
-            class="char-image"
+          <div
+            class="char-image-wrapper"
             data-index={i}
-            src={char.image}
-            alt={char.name}
-            style={`display: ${i === 0 ? 'block' : 'none'};`}
-          />
+            style={`display: ${i === 0 ? 'flex' : 'none'}; flex-direction: column; align-items: center;`}
+          >
+            <img
+              class="char-image"
+              src={char.image}
+              alt={char.name}
+            />
+
+            <div class="char-info-text">
+			<h2>Basic Info</h2>
+			  <p><strong>Age:</strong> {char.age || "—"}</p>
+			  <p><strong>Height:</strong> {char.height || "—"}</p>
+			  <p><strong>Gender:</strong> {char.gender || "—"}</p>
+			  <p><strong>Pronouns:</strong> {char.pronouns || "—"}</p>
+			</div>
+
+          </div>
         ))}
       </section>
     </div>
@@ -123,7 +140,7 @@ const allTags = [
 document.addEventListener("DOMContentLoaded", () => {
   const listItems = document.querySelectorAll('#char-list li');
   const descs = document.querySelectorAll('.char-desc');
-  const images = document.querySelectorAll('.char-image');
+  const images = document.querySelectorAll('.char-image-wrapper');
 
   // Character selection
   function selectCharacter(index) {
@@ -132,58 +149,58 @@ document.addEventListener("DOMContentLoaded", () => {
     descs.forEach(d => (d.style.display = 'none'));
     descs[index].style.display = 'block';
     images.forEach(img => (img.style.display = 'none'));
-    images[index].style.display = 'block';
+    images[index].style.display = 'flex';
   }
 
   listItems.forEach((li, i) => li.addEventListener('click', () => selectCharacter(i)));
 
-const dropdown = document.getElementById("char-tag-dropdown");
-const toggle = dropdown.querySelector(".tag-toggle");
-const menu = dropdown.querySelector(".tag-menu");
-const checkboxes = dropdown.querySelectorAll(".tag-option input");
-let open = false;
+  const dropdown = document.getElementById("char-tag-dropdown");
+  const toggle = dropdown.querySelector(".tag-toggle");
+  const menu = dropdown.querySelector(".tag-menu");
+  const checkboxes = dropdown.querySelectorAll(".tag-option input");
+  let open = false;
 
-toggle.addEventListener("click", e => {
-  e.stopPropagation();
-  open = !open;
-  if(open){
-    menu.style.maxHeight = menu.scrollHeight + "px";
-    menu.style.opacity = "1";
-    menu.style.pointerEvents = "auto";
-  } else {
-    menu.style.maxHeight = "0px";
-    menu.style.opacity = "0";
-    menu.style.pointerEvents = "none";
-  }
-  toggle.classList.toggle("open", open);
-});
-
-// NEW: prevent dropdown from closing when clicking inside
-menu.addEventListener("click", e => e.stopPropagation());
-
-checkboxes.forEach(cb => {
-  cb.addEventListener("change", () => {
-    if(cb.value === "all" && cb.checked){
-      checkboxes.forEach(c => { if(c.value!=="all") c.checked=false; });
-    } else if(cb.value!=="all" && cb.checked){
-      dropdown.querySelector('input[value="all"]').checked=false;
+  toggle.addEventListener("click", e => {
+    e.stopPropagation();
+    open = !open;
+    if(open){
+      menu.style.maxHeight = menu.scrollHeight + "px";
+      menu.style.opacity = "1";
+      menu.style.pointerEvents = "auto";
+    } else {
+      menu.style.maxHeight = "0px";
+      menu.style.opacity = "0";
+      menu.style.pointerEvents = "none";
     }
-
-    const selectedTags = Array.from(checkboxes).filter(c=>c.checked && c.value!=="all").map(c=>c.value);
-    const useAll = selectedTags.length===0 || dropdown.querySelector('input[value="all"]').checked;
-
-    listItems.forEach(li=>{
-      const tags = li.dataset.tags ? li.dataset.tags.split(',').map(t=>t.trim()) : [];
-      li.style.display = useAll || selectedTags.every(tag=>tags.includes(tag)) ? '' : 'none';
-    });
-
-    const firstVisible = [...listItems].findIndex(li => li.style.display !== 'none');
-    if(firstVisible !== -1) selectCharacter(firstVisible);
+    toggle.classList.toggle("open", open);
   });
-});
 
+  menu.addEventListener("click", e => e.stopPropagation());
 
-  // Close dropdown on outside click
+  checkboxes.forEach(cb => {
+    cb.addEventListener("change", () => {
+      if(cb.value === "all" && cb.checked){
+        checkboxes.forEach(c => { if(c.value!=="all") c.checked=false; });
+      } else if(cb.value!=="all" && cb.checked){
+        dropdown.querySelector('input[value="all"]').checked=false;
+      }
+
+      const selectedTags = Array.from(checkboxes)
+        .filter(c=>c.checked && c.value!=="all")
+        .map(c=>c.value);
+
+      const useAll = selectedTags.length===0 || dropdown.querySelector('input[value="all"]').checked;
+
+      listItems.forEach(li=>{
+        const tags = li.dataset.tags ? li.dataset.tags.split(',').map(t=>t.trim()) : [];
+        li.style.display = useAll || selectedTags.every(tag=>tags.includes(tag)) ? '' : 'none';
+      });
+
+      const firstVisible = [...listItems].findIndex(li => li.style.display !== 'none');
+      if(firstVisible !== -1) selectCharacter(firstVisible);
+    });
+  });
+
   document.addEventListener("click", () => {
     if(open){
       open=false;
@@ -197,6 +214,37 @@ checkboxes.forEach(cb => {
 </script>
 
 <style>
+/* IMAGE INFO (UPDATED STYLE) */
+.char-image-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 320px; /* match the image width */
+  background-color: var(--color-3);
+  border-radius: 1rem;
+  border: 2px solid var(--color-2);
+  padding-bottom: 1rem;
+}
+
+.char-info-text {
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  width: 100%;   /* fill the wrapper */
+  text-align: left;
+}
+
+.char-info-text h2 {
+  margin-top: 0.6rem;
+  color: var(--text-dark);
+  width: 100%;      /* fill the wrapper */
+  text-align: center; /* center only the h2 */
+}
+
+.char-info-text p {
+  margin: 2px 0;
+  padding-left: 1.2rem;
+}
 
 h1 { font-size: 1.8rem; color: var(--color-1); margin-bottom: 1rem; }
 
@@ -417,11 +465,11 @@ main.content {
 }
 
 .char-info img {
-  width: 200px;
-  height: 200px;
+  width: 320px;
+  height: 320px;
   object-fit: cover;
-  border-radius: 0.75rem;
-  border: 2px solid var(--color-2);
+  border-radius: 1rem 1rem 0rem 0rem;
+  border-bottom: 2px solid var(--color-2);
 }
 
 .char-info h2 {
