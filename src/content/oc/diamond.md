@@ -33,7 +33,7 @@ pronouns: He/Him
 
   <div class="info-stuffs">
   He has black wolf-cut hair and wears diamond-shaped earrings. His usual outfit includes a black shirt with a messy,
-  unkempt lab coat worn underneath, along with black pants, dark gray sweatpants, and long black boots.
+  unkempt lab coat worn underneath, along with dark gray sweatpants, and long black boots.
   </div>
 
   <div class="char-description-title-line">

@@ -29,7 +29,7 @@ pronouns: He/Him
   </div>
 
   <div class="info-stuffs">
-  Boomer has large, brownish-orange fluffy fur, a black nose, and black eyes. He sometimes wears a blue bike helmet.
+  Boomer has large, brownish-orange fluffy fur, a black nose, and black eyes, with cat like ears. He sometimes wears a blue bike helmet.
   </div>
 
   <div class="char-description-title-line">

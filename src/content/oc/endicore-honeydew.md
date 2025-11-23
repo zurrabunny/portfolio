@@ -18,7 +18,12 @@ pronouns: He/Him
   </div>
 
   <div class="info-stuffs">
-  a
+  Endicore Honeydew is the tough yet playful father of the Honeydew family and husband of Agatha Honeydew.
+  He resides in the serene neighborhood of Azalea Hills and serves as Chief Strategy Officer & Head of Robotic Engineering.
+  Endicore typically works from home, managing company operations and strategic planning from his home
+  office while also taking care of Bee. On occasions when he must attend in-person meetings, Bee is left
+  alone, so he created caretaker bots, Tune-Up and a House System Moderation Unit (MUni) to ensure Bee never feels lonely.
+  Diamond Montgomery, the next in line for CEO, is Endicore's former friend and longtime rival.
   </div>
 
   <div class="char-description-title-line">
@@ -28,7 +33,10 @@ pronouns: He/Him
   </div>
 
   <div class="info-stuffs">
-  a
+  He has dark skin and black spiky hair, accessorized with a dark purple sweatband.
+  His usual outfit reflects a typical stay-at-home father. When at work, he wears a
+  black shirt layered under a neat lab coat, paired with black pants and polished
+  black shoes. He completes his professional look with slim rectangular glasses.
   </div>
 
   <div class="char-description-title-line">
@@ -38,7 +46,11 @@ pronouns: He/Him
   </div>
 
   <div class="info-stuffs">
-  a
+  Endicore is a tough but playful father who loves spending time with Bee more than anything.
+  He comes across as confident and successful, believing his work defines his worth.
+  But underneath, he struggles with self-doubt, often hiding it behind pride and the
+  idea that achievements can make him feel complete. Sometimes, he looks at the world
+  and others with a sense of superiority, revealing his fear of not being enough.
   </div>
 
   <div class="char-description-title-line">

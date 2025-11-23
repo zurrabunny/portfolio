@@ -18,7 +18,11 @@ pronouns: It/Its
   </div>
 
   <div class="info-stuffs">
-  a
+  Lust dwells beneath the Wreckage of the Seraphic Superstructure,
+  its resting place. It seeks those on the edge of despair, whispering
+  temptations and false promises. Drawing them into indulgence and
+  obsession, it feeds on their desires and weaknesses, thriving in
+  the emptiness of others while hiding its own endless hunger.
   </div>
 
   <div class="char-description-title-line">
@@ -28,7 +32,9 @@ pronouns: It/Its
   </div>
 
   <div class="info-stuffs">
-  a
+  Its visible features include a white mask and an armor-like body in red and blue,
+  lined with gold. Though it has no arms, 4 gloves seem to take their place. Its armor
+  is marked with subtle symbols, and its form and armor appears to extend downward
   </div>
 
   <div class="char-description-title-line">
@@ -38,7 +44,10 @@ pronouns: It/Its
   </div>
 
   <div class="info-stuffs">
-  a
+  Lust is manipulative, charming, and cunning, hiding its endless hunger behind a mask of
+  spiritual or intellectual sophistication. It judges and exploits others while refusing
+  to face its own flaws, feeding on weakness, desire, and dependence. Restless and insatiable,
+  it constantly seeks validation, control, and admiration to fill its inner emptiness.
   </div>
 
   <div class="char-description-title-line">

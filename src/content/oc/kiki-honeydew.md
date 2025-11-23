@@ -18,7 +18,7 @@ pronouns: She/Her
   </div>
 
   <div class="info-stuffs">
-  a
+  Kiki Honeydew is the Honeydew Family's pet Shih Tzu, Bee finds comfort it hanging out and taking care of her.
   </div>
 
   <div class="char-description-title-line">
@@ -28,7 +28,7 @@ pronouns: She/Her
   </div>
 
   <div class="info-stuffs">
-  a
+  Kiki has soft dirty white fur, a black nose and black eyes, with flabby ears. She sometimes wears a strawberry dog dress
   </div>
 
   <div class="char-description-title-line">
@@ -38,7 +38,8 @@ pronouns: She/Her
   </div>
 
   <div class="info-stuffs">
-  a
+  Kiki is very hyperactive, and would leave a mess everywhere if not properly groomed / tended to.
+  But she's a loyal dog that turns defensive when she thinks Bee is threatened with other people, which makes Bee happy.
   </div>
 
   <div class="char-description-title-line">
@@ -48,7 +49,9 @@ pronouns: She/Her
   </div>
 
   <div class="info-stuffs">
-  a
+  <ul>
+	<li>Kiki was my dog irl!
+  </ul>
   </div>
 
 
