@@ -18,7 +18,12 @@ pronouns: She/Her
   </div>
 
   <div class="info-stuffs">
-  a
+  Bee Honeydew is the only child of the Honeydew family, daughter of
+  Agatha and Endicore Honeydew. Her life is usually mundane, helping
+  around the house when her parents are away. She finds comfort in her pet dogs,
+  Kiki and Boomer, aswell as the company of her caretaker robots, Tune-Up and MUni Honeydew. While she
+  appreciates having robot companions, she struggles to connect with other
+  people. Her only friend is Rosaline Mayberry, whom she secretly has feelings for.
   </div>
 
   <div class="char-description-title-line">
@@ -28,7 +33,9 @@ pronouns: She/Her
   </div>
 
   <div class="info-stuffs">
-  a
+  She has short, orange hair and wears an antenna headband. When going outside,
+  she wears a summer dress paired with white knee-high socks and white slippers.
+  She also wears a sun hat and carries a white sling bag.
   </div>
 
   <div class="char-description-title-line">
@@ -38,7 +45,14 @@ pronouns: She/Her
   </div>
 
   <div class="info-stuffs">
-  a
+  Bee struggles to find her true self beneath layers of borrowed
+  identities. She often imitates her parents, friends, or whoever she feels she should
+  be, thinking that performing for others will protect her from fault. Yet these masks
+  only deepen her emptiness and insecurities.
+
+  She seeks comfort in illusions, pretending to be the perfect daughter, fearless friend,
+  or untouchable rebel. These roles offer temporary sweetness but leave her further from
+  who she really is. Sometimes she finds fun in playing these parts, but other times it can be exhausting.
   </div>
 
   <div class="char-description-title-line">

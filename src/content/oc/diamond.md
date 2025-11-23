@@ -1,5 +1,5 @@
 ---
-name: Diamond
+name: Diamond Montgomery
 image: /images/sample.png
 tags: ["First Generation", "Antagonist", "Lore OC"]
 age: 42
@@ -18,7 +18,11 @@ pronouns: He/Him
   </div>
 
   <div class="info-stuffs">
-  a
+  Diamond Montgomery is Endicore's co-worker / rival and the son of Edmund Montgomery, the owner of Seraphic Co.
+  He chose to follow in his father’s footsteps, but with a different vision. Rather than focusing on helping
+  inventors bring their ideas to life, Diamond aimed to transform Seraphic Co. into a multi-million dollar
+  conglomerate. He believed that he had the vision and creativity to drive the company forward, rendering
+  outside inventors’ ideas unnecessary.
   </div>
 
   <div class="char-description-title-line">
@@ -28,7 +32,8 @@ pronouns: He/Him
   </div>
 
   <div class="info-stuffs">
-  a
+  He has black wolf-cut hair and wears diamond-shaped earrings. His usual outfit includes a black shirt with a messy,
+  unkempt lab coat worn underneath, along with black pants, dark gray sweatpants, and long black boots.
   </div>
 
   <div class="char-description-title-line">
@@ -38,7 +43,11 @@ pronouns: He/Him
   </div>
 
   <div class="info-stuffs">
-  a
+  He is a man driven by ambition, masking his desire for power,
+  wealth, and superiority as righteous duty. Every scheme for
+  dominance is justified as preserving order or protecting purity,
+  though it primarily serves his own interests. Weakness in others
+  fuels his contempt, which in turn drives his ambition.
   </div>
 
   <div class="char-description-title-line">

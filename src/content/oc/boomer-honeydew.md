@@ -18,7 +18,8 @@ pronouns: He/Him
   </div>
 
   <div class="info-stuffs">
-  a
+  Boomer Honeydew is the Honeydew Family's pet Chow-Chow, Bee finds comfort in hanging out
+  and taking care of him.
   </div>
 
   <div class="char-description-title-line">
@@ -28,7 +29,7 @@ pronouns: He/Him
   </div>
 
   <div class="info-stuffs">
-  a
+  Boomer has large, brownish-orange fluffy fur, a black nose, and black eyes. He sometimes wears a blue bike helmet.
   </div>
 
   <div class="char-description-title-line">
@@ -38,7 +39,7 @@ pronouns: He/Him
   </div>
 
   <div class="info-stuffs">
-  a
+  Boomer is very clumsy, hence why he needs the bike helmet on his head. But he's a loving dog that always makes Bee happy
   </div>
 
   <div class="char-description-title-line">
@@ -48,7 +49,9 @@ pronouns: He/Him
   </div>
 
   <div class="info-stuffs">
-  a
+	  <ul>
+	  <li>Boomer was my dog irl! He also wore a bike helmet irl
+	  </ul>
   </div>
 
 

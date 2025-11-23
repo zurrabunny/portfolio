@@ -18,7 +18,10 @@ pronouns: She/They
   </div>
 
   <div class="info-stuffs">
-  a
+  Natala is a widowed co-chief of her village. She spent her entire life
+  training to be a shaman for the chief, but her childhood love for arts
+  and crafts never faded. Instead of fully committing to shamanism, she
+  became a part-time shaman and focused her energy on being a basket weaver.
   </div>
 
   <div class="char-description-title-line">
@@ -28,7 +31,12 @@ pronouns: She/They
   </div>
 
   <div class="info-stuffs">
-  a
+  Her skin is a warm brown, and she has bright mint-green
+  hair styled in a fluffy bob that covers one eye. A leafy
+  crown made of white pandan-shaped leaves rests on top of
+  her hair. She wears a flowy green dress with layered stripes
+  in different shades of green and yellow. Around her neck is
+  a small teal necklace. Her one visible eye is a light teal.
   </div>
 
   <div class="char-description-title-line">
@@ -38,7 +46,15 @@ pronouns: She/They
   </div>
 
   <div class="info-stuffs">
-  a
+  Natala is ambitious and always tries to help her tribe, but she’s also a bit delulu.
+  she still dreams about finding a new partner someday. She has a lot of stress bottled
+  up, so she often vents to an earth spirit that lives in a rock inside her kubo, which
+  makes people think she’s a little strange.
+
+  She cares for six buko pup-pies, with Koko being her favorite, and looking after them
+  helps her feel less alone. Even though her life has been tragic and tiring, she stays
+  grounded by weaving baskets for the village. It’s the one thing that helps her relax
+  and clear her mind.
   </div>
 
   <div class="char-description-title-line">
@@ -48,7 +64,10 @@ pronouns: She/They
   </div>
 
   <div class="info-stuffs">
-  a
+  <ul>
+	<li>Her design / artstyle choice was inspired by Cookie Run
+	<li>She is a character for Balai Dulce, from Tamis Tinta Publishing
+  </ul>
   </div>
 
 
