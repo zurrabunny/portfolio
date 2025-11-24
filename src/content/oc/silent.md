@@ -1,7 +1,7 @@
 ---
 name: Silent
 image: /images/sample.png
-tags: ["Third Generation", "Antagonist", "Lore OC"]
+tags: ["First Generation", "Antagonist", "Lore OC"]
 age: undefined
 height: 5'7"
 gender: undefined

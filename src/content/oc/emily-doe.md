@@ -18,7 +18,9 @@ pronouns: She/Her
   </div>
 
   <div class="info-stuffs">
-  a
+  Emily Doe is a bookworm who spends most of her free time curled up with slow-burn romance novels.
+  She enjoys taking her time with each story, getting absorbed in the small moments and quiet tension
+  between characters. Emily prefers peaceful corners, soft lighting, and calm places where she can read without interruption/
   </div>
 
   <div class="char-description-title-line">
@@ -28,7 +30,10 @@ pronouns: She/Her
   </div>
 
   <div class="info-stuffs">
-  a
+  She has a mix of dark and light fur with light spots on the darker areas, similar to a doe.
+  She wears rounded glasses, a cream long-sleeve polo, and a crimson vest underneath.
+  She also wears a dark-red skirt, white knee-high socks, and has black hooves.
+  Her hair is short, brown, and poofy, and she has a short tail.
   </div>
 
   <div class="char-description-title-line">
@@ -38,7 +43,11 @@ pronouns: She/Her
   </div>
 
   <div class="info-stuffs">
-  a
+  Emily is gentle, soft-spoken, and deeply introverted. She prefers quiet, familiar spaces where she can
+  stay indoors and enjoy her own company. She’s patient and thoughtful, taking her time with everything
+  she does. Emily gets attached easily and forms quiet, steady bonds with the people she trusts. She can
+  be shy at first, but she becomes warm and caring once she feels comfortable. She’s sentimental, dreamy,
+  and finds comfort in slow, simple moments that feel calm and steady.
   </div>
 
   <div class="char-description-title-line">
@@ -48,7 +57,9 @@ pronouns: She/Her
   </div>
 
   <div class="info-stuffs">
-  a
+  <ul>
+  <li>mmmm emma
+  </ul>
   </div>
 
 
