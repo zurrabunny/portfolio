@@ -213,13 +213,6 @@ function addTextToGallery(name, text, timestamp, liked = false) {
 
   gallery.appendChild(wrapper);
 
-  const divider = document.createElement("hr");
-  divider.style.border = "0";
-  divider.style.height = "1px";
-  divider.style.background = "var(--color-4)";
-  divider.style.margin = "0.5rem 0";
-  gallery.appendChild(divider);
-
   gallery.scrollTop = gallery.scrollHeight;
 }
 
@@ -261,7 +254,6 @@ document.getElementById("text-submit").addEventListener("click", async () => {
   }
 });
 
-// FETCH EXISTING TEXTS
 async function fetchTexts() {
   try {
     const response = await fetch(GOOGLE_SHEET_CSV);
@@ -285,7 +277,36 @@ async function fetchTexts() {
 
       const liked = columns[2] && columns[2].trim().toLowerCase() === "true";
 
+      // Column D → your reply
+      const replyText = columns[3] ? columns[3].trim() : "";
+
+      // wrapper for everything (message + reply + divider)
+      const block = document.createElement("div");
+
+      // message
       addTextToGallery(name, messageText, timestamp, liked);
+
+      // reply (if exists)
+      if (replyText !== "") {
+        const replyBox = document.createElement("div");
+        replyBox.style.margin = "6px 0 10px 20px";
+        replyBox.style.padding = "6px 10px";
+        replyBox.style.borderLeft = "3px solid var(--color-4)";
+        replyBox.style.background = "var(--color-6)";
+        replyBox.style.borderRadius = "6px";
+        replyBox.style.color = "var(--text-dark)";
+        replyBox.textContent = `ZurraBunny replied: ${replyText}`;
+        gallery.appendChild(replyBox);
+      }
+
+      // ✅ divider always goes LAST → right under reply or message
+      const divider = document.createElement("hr");
+      divider.style.border = "0";
+      divider.style.height = "1px";
+      divider.style.background = "var(--color-4)";
+      divider.style.margin = "0.5rem 0";
+
+      gallery.appendChild(divider);
     });
 
     gallery.scrollTop = gallery.scrollHeight;
@@ -294,6 +315,8 @@ async function fetchTexts() {
     gallery.textContent = "Failed to load texts.";
   }
 }
+
+
 
 fetchTexts();
 </script>
