@@ -1,14 +1,81 @@
 <style>
 
-/* Center all controls */
+/* ---------- Color Picker Container ---------- */
 #controls {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center; /* center horizontally */
-    align-items: center;     /* center vertically if needed */
-    gap: 0.5rem;             /* spacing between items */
-    margin-bottom: 1rem;     /* space below controls */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1rem;
+  padding: 0.6rem 1rem;
 }
+
+/* ---------- Styled Color Picker ---------- */
+input[type="color"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 45px;
+  height: 45px;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid var(--color-5);
+  cursor: pointer;
+  background: var(--color-6);
+  transition: transform 0.2s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Remove default swatch border */
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+}
+
+/* Hover & focus effects */
+input[type="color"]:hover {
+  border-color: var(--color-2);
+}
+
+/* ---------- Range Slider Styling ---------- */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 150px;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--color-5);
+  cursor: pointer;
+  accent-color: var(--color-2);
+  transition: all 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--color-2);
+  border-radius: 50%;
+  border: 2px solid var(--color-3);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--color-2);
+  border-radius: 50%;
+  border: 2px solid var(--color-3);
+  cursor: pointer;
+}
+
 
 
 /* ---------- Canvas ---------- */
@@ -187,7 +254,6 @@ h1 {
   opacity: 1;
   transform: translateX(-50%) translateY(-3px);
 }
-
 
 </style>
 
