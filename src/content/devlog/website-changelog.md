@@ -200,6 +200,20 @@ tags: ["Process"]
 	
 	</ul>
 	
+	<h3>November 23 2025</h3>
+	<ul>
+	<li>Blogs Tab :
+		<ul>
+		<li>made the container modal wider
+		</ul>
+		
+	<li>Visitor's Lounge Tab :
+		<ul>
+		<li>made the container wider
+		</ul>
+	
+	</ul>
+	
 </div>
 
 <style>
