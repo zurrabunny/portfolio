@@ -16,14 +16,14 @@ import ToDos from "./blog_modules/ToDos.astro";
   
     <!-- TAB BUTTONS -->
     <div class="growth-goal-tab">
-      <button class="goal-btn active" data-goal="drawbox">Life Map</button>
-      <button class="goal-btn" data-goal="textbox">To-Do List</button>
+      <button class="goal-btn active" data-goal="goal-life-map">Life Map</button>
+      <button class="goal-btn" data-goal="goal-to-do">To-Do List</button>
     </div>
   
     <!-- TAB CONTENT -->
     <div class="goal-content">
-      <div id="drawbox" class="goal-panel active">
-	  <h3>Life Map</h3>
+      <div id="goal-life-map" class="goal-panel active">
+	    <h3>Life Map</h3>
 		<p class="goal-description">
 		  This section shows how I plan to grow, the skills I’m building,
 		  challenges I face, and goals I aim to reach. It tracks my progress year by year!! >:D<br>
@@ -32,8 +32,8 @@ import ToDos from "./blog_modules/ToDos.astro";
         <LifeMap />
       </div>
 
-      <div id="textbox" class="goal-panel">
-	  <h3>To-Do List</h3>
+      <div id="goal-to-do" class="goal-panel">
+	    <h3>To-Do List</h3>
 	    <p class="goal-description">
 		  This section shows a table of my ongoing tasks and deadlines!<br>
 		</p>
@@ -53,7 +53,7 @@ document.querySelectorAll(".goal-btn").forEach(btn => {
 
     // Set new active
     btn.classList.add("active");
-    const panelId = btn.dataset.goal; // fixed to match data-goal
+    const panelId = btn.dataset.goal;
     document.getElementById(panelId).classList.add("active");
   });
 });
