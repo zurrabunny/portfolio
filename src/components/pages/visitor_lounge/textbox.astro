@@ -80,6 +80,10 @@
   font-family: inherit;
 }
 
+#text-rules {
+color: var(--text-dark);
+}
+
 /* ---------- Right: Messages area ---------- */
 #text-gallery-wrapper {
   flex: 1;
@@ -132,6 +136,9 @@
       <button id="text-submit" class="text-button">Submit Text</button>
     </div>
     <div id="text-status"></div>
+    <div id="text-rules">
+	<p>NOTE : The message board is for<br>feedback / compliments / criticisms<br>of my service / website!<br><br><strong>Do not contact me here<br>under any circumstances.</strong><br>Thank you! :D</p>
+	</div>
   </div>
 
   <div id="text-gallery-wrapper">
@@ -290,8 +297,8 @@ async function fetchTexts() {
       if (replyText !== "") {
         const replyBox = document.createElement("div");
         replyBox.style.margin = "6px 0 10px 20px";
-        replyBox.style.padding = "6px 10px";
-        replyBox.style.borderLeft = "3px solid var(--color-4)";
+        replyBox.style.padding = "10px";
+        replyBox.style.border = "1px solid var(--color-4)";
         replyBox.style.background = "var(--color-6)";
         replyBox.style.borderRadius = "6px";
         replyBox.style.color = "var(--text-dark)";

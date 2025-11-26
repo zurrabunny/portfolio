@@ -231,7 +231,14 @@ tags: ["Process"]
 	<li>OC Compendium Tab :
 		<ul>
 		<li>added "Basic Info : Aliases"
+		</ul>
 	</ul>
+	
+	<li>Visitor's Lounge Tab :
+		<ul>
+		<li>added "Note" in Message Board
+		<li>tweaked Reply Style
+		</ul>
 	</ul>
 	
 </div>
