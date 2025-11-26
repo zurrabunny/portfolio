@@ -6,6 +6,7 @@ age: undefined
 height: 5'4"
 gender: Female
 pronouns: She/Her
+alias: ["Aurora", "Bearer Of Knowledge", "The Truth"]
 ---
 
 

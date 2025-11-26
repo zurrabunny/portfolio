@@ -6,6 +6,7 @@ age: 10th Generation Iterator
 height: 503,300 miles (Structure) / 4'11 (Puppet)
 gender: Female
 pronouns: She/Her
+alias: ["Tethered Beyond Horizons", "TBH", "Lil Sis (Her Local Group)"]
 ---
 
 

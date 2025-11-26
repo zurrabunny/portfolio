@@ -6,6 +6,7 @@ age: undefined
 height: 5'7"
 gender: undefined
 pronouns: prefers He/Him
+alias: ["Silent", "The Silhouette", "The Bounty Hunter"]
 ---
 
 

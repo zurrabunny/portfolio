@@ -6,6 +6,7 @@ age: 23
 height: 5'5"
 gender: Female
 pronouns: She/Her
+alias: ["Chora", "Miss Chora", "End City Gal"]
 ---
 
 

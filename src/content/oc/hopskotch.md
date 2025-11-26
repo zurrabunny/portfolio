@@ -6,6 +6,7 @@ age: 19
 height: 5'6"
 gender: Female
 pronouns: She/Her
+alias: ["Hopskoch", "Merri", "Hopps"]
 ---
 
 

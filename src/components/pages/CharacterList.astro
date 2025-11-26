@@ -12,10 +12,15 @@ const characters = Object.values(modules).map(mod => {
     name: mod.frontmatter.name,
     image: mod.frontmatter.image,
     role: mod.frontmatter.role || "",
-    age: mod.frontmatter.age || "",           // ← ADDED
-    height: mod.frontmatter.height || "",     // ← ADDED
-    gender: mod.frontmatter.gender || "",     // ← ADDED
-    pronouns: mod.frontmatter.pronouns || "", // ← ADDED
+    age: mod.frontmatter.age || "",
+    height: mod.frontmatter.height || "",
+    gender: mod.frontmatter.gender || "",
+    pronouns: mod.frontmatter.pronouns || "",
+    alias: mod.frontmatter.alias 
+        ? Array.isArray(mod.frontmatter.alias) 
+            ? mod.frontmatter.alias 
+            : [mod.frontmatter.alias] 
+        : [],
     tags,
     Component: mod.default
   };
@@ -122,11 +127,17 @@ const allTags = [
             />
 
             <div class="char-info-text">
-			<h2>Basic Info</h2>
+			  <h2>Basic Info</h2>
 			  <p><strong>Age:</strong> {char.age || "—"}</p>
 			  <p><strong>Height:</strong> {char.height || "—"}</p>
 			  <p><strong>Gender:</strong> {char.gender || "—"}</p>
 			  <p><strong>Pronouns:</strong> {char.pronouns || "—"}</p>
+			  <p class="alias"><strong>Aliases:</strong></p>
+			  <ul>
+			    {char.alias.length > 0
+			      ? char.alias.map(a => <li>{a}</li>)
+			      : <li>—</li>}
+			  </ul>
 			</div>
 
           </div>
@@ -212,6 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
+
 
 <style>
 /* IMAGE INFO (UPDATED STYLE) */
@@ -593,4 +605,3 @@ main.content {
 }
 
 </style>
-

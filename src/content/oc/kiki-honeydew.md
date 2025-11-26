@@ -6,6 +6,7 @@ age: 4 (dog years)
 height: 27 cm
 gender: Female
 pronouns: She/Her
+alias: ["Kiki", "Good Girl (when good girl)", "Bad Girl (when bad girl)"]
 ---
 
 

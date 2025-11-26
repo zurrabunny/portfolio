@@ -6,6 +6,7 @@ age: undefined
 height: 4'11"
 gender: undefined
 pronouns: prefers She/Her
+alias: ["Tune-Up", "A Buggy Mess (Endicore)"]
 ---
 
 

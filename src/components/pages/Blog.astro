@@ -1,6 +1,7 @@
 ---
 import Container from "../Container.astro";
 import LifeMap from "./blog_modules/LifeMap.astro";
+import ToDos from "./blog_modules/ToDos.astro";
 ---
 
 <main class="content">
@@ -13,20 +14,53 @@ import LifeMap from "./blog_modules/LifeMap.astro";
       <div class="goal-line"></div>
     </div>
   
-    <p class="flowchart-description">
-      these be where my goals at, if i dont achieve them, i die (in a professional way)<br>
-      Click on the nodes to highlight their path and see the SMART stuff..<br>
-      note that SOME OF the smart stuff here so far are <strong>GENERATED</strong> placeholders.. I WILL change them eventually
-    </p>
+    <!-- TAB BUTTONS -->
+    <div class="growth-goal-tab">
+      <button class="goal-btn active" data-goal="drawbox">Life Map</button>
+      <button class="goal-btn" data-goal="textbox">To-Do List</button>
+    </div>
   
-	<LifeMap/ >
-		
+    <!-- TAB CONTENT -->
+    <div class="goal-content">
+      <div id="drawbox" class="goal-panel active">
+	  <h3>Life Map</h3>
+		<p class="goal-description">
+		  This section shows how I plan to grow, the skills I’m building,
+		  challenges I face, and goals I aim to reach. It tracks my progress year by year!! >:D<br>
+		  Click on the nodes to trace their path and view their SMART overview!<br>
+		</p>
+        <LifeMap />
+      </div>
+
+      <div id="textbox" class="goal-panel">
+	  <h3>To-Do List</h3>
+	    <p class="goal-description">
+		  This section shows a table of my ongoing tasks and deadlines!<br>
+		</p>
+        <ToDos />
+      </div>
+    </div>
+    
   </Container>
 </main>
 
+<script>
+document.querySelectorAll(".goal-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    // Remove old actives
+    document.querySelectorAll(".goal-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".goal-panel").forEach(p => p.classList.remove("active"));
 
+    // Set new active
+    btn.classList.add("active");
+    const panelId = btn.dataset.goal; // fixed to match data-goal
+    document.getElementById(panelId).classList.add("active");
+  });
+});
+</script>
 
 <style>
+/* ---------- Content & Card Styling ---------- */
 main.content {
   flex: 1;
   margin-left: 260px;
@@ -64,23 +98,9 @@ h3::after {
   opacity: 0.5;
 }
 
-.flowchart-description {
-color: var(--text-dark);
-}
+.goal-description { color: var(--text-dark); }
 
-/* ---------- Responsive Mobile ---------- */
-@media (max-width: 900px) {
-  main.content { margin-left: 0; padding: 0.5rem; flex: 1; }
-
-  .card { padding: 0.5rem; margin-top: 0.5rem; }
-  .accordion-header { font-size: 1rem; border-radius: 1rem; padding: 0.6rem 0.8rem; }
-  .accordion-body { padding: 0 0.5rem; }
-  p, li, span, a { font-size: 0.55rem; margin: 0.5rem; }
-  h2 { font-size: 0.9rem; margin: 0.3rem; }
-  h3 { font-size: 0.8rem; }
-}
-
-/* Goal title line styling */
+/* ---------- Goal Title Line ---------- */
 .goal-title-line {
   display: flex;
   align-items: center;
@@ -88,16 +108,13 @@ color: var(--text-dark);
   margin-bottom: 1rem;
   gap: 1rem;
 }
-
 .goal-line {
   flex: 1;
   height: 2px;
-  background-color: var(--color-6); /* adjust to visible color */
+  background-color: var(--color-6);
   opacity: 1;
   transform: scaleX(1);
 }
-
-/* Title styling */
 #goal-title {
   font-size: 2rem;
   font-weight: 700;
@@ -108,19 +125,40 @@ color: var(--text-dark);
   justify-content: center;
 }
 
-/* Mobile adjustments */
-@media (max-width: 900px) {
-  #goal-title {
-    font-size: 1.5rem;
-    text-align: center;
-    white-space: normal;
-  }
-  .goal-title-line {
-    gap: 0.5rem;
-  }
-  .goal-line {
-    height: 1px;
-  }
+/* ---------- Tabs ---------- */
+.growth-goal-tab {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.goal-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  border: 2px solid var(--color-1);
+  background: var(--color-1);
+  color: var(--text-dark);
+  cursor: pointer;
+  font-weight: 60;
+  transition: all 0.2s ease;
+}
+.goal-btn.active {
+  background: var(--color-6);
+  color: var(--text-dark);
 }
 
+/* ---------- Panels ---------- */
+.goal-content .goal-panel { display: none; }
+.goal-content .goal-panel.active { display: block; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  main.content { margin-left: 0; padding: 0.5rem; flex: 1; }
+  .card { padding: 0.5rem; margin-top: 0.5rem; }
+  p, li, span, a { font-size: 0.55rem; margin: 0.5rem; }
+  h2 { font-size: 0.9rem; margin: 0.3rem; }
+  h3 { font-size: 0.8rem; }
+  #goal-title { font-size: 1.5rem; text-align: center; white-space: normal; }
+  .goal-title-line { gap: 0.5rem; }
+  .goal-line { height: 1px; }
+}
 </style>

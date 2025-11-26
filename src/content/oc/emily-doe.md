@@ -6,6 +6,7 @@ age: 20
 height: 5'4"
 gender: Female
 pronouns: She/Her
+alias: ["Emily", "Emma"]
 ---
 
 

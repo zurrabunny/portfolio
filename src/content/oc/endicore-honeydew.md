@@ -6,6 +6,7 @@ age: 46
 height: 6'1"
 gender: Male
 pronouns: He/Him
+alias: ["Endicore", "Endie", "Mister Honeydew"]
 ---
 
 

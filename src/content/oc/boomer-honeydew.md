@@ -6,6 +6,7 @@ age: 7 (dog years)
 height: 2'1"
 gender: Male
 pronouns: He/Him
+alias: ["Boomer", "Good Boy (when good boy)", "Bad Boy (when bad boy)"]
 ---
 
 

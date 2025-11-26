@@ -6,6 +6,7 @@ age: 24
 height: 5'5"
 gender: Female
 pronouns: She/They
+alias: ["Natala", "Miss Delulu"]
 ---
 
 

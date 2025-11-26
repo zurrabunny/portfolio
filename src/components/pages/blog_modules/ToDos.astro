@@ -1,0 +1,108 @@
+<div class="card">
+  <table class="todo-table" id="todoTable">
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Status</th>
+        <th>Deadline</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Rows will be populated dynamically -->
+    </tbody>
+  </table>
+</div>
+
+<style>
+/* ---------- To Do Table Styling ---------- */
+.todo-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: var(--color-3);
+}
+
+.todo-table th, 
+.todo-table td {
+  padding: 0.8rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-5);
+  font-size: 0.95rem;
+}
+
+.todo-table th {
+  background-color: var(--color-2, #f0f0f0);
+  color: var(--text-dark, #333);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+</style>
+
+
+<script>
+const sheetUrl = "https://docs.google.com/spreadsheets/d/1ES17eiwj-H6BEgax-BcyhYkG3qRaqg4KHsHpz3oeu2s/export?format=csv";
+
+async function loadToDoTable() {
+  try {
+    const response = await fetch(sheetUrl);
+    const csvText = await response.text();
+    
+    const rows = csvText.split('\n').slice(4); // start at row 4
+    const tbody = document.querySelector("#todoTable tbody");
+    tbody.innerHTML = ""; // clear old rows
+
+    rows.forEach((row, index) => {
+      const cols = row.split(",");
+      if (cols.length < 3) return;
+
+      const tr = document.createElement("tr");
+
+      // Alternate row colors dynamically
+      tr.style.backgroundColor = index % 2 === 0 ? "var(--color-6)" : "var(--color-7)";
+
+      // Check if task is done (Column A)
+      const isChecked = cols[0].trim() === "✔" || cols[0].trim().toLowerCase() === "true";
+
+      // Task info (Column C)
+      const taskTd = document.createElement("td");
+      taskTd.textContent = cols[2] || "";
+      taskTd.style.padding = "0.8rem 1rem"; // Add padding
+      taskTd.style.color = "var(--text-dark)";
+      if (isChecked) {
+        taskTd.style.textDecoration = "line-through"; // Strikethrough
+      }
+      tr.appendChild(taskTd);
+
+      // Status icon (Column A)
+      const statusTd = document.createElement("td");
+      statusTd.style.textAlign = "center"; // center the icon
+      const icon = document.createElement("img");
+      icon.src = isChecked ? "checkmark-check.svg" : "checkmark-empty.svg";
+      icon.alt = isChecked ? "Checked" : "Empty";
+      icon.style.width = "30px";
+      icon.style.height = "30px";
+      icon.style.padding = "0.8rem 1rem";
+      icon.style.filter = "brightness(var(--invert))";
+      statusTd.appendChild(icon);
+      tr.appendChild(statusTd);
+
+      // Deadline (Column B)
+      const dateTd = document.createElement("td");
+      dateTd.textContent = cols[1] || "";
+      tr.appendChild(dateTd);
+
+      tbody.appendChild(tr);
+    });
+
+  } catch (err) {
+    console.error("Error loading To Do table:", err);
+  }
+}
+
+// Load table on page load
+window.addEventListener("DOMContentLoaded", loadToDoTable);
+</script>

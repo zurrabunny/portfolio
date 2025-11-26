@@ -190,6 +190,12 @@ tags: ["Process"]
 	<h3>November 23 2025</h3>
 	<ul>
 	<li>added OC Compendium Tab
+	<ul>
+		<li>added Tag Filter
+		<li>added OCs
+		<li>added OC descriptions ("Basic Info : Age, Height, Gender, Pronouns", "Character Descriptions", "Appearance", "Personality", "Trivia")
+	</ul>
+	
 	<li>Visitor's Lounge Tab :
 		<ul>
 		<li>implemented Reserved Name Protection
@@ -213,6 +219,19 @@ tags: ["Process"]
 		<li>added Reply feature ( only for me tho :^ )
 		</ul>
 	
+	</ul>
+	
+	<h3>November 27 2025</h3>
+	<ul>
+	<li>Goals Tab :
+		<ul>
+		<li>added To-Dos List
+	</ul>
+	
+	<li>OC Compendium Tab :
+		<ul>
+		<li>added "Basic Info : Aliases"
+	</ul>
 	</ul>
 	
 </div>

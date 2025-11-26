@@ -6,6 +6,7 @@ age: 21
 height: 5'3"
 gender: Female
 pronouns: She/Her
+alias: ["Azure", "Azzurra", "Zurra"]
 ---
 
 

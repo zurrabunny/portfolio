@@ -6,6 +6,7 @@ age: 16
 height: 5'2"
 gender: Female
 pronouns: She/Her
+alias: ["Bee", "Buddy (Rosaline)", "Sweetums (Agatha)", "Baby (Endicore)"]
 ---
 
 

@@ -6,6 +6,7 @@ age: undefined
 height: 8'4"
 gender: undefined
 pronouns: prefers She/They
+alias: ["Muni", "Moderation Unit (Endicore)"]
 ---
 
 

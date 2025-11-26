@@ -6,6 +6,7 @@ age: 42
 height: 5'8"
 gender: Female
 pronouns: She/Her
+alias: ["Agatha Honeydew","Aggie", "Miss Honeydew"]
 ---
 
 

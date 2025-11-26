@@ -6,6 +6,7 @@ age: 17
 height: 5'3"
 gender: Female
 pronouns: She/They
+alias: ["Rosaline","Rosie", "Princess (Rosaline's Mom)"]
 ---
 
 

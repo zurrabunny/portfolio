@@ -6,6 +6,7 @@ age: undefined
 height: 84"
 gender: undefined
 pronouns: It/Its
+alias: ["Lust","Miss Desire", "Urge of Man"]
 ---
 
 

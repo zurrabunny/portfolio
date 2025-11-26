@@ -6,6 +6,7 @@ age: 42
 height: 5'9"
 gender: Male
 pronouns: He/Him
+alias: ["Diamond", "Dia", "Mister Montgomery (Post Dad Death)"]
 ---
 
 
