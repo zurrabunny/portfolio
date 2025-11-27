@@ -20,7 +20,7 @@ alias: ["Endicore", "Endie", "Mister Honeydew"]
 
   <div class="info-stuffs">
   Endicore Honeydew is the tough yet playful father of the Honeydew family and husband of Agatha Honeydew.
-  He resides in the serene neighborhood of Azalea Hills and serves as Chief Strategy Officer & Head of Robotic Engineering.
+  He resides in the serene neighborhood of Azalea Hills and serves as Chief Strategy Officer & Head of Robotic Engineering in Seraphc Co.
   Endicore typically works from home, managing company operations and strategic planning from his home
   office while also taking care of Bee. On occasions when he must attend in-person meetings, Bee is left
   alone, so he created caretaker bots, Tune-Up and a House System Moderation Unit (MUni) to ensure Bee never feels lonely.
