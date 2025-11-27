@@ -6,7 +6,7 @@ age: undefined
 height: 6'1"
 gender: Male
 pronouns: He/Him
-alias: ["???"]
+alias: ["Avert","Averted Vision", "Heir of Defiance"]
 ---
 
 
@@ -38,7 +38,12 @@ alias: ["???"]
   </div>
 
   <div class="info-stuffs">
-  He's nothing but a shadow of his former self
+	His head is always in a side profile no matter what angle you look at him from.
+	His entire head is dark, with only one glowing eye showing.
+	The rest of his skin has a pale, dark tone.
+	His hair is a messy black mass that moves and rises like smoke.
+	He wears a white polo over a black suit, paired with a black necktie.
+	He has black pants, white socks, and black shoes.
   </div>
 
   <div class="char-description-title-line">
