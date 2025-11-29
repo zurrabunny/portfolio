@@ -105,4 +105,8 @@ async function loadToDoTable() {
 
 // Load table on page load
 window.addEventListener("DOMContentLoaded", loadToDoTable);
+
+document.getElementById("refreshTodo").addEventListener("click", () => {
+  loadToDoTable(); // Reload the data
+});
 </script>

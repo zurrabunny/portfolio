@@ -31,6 +31,9 @@ import Textbox from "./visitor_lounge/textbox.astro";
 
       <div id="textbox" class="tab-panel">
         <Textbox />
+		<div id="text-rules">
+			<p>NOTE : The message board is for feedback / compliments / criticisms of my service / website!<br><strong>Do not contact me here under any circumstances.</strong><br>"One Question - One Answer" messages are allowed though,<br>Thank you! :D</p>
+			</div>
       </div>
     </div>
 
@@ -66,6 +69,15 @@ main.content {
 
 .visitor-tab .tab-btn.active {
   background: var(--color-6);
+}
+
+#text-rules {
+  padding: 0.5rem;
+  width: 74%;
+  font-size: 16px;
+  color: var(--text-dark);
+  margin: 0 auto; /* centers it */
+  text-align: center;    /* centers the text */
 }
 
 /* -------- TAB PANELS -------- */

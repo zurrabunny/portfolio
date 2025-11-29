@@ -206,7 +206,7 @@ tags: ["Process"]
 	
 	</ul>
 	
-	<h3>November 23 2025</h3>
+	<h3>November 25 2025</h3>
 	<ul>
 	<li>Blogs Tab :
 		<ul>
@@ -232,12 +232,26 @@ tags: ["Process"]
 		<ul>
 		<li>added "Basic Info : Aliases"
 		</ul>
-	</ul>
 	
 	<li>Visitor's Lounge Tab :
 		<ul>
 		<li>added "Note" in Message Board
 		<li>tweaked Reply Style
+		</ul>
+	</ul>
+	
+	<h3>November 29 2025</h3>
+	<ul>
+		<li>Visitor's Lounge Tab :
+		<ul>
+		<li>added Refresh Button
+		<li>made The Message Board wider
+		<li>added Pagination for Submitted Drawings
+		</ul>
+		
+		<li>Goals Tab :
+		<ul>
+		<li>added To-Dos Refresh Button
 		</ul>
 	</ul>
 	

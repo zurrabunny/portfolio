@@ -23,7 +23,9 @@ import ToDos from "./blog_modules/ToDos.astro";
     <!-- TAB CONTENT -->
     <div class="goal-content">
       <div id="goal-life-map" class="goal-panel active">
+	  <div class="todo-header">
 	    <h3>Life Map</h3>
+		</div>
 		<p class="goal-description">
 		  This section shows how I plan to grow, the skills I’m building,
 		  challenges I face, and goals I aim to reach. It tracks my progress year by year!! >:D<br>
@@ -33,7 +35,10 @@ import ToDos from "./blog_modules/ToDos.astro";
       </div>
 
       <div id="goal-to-do" class="goal-panel">
-	    <h3>To-Do List</h3>
+	    <div class="todo-header">
+		  <h3>To-Do List</h3>
+		  <button id="refreshTodo" class="refresh-btn">Refresh</button>
+		</div>
 	    <p class="goal-description">
 		  This section shows a table of my ongoing tasks and deadlines!<br>
 		</p>
@@ -83,20 +88,27 @@ h2 { font-size: 1.3rem; color: var(--color-2); margin-bottom: 0.5rem; margin-top
 h3 {
   font-size: 1.3rem;
   color: var(--color-2);
-  margin-bottom: 0.5rem;
-  position: relative;
+  font-weight: 600;
+  line-height: 0; /* <— FIX: aligns it to center */
+}
+
+
+.todo-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  font-weight: 600;
+  gap: 1rem;
+  margin-top: 0rem;
+  margin-bottom: -1rem;
 }
-h3::after {
+
+.todo-header::after {
   content: "";
   flex-grow: 1;
-  height: 2px;
+  height: 2.5px;
   background-color: var(--color-5);
   opacity: 0.5;
 }
+
 
 .goal-description { color: var(--text-dark); }
 
@@ -160,5 +172,23 @@ h3::after {
   #goal-title { font-size: 1.5rem; text-align: center; white-space: normal; }
   .goal-title-line { gap: 0.5rem; }
   .goal-line { height: 1px; }
+}
+
+.refresh-btn {
+  padding: 0.1rem 0.5rem;
+  background-color: var(--color-1);
+  color: var(--text-dark);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-bottom: 0rem;
+  transition: 0.2s;
+  border: 2px solid var(--color-1);
+}
+
+.refresh-btn:hover {
+  background: var(--color-6);
+  color: var(--text-dark);
 }
 </style>
