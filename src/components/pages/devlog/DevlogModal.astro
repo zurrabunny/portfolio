@@ -26,6 +26,118 @@
 <div id="devlog-player-container"></div>
 
 <script client:load>
+/* ---------- Inject styling for volume slider + player ---------- */
+const style = document.createElement("style");
+style.textContent = `
+.custom-player {
+  width: 96%;
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 10px;
+  background: var(--color-6);
+  border: 2px solid var(--border-sidebar);
+}
+
+.custom-player strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--color-2);
+  font-size: 1.1rem;
+}
+
+.custom-player .controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.custom-player .play-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Progress bar */
+.custom-player .progress {
+  flex: 1;
+  height: 6px;
+  border-radius: 4px;
+  background: var(--border-sidebar);
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Webkit (Chrome/Safari) */
+.custom-player .progress::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 4px;
+  background: var(--border-sidebar);
+}
+
+.custom-player .progress::-webkit-slider-thumb {
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  margin-top: -3.5px;
+}
+
+/* Firefox */
+.custom-player .progress::-moz-range-track {
+  height: 6px;
+  border-radius: 4px;
+  background: var(--border-sidebar);
+}
+
+.custom-player .progress::-moz-range-thumb {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--color-2);
+  cursor: pointer;
+}
+
+.custom-player .time {
+  font-size: 0.85rem;
+  color: var(--text-main);
+  white-space: nowrap;
+}
+
+.volume-slider {
+  width: 70px;
+  height: 6px;
+  appearance: none;
+  background: var(--border-sidebar);
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: var(--color-2);
+  border-radius: 50%;
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: var(--color-2);
+  border-radius: 50%;
+}
+`;
+document.head.appendChild(style);
+
+/* ---------- ELEMENTS ---------- */
 const modal = document.getElementById('devlog-modal');
 const modalInner = modal.querySelector('.modal-inner');
 const titleEl = modal.querySelector('.modal-title');
@@ -33,150 +145,152 @@ const dateEl = modal.querySelector('.modal-date');
 const contentEl = modal.querySelector('.modal-content');
 const closeBtn = modal.querySelector('.modal-close');
 const modalTags = modal.querySelector('.modal-tags');
-const playerContainer = document.getElementById('devlog-player-container');
-let currentAudio = null;
 
+let activeAudios = [];
+
+/* ---------- WAIT FOR CARDS ---------- */
 const waitForCards = setInterval(() => {
   const cards = document.querySelectorAll('.devlog-card');
-  if (cards.length) {
-    clearInterval(waitForCards);
+  if (!cards.length) return;
+  clearInterval(waitForCards);
 
-    cards.forEach(card => {
-      card.addEventListener('click', () => {
-        if (currentAudio) {
-          currentAudio.pause();
-          currentAudio = null;
-        }
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
 
-        playerContainer.innerHTML = '';
+      // Pause any active audio
+      activeAudios.forEach(a => a.pause());
+      activeAudios = [];
 
-        titleEl.innerText = card.dataset.title;
-        dateEl.innerText = new Date(card.dataset.date).toDateString();
-        contentEl.innerHTML = card.dataset.body;
+      // Inject content
+      titleEl.innerText = card.dataset.title;
+      dateEl.innerText = new Date(card.dataset.date).toDateString();
+      contentEl.innerHTML = card.dataset.body;
 
-        const tags = card.dataset.tags ? card.dataset.tags.split(',') : [];
-        modalTags.innerHTML = tags.map(tag => `<span class="modal-tag">#${tag}</span>`).join(' ');
+      const tags = (card.dataset.tags || "").split(",");
+      modalTags.innerHTML = tags.map(tag => `<span class="modal-tag">#${tag}</span>`).join(' ');
 
-        const hasPlayer = contentEl.querySelector('devlog-music-player');
-        if (hasPlayer) {
-          const src = hasPlayer.getAttribute('data-src');
-          const title = hasPlayer.getAttribute('data-title') || card.dataset.title;
+      // Find all <devlog-music-player> tags
+      const players = contentEl.querySelectorAll('devlog-music-player');
 
-          playerContainer.innerHTML = `
-            <div class="custom-player">
-              <strong>${title}</strong>
-              <div class="controls">
-                <button class="play-btn">
-                  <img class="play-icon" src="play.svg" alt="Play" />
-                  <img class="pause-icon" src="pause.svg" alt="Pause" style="display:none;" />
-                </button>
-                <input type="range" class="progress" value="0" min="0" max="100">
-                <span class="time">0:00 / 0:00</span>
-              </div>
-            </div>
-          `;
+      players.forEach(playerTag => {
+        const src = playerTag.getAttribute("data-src");
+        const title = playerTag.getAttribute("data-title") || "Audio Track";
 
-          const audio = new Audio(src);
-          currentAudio = audio;
+        // Create player
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("custom-player");
+        wrapper.innerHTML = `
+          <strong>${title}</strong>
+          <div class="controls">
+            <button class="play-btn">
+              <img class="play-icon" src="play.svg">
+              <img class="pause-icon" src="pause.svg" style="display:none;">
+            </button>
+            <input type="range" class="progress" value="0" min="0" max="100">
+            <span class="time">0:00 / 0:00</span>
+            <input type="range" class="volume-slider" min="0" max="1" step="0.01" value="1">
+          </div>
+        `;
 
-          const playBtn = playerContainer.querySelector('.play-btn');
-          const playIcon = playBtn.querySelector('.play-icon');
-          const pauseIcon = playBtn.querySelector('.pause-icon');
-          const progress = playerContainer.querySelector('.progress');
-          const timeEl = playerContainer.querySelector('.time');
+        // Replace original tag with player
+        playerTag.replaceWith(wrapper);
 
-          let isPlaying = false;
-          let isDragging = false;
+        // Audio logic
+        const audio = new Audio(src);
+        activeAudios.push(audio);
 
-          playBtn.addEventListener('click', () => {
-            if (isPlaying) audio.pause();
-            else audio.play();
-          });
+        const playBtn = wrapper.querySelector('.play-btn');
+        const playIcon = wrapper.querySelector('.play-icon');
+        const pauseIcon = wrapper.querySelector('.pause-icon');
+        const progress = wrapper.querySelector('.progress');
+        const timeEl = wrapper.querySelector('.time');
+        const volumeSlider = wrapper.querySelector('.volume-slider');
 
-          audio.addEventListener('play', () => {
-            isPlaying = true;
-            playIcon.style.display = 'none';
-            pauseIcon.style.display = 'inline';
-          });
+        let isPlaying = false;
+        let dragging = false;
 
-          audio.addEventListener('pause', () => {
-            isPlaying = false;
-            playIcon.style.display = 'inline';
-            pauseIcon.style.display = 'none';
-          });
-
-          audio.addEventListener('timeupdate', () => {
-            if (!isDragging) {
-              const percent = (audio.currentTime / audio.duration) * 100 || 0;
-              progress.value = percent;
-              progress.style.background = `linear-gradient(to right, var(--color-2) ${percent}%, var(--border-sidebar) ${percent}%)`;
-            }
-            timeEl.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
-          });
-
-          progress.addEventListener('mousedown', () => isDragging = true);
-          progress.addEventListener('touchstart', () => isDragging = true);
-          progress.addEventListener('mouseup', (e) => {
-            isDragging = false;
-            const time = (progress.value / 100) * audio.duration;
-            audio.currentTime = time;
-          });
-          progress.addEventListener('touchend', (e) => {
-            isDragging = false;
-            const time = (progress.value / 100) * audio.duration;
-            audio.currentTime = time;
-          });
-
-          progress.addEventListener('input', () => {
-            const percent = progress.value;
-            progress.style.background = `linear-gradient(to right, var(--color-2) ${percent}%, var(--border-sidebar) ${percent}%)`;
-          });
-
-          function formatTime(sec) {
-            if (isNaN(sec)) return '0:00';
-            const m = Math.floor(sec / 60);
-            const s = Math.floor(sec % 60).toString().padStart(2,'0');
-            return `${m}:${s}`;
-          }
-
-          hasPlayer.remove();
-        }
-
-        contentEl.querySelectorAll('audio').forEach(audio => {
-          audio.style.width = '100%';
-          audio.style.margin = '1rem 0';
-          audio.controls = true;
+        // Play/pause
+        playBtn.addEventListener("click", () => {
+          activeAudios.forEach(a => a !== audio && a.pause());
+          isPlaying ? audio.pause() : audio.play();
         });
 
-        modal.style.display = 'flex';
-        requestAnimationFrame(() => modal.classList.add('showing'));
-        document.body.style.overflow = 'hidden';
+        audio.addEventListener("play", () => {
+          isPlaying = true;
+          playIcon.style.display = "none";
+          pauseIcon.style.display = "inline";
+        });
+
+        audio.addEventListener("pause", () => {
+          isPlaying = false;
+          playIcon.style.display = "inline";
+          pauseIcon.style.display = "none";
+        });
+
+        // Time update
+        audio.addEventListener("timeupdate", () => {
+          if (!dragging) {
+            let percent = (audio.currentTime / audio.duration) * 100 || 0;
+            progress.value = percent;
+
+            // Fill gradient
+            progress.style.background = `linear-gradient(to right, var(--color-2) ${percent}%, var(--border-sidebar) ${percent}%)`;
+          }
+          timeEl.textContent = `${fmt(audio.currentTime)} / ${fmt(audio.duration)}`;
+        });
+
+        // Seek
+        progress.addEventListener("mousedown", () => dragging = true);
+        progress.addEventListener("mouseup", () => {
+          dragging = false;
+          audio.currentTime = (progress.value / 100) * audio.duration;
+        });
+        progress.addEventListener("input", () => {
+          audio.currentTime = (progress.value / 100) * audio.duration;
+        });
+
+        // Volume
+        volumeSlider.addEventListener("input", () => audio.volume = volumeSlider.value);
+
+        function fmt(sec) {
+          if (!sec || isNaN(sec)) return "0:00";
+          const m = Math.floor(sec / 60);
+          const s = Math.floor(sec % 60).toString().padStart(2, "0");
+          return `${m}:${s}`;
+        }
       });
+
+      // Show modal
+      modal.style.display = "flex";
+      requestAnimationFrame(() => modal.classList.add("showing"));
+      document.body.style.overflow = "hidden";
     });
-  }
+  });
+
 }, 100);
 
+/* ---------- CLOSE MODAL ---------- */
 function closeModal() {
-  contentEl.querySelectorAll('audio').forEach(a => a.pause());
-  if (currentAudio) currentAudio.pause();
-  currentAudio = null;
-  playerContainer.innerHTML = '';
+  activeAudios.forEach(a => a.pause());
+  activeAudios = [];
 
-  modal.classList.remove('showing');
-  modal.classList.add('hiding');
+  modal.classList.remove("showing");
+  modal.classList.add("hiding");
+
   setTimeout(() => {
-    modal.style.display = 'none';
-    modal.classList.remove('hiding');
-    document.body.style.overflow = '';
+    modal.style.display = "none";
+    modal.classList.remove("hiding");
+    document.body.style.overflow = "";
   }, 250);
 }
 
-closeBtn.addEventListener('click', closeModal);
-modal.addEventListener('click', e => {
+closeBtn.addEventListener("click", closeModal);
+modal.addEventListener("click", e => {
   if (!modalInner.contains(e.target)) closeModal();
 });
-
 </script>
+
+
 
 <style>
 .goal-title-line {
