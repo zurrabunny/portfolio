@@ -1,6 +1,6 @@
 ---
 name: Avert
-image: /images/sample.png
+image: ./illustrations/Avert.png
 tags: ["Third Generation", "Antagonist", "Lore OC"]
 age: undefined
 height: 6'1"
@@ -40,10 +40,10 @@ alias: ["Avert","Averted Vision", "Heir of Defiance"]
   <div class="info-stuffs">
 	His head is always in a side profile no matter what angle you look at him from.
 	His entire head is dark, with only one glowing eye showing.
-	The rest of his skin has a pale, dark tone.
+	The rest of his skin has a pale, dark tone, almost black.
 	His hair is a messy black mass that moves and rises like smoke.
-	He wears a white polo over a black suit, paired with a black necktie.
-	He has black pants, white socks, and black shoes.
+	He wears a white polo over a gray suit, paired with a dark red necktie.
+	He has gray pants, white socks, and black shoes.
   </div>
 
   <div class="char-description-title-line">
@@ -72,7 +72,13 @@ and using refusal as his only form of strength.
   </div>
 
   <div class="info-stuffs">
-  a
+  <ul>
+	<li>Avert has a pet owl named Gray
+	<ul>
+		<li>Well, its not technically a pet, Gray and Avert are one.
+	</ul>
+	<li>Avert's "strict side profile only" design symbolizes that he doesnt look at the consequences of his actions
+  </ul>
   </div>
 
 

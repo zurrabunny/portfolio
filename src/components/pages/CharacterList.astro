@@ -477,12 +477,13 @@ main.content {
 }
 
 .char-info img {
-  width: 320px;
-  height: 320px;
-  object-fit: cover;
-  border-radius: 1rem 1rem 0rem 0rem;
+  width: 100%;      /* or 320px if you want fixed width */
+  height: auto;     /* auto keeps aspect ratio */
+  object-fit: contain; /* ensure it fits inside wrapper */
+  border-radius: 1rem 1rem 0 0;
   border-bottom: 2px solid var(--color-2);
 }
+
 
 .char-info h2 {
   margin: 0 0 0.3rem 0;
