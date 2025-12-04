@@ -75,7 +75,7 @@ and using refusal as his only form of strength.
   <ul>
 	<li>Avert has a pet owl named Gray
 	<ul>
-		<li>Well, its not technically a pet, Gray and Avert are one.
+		<li>Well, its not technically a pet, Gray and Avert are one being.
 	</ul>
 	<li>Avert's "strict side profile only" design symbolizes that he doesnt look at the consequences of his actions
   </ul>
