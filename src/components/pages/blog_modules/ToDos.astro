@@ -1,5 +1,6 @@
 <div class="card">
-  <table class="todo-table" id="todoTable">
+  <h2>Pending Tasks</h2>
+  <table class="todo-table" id="todoPending">
     <thead>
       <tr>
         <th>Task</th>
@@ -7,11 +8,26 @@
         <th>Deadline</th>
       </tr>
     </thead>
-    <tbody>
-      <!-- Rows will be populated dynamically -->
-    </tbody>
+    <tbody></tbody>
   </table>
+  <div class="pagination" id="pendingPagination"></div>
 </div>
+
+<div class="card" style="margin-top: 2rem;">
+  <h2>Completed Tasks</h2>
+  <table class="todo-table" id="todoCompleted">
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Status</th>
+        <th>Deadline</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <div class="pagination" id="completedPagination"></div>
+</div>
+
 
 <style>
 /* ---------- To Do Table Styling ---------- */
@@ -46,67 +62,173 @@
 <script>
 const sheetUrl = "https://docs.google.com/spreadsheets/d/1ES17eiwj-H6BEgax-BcyhYkG3qRaqg4KHsHpz3oeu2s/export?format=csv";
 
-async function loadToDoTable() {
+let pendingTasks = [];
+let completedTasks = [];
+
+let pendingPage = 1;
+let completedPage = 1;
+const ITEMS_PER_PAGE = 6;
+
+async function loadToDoData() {
   try {
     const response = await fetch(sheetUrl);
     const csvText = await response.text();
-    
-    const rows = csvText.split('\n').slice(4); // start at row 4
-    const tbody = document.querySelector("#todoTable tbody");
-    tbody.innerHTML = ""; // clear old rows
 
-    rows.forEach((row, index) => {
+    const rows = csvText.split('\n').slice(4); 
+
+    pendingTasks = [];
+    completedTasks = [];
+
+    rows.forEach(row => {
       const cols = row.split(",");
       if (cols.length < 3) return;
 
-      const tr = document.createElement("tr");
-
-      // Alternate row colors dynamically
-      tr.style.backgroundColor = index % 2 === 0 ? "var(--color-6)" : "var(--color-7)";
-
-      // Check if task is done (Column A)
       const isChecked = cols[0].trim() === "✔" || cols[0].trim().toLowerCase() === "true";
 
-      // Task info (Column C)
-      const taskTd = document.createElement("td");
-      taskTd.textContent = cols[2] || "";
-      taskTd.style.padding = "0.8rem 1rem"; // Add padding
-      taskTd.style.color = "var(--text-dark)";
-      if (isChecked) {
-        taskTd.style.textDecoration = "line-through"; // Strikethrough
-      }
-      tr.appendChild(taskTd);
+      const item = {
+        checked: isChecked,
+        deadline: cols[1] || "",
+        task: cols[2] || ""
+      };
 
-      // Status icon (Column A)
-      const statusTd = document.createElement("td");
-      statusTd.style.textAlign = "center"; // center the icon
-      const icon = document.createElement("img");
-      icon.src = isChecked ? "checkmark-check.svg" : "checkmark-empty.svg";
-      icon.alt = isChecked ? "Checked" : "Empty";
-      icon.style.width = "30px";
-      icon.style.height = "30px";
-      icon.style.padding = "0.8rem 1rem";
-      icon.style.filter = "brightness(var(--invert))";
-      statusTd.appendChild(icon);
-      tr.appendChild(statusTd);
-
-      // Deadline (Column B)
-      const dateTd = document.createElement("td");
-      dateTd.textContent = cols[1] || "";
-      tr.appendChild(dateTd);
-
-      tbody.appendChild(tr);
+      if (isChecked) completedTasks.push(item);
+      else pendingTasks.push(item);
     });
 
+    renderTables();
   } catch (err) {
     console.error("Error loading To Do table:", err);
   }
 }
 
-// Load table on page load
-window.addEventListener("DOMContentLoaded", loadToDoTable);
+function renderTables() {
+  renderTable("todoPending", pendingTasks, pendingPage, "pending");
+  renderTable("todoCompleted", completedTasks, completedPage, "completed");
+}
+
+function renderTable(tableId, list, page, type) {
+  const tbody = document.querySelector(`#${tableId} tbody`);
+  tbody.innerHTML = "";
+
+  const start = (page - 1) * ITEMS_PER_PAGE;
+  const end = start + ITEMS_PER_PAGE;
+  const pageItems = list.slice(start, end);
+
+  pageItems.forEach((item, index) => {
+    const tr = document.createElement("tr");
+    tr.style.backgroundColor = index % 2 === 0 ? "var(--color-6)" : "var(--color-7)";
+
+    // Task cell
+    const tdTask = document.createElement("td");
+    tdTask.textContent = item.task;
+    tdTask.style.padding = "0.8rem 1rem";
+    tdTask.style.color = "var(--text-dark)";
+    if (item.checked) tdTask.style.textDecoration = "line-through";
+    tr.appendChild(tdTask);
+
+    // Status cell
+    const tdStatus = document.createElement("td");
+    tdStatus.style.textAlign = "center";
+    tdStatus.style.padding = "0.8rem 1rem";
+    const icon = document.createElement("img");
+    icon.src = item.checked ? "checkmark-check.svg" : "checkmark-empty.svg";
+    icon.alt = item.checked ? "Checked" : "Empty";
+    icon.style.width = "30px";
+    icon.style.height = "30px";
+    icon.style.filter = "brightness(var(--invert))";
+    tdStatus.appendChild(icon);
+    tr.appendChild(tdStatus);
+
+    // Deadline cell
+    const tdDeadline = document.createElement("td");
+    tdDeadline.textContent = item.deadline;
+    tdDeadline.style.padding = "0.8rem 1rem";
+    tr.appendChild(tdDeadline);
+
+    tbody.appendChild(tr);
+  });
+
+  renderPagination(type, list.length, page);
+}
+
+function renderPagination(type, totalItems, currentPage) {
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  const container = document.getElementById(`${type}Pagination`);
+  container.innerHTML = ""; // clear old content
+  container.style.display = "flex";
+  container.style.justifyContent = "center";
+  container.style.alignItems = "center";
+  container.style.gap = "0.5rem";
+  container.style.marginTop = "1rem";
+
+  // Previous button
+  const prevBtn = document.createElement("button");
+  prevBtn.textContent = "Previous";
+  prevBtn.disabled = currentPage === 1;
+  stylePaginationButton(prevBtn);
+  prevBtn.onclick = () => changePage(type, -1);
+  container.appendChild(prevBtn);
+
+  // Page info
+  const pageInfo = document.createElement("span");
+  pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+  pageInfo.style.padding = "0.1rem 0.5rem";
+  pageInfo.style.fontSize = "0.9rem";
+  pageInfo.style.color = "var(--text-dark)";
+  container.appendChild(pageInfo);
+
+  // Next button
+  const nextBtn = document.createElement("button");
+  nextBtn.textContent = "Next";
+  nextBtn.disabled = currentPage === totalPages;
+  stylePaginationButton(nextBtn);
+  nextBtn.onclick = () => changePage(type, 1);
+  container.appendChild(nextBtn);
+}
+
+// Apply refresh-btn style dynamically
+function stylePaginationButton(btn) {
+  btn.style.padding = "0.1rem 0.5rem";
+  btn.style.backgroundColor = "var(--color-1)";
+  btn.style.color = "var(--text-dark)";
+  btn.style.border = "2px solid var(--color-1)";
+  btn.style.borderRadius = "10px";
+  btn.style.cursor = "pointer";
+  btn.style.fontSize = "0.9rem";
+  btn.style.transition = "0.2s";
+  btn.onmouseover = () => {
+    if (!btn.disabled) {
+      btn.style.backgroundColor = "var(--color-2)";
+      btn.style.borderColor = "var(--color-2)";
+    }
+  };
+  btn.onmouseout = () => {
+    if (!btn.disabled) {
+      btn.style.backgroundColor = "var(--color-1)";
+      btn.style.borderColor = "var(--color-1)";
+    }
+  };
+  if (btn.disabled) {
+    btn.style.opacity = "0.5";
+    btn.style.cursor = "not-allowed";
+  }
+}
+
+function changePage(type, direction) {
+  if (type === "pending") {
+    pendingPage += direction;
+  } else {
+    completedPage += direction;
+  }
+  renderTables();
+}
+
+window.addEventListener("DOMContentLoaded", loadToDoData);
 
 document.getElementById("refreshTodo").addEventListener("click", () => {
-  loadToDoTable(); // Reload the data
+  pendingPage = 1;
+  completedPage = 1;
+  loadToDoData(); // Correct function name
 });
+
 </script>

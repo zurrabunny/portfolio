@@ -47,40 +47,44 @@ html, body {
   Color Palette & Dark Mode
 ==========================*/
 :root {
-  --color-1: #c62e3f;
-  --color-2: #cf3c4d;
-  --color-3: #d85868;
-  --color-4: #df7c8a;
-  --color-5: #e8a4af;
-  --color-6: #edd0d7;
-  --color-7: #dea2b0;
+  /* Primary colors (lighter versions of dark-mode) */
+  --color-1: #E36B79;
+  --color-2: #EA7B86;
+  --color-3: #F2D2D8;
+  --color-4: #F7E1E5;
+  --color-5: #FCEAF0;
+  --color-6: #FFF5F7;
+  --color-7: #FFE6EB;
 
   /* Backgrounds */
-  --bg-main: var(--color-6);
-  --bg-sidebar: var(--color-4);
-  --container: rgba(255,255,255,0.85);
+  --bg-main: #FFF5F7;          /* light main background */
+  --bg-sidebar: #FFE6EB;       /* lighter sidebar */
+  --container: rgba(255,255,255,0.9);
   --container-fixed: var(--bg-sidebar);
   
+  /* Borders */
   --border-container: rgba(0,0,0,0.05);
   --border-sidebar: rgba(0,0,0,0.05);
 
   /* Text */
-  --text-main: #2b0004;
+  --text-main: #2B0004;        /* keep dark for readability */
   --text-light: #fff;
-  --text-dark: #2b0004;
-  
-  --line-dormant: #e8a4af;
-  --line-highlight: #c62e3f;
+  --text-dark: #4D1A1F;
 
-  /* Background Grid */
-  --bg-grid-color-a: rgba(255, 201, 198,0.2);
-  --bg-grid-color-b: rgba(254, 211, 206,0.2);
-  
+  /* Lines / highlights */
+  --line-dormant: #FCEAF0;
+  --line-highlight: #E36B79;
+
+  /* Background grid */
+  --bg-grid-color-a: rgba(255, 201, 198,0.1);
+  --bg-grid-color-b: rgba(254, 211, 206,0.1);
+
+  /* Misc */
   --invert: 0.1;
-  --graph-graient: linear-gradient(90deg, #df7c8a, #e8a4af);
-  --bg-bar: #A84D64;
-  
-  --node: #e36b79;
+  --graph-graient: linear-gradient(90deg, #F7E1E5, #FCEAF0);
+  --bg-bar: #F7E1E5;
+
+  --node: #EA7B86;
 }
 
 :root.dark-mode {
