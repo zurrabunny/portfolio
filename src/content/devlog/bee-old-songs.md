@@ -17,6 +17,8 @@ can’t forget the tracks that started everything <:0<br><br>
 I will also be pointing out some flaws of the old versions, and how I improved on it in the current versions!
 </pblog>
 
+<hr style="border: 0; border-top: 2px solid var(--color-4); margin: 2rem 0;">
+
 <h3>Flower Basket (2021)</h3>
 
 <pblog>
@@ -29,7 +31,9 @@ The new version made me think of mixing ahead of time, and with the help of Onli
 rendition of Flower Basket >:D
 </pblog>
 
-<devlog-music-player data-src="devlog/music/bee_old_songs/flower_basket.ogg" data-title="Flower Basket (2021)"></devlog-music-player><br><br>
+<devlog-music-player data-src="devlog/music/bee_old_songs/flower_basket.ogg" data-title="Flower Basket (2021)"></devlog-music-player>
+
+<hr style="border: 0; border-top: 2px solid var(--color-4); margin: 2rem 0;">
 
 <h3>Starstruck (2021)</h3>
 
@@ -42,7 +46,9 @@ I got rid of the heavy bass and got rid of all of the percussion, and added a he
 reworking the arp. I also made the song "wider" to make it feel as if youre actually floating in space. <:D
 </pblog>
 
-<devlog-music-player data-src="devlog/music/bee_old_songs/starstruck.ogg" data-title="Starstruck (2021)"></devlog-music-player><br><br>
+<devlog-music-player data-src="devlog/music/bee_old_songs/starstruck.ogg" data-title="Starstruck (2021)"></devlog-music-player>
+
+<hr style="border: 0; border-top: 2px solid var(--color-4); margin: 2rem 0;">
 
 <h3>Take A Minute (2021) / Old Shorts and Shores</h3>
 
@@ -56,7 +62,9 @@ common is that they have percussion akin to slapping your hand on some random ob
 a synth pluck, and sounds from the beach itself. i took those ideas and added it in the current version of Take A Minute, Shorts and Shores! :D
 </pblog>
 
-<devlog-music-player data-src="devlog/music/bee_old_songs/take_a_minute.ogg" data-title="Take A Minute (2021)"></devlog-music-player><br><br>
+<devlog-music-player data-src="devlog/music/bee_old_songs/take_a_minute.ogg" data-title="Take A Minute (2021)"></devlog-music-player>
+
+<hr style="border: 0; border-top: 2px solid var(--color-4); margin: 2rem 0;">
 
 <h3>Fallen Star (2022) / Old Unholy Seranata</h3>
 

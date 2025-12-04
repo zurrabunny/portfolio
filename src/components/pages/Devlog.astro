@@ -7,26 +7,27 @@ import DevlogModal from './devlog/DevlogModal.astro';
 <main class="content">
   <Container variant="static">
     <DevlogModal />
-	
-		<div class="goal-title-line">
-		  <div class="goal-line"></div>
-		  <h1 id="goal-title">
-			Blogs
-		  </h1>
-		  <div class="goal-line"></div>
-		</div>
-	
-		<p class="intro">
-        Hear my ramblings! whether that be current / upcoming projects, brainstorms, events, creative processes, etc. I update this section from time to time!
-		</p>
-	
-    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+
+    <div class="goal-title-line">
+      <div class="goal-line"></div>
+      <h1 id="goal-title">Blogs</h1>
+      <div class="goal-line"></div>
+    </div>
+
+    <p class="intro">
+      Hear my ramblings! Whether that’s current or upcoming projects, brainstorms, events,
+      creative processes, and more. I update this section from time to time!
+    </p>
+
+    <div class="devlog-wrapper">
       <DevlogList />
     </div>
+
   </Container>
 </main>
 
 <style>
+/* ===== Base Layout ===== */
 main.content {
   flex: 1;
   margin-left: 260px;
@@ -35,7 +36,7 @@ main.content {
 }
 
 p {
-color: var(--text-dark);
+  color: var(--text-dark);
 }
 
 h1 {
@@ -44,70 +45,65 @@ h1 {
   margin-bottom: 1rem;
 }
 
-/* Goal title line styling */
+/* ===== Title Line ===== */
 .goal-title-line {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1rem;
   gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .goal-line {
   flex: 1;
   height: 2px;
-  background-color: var(--color-6); /* adjust to visible color */
-  opacity: 1;
-  transform: scaleX(1);
+  background-color: var(--color-6);
 }
 
-/* Title styling */
 #goal-title {
   font-size: 2rem;
   font-weight: 700;
   letter-spacing: 0.03em;
   margin: 0;
   white-space: nowrap;
+}
+
+/* ===== Devlog layout ===== */
+.devlog-wrapper {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-/* Mobile adjustments */
+/* ===== Mobile ===== */
 @media (max-width: 900px) {
-
   main.content {
-  flex: 1;
-  margin: 1px;
-  padding: 0.5rem;
-  color: var(--text-dark);
+    margin: 0;
+    padding: 0.5rem;
   }
 
-  h1 {
-    font-size: 1.5rem;
-    text-align: center;
-  }
-
-  h2, h3 {
-    font-size: 1.1rem;
-  }
-
-  /* Shrink text for all base elements */
-p, li, span, a {
-  font-size: 0.55rem;
-  margin: 0.5rem;
-}
-
+  h1,
   #goal-title {
     font-size: 1.5rem;
     text-align: center;
     white-space: normal;
   }
+
+  /* Body text scaling */
+  p,
+  li,
+  span,
+  a {
+    font-size: 0.55rem;
+    margin: 0.5rem 0;
+  }
+
   .goal-title-line {
     gap: 0.5rem;
   }
+
   .goal-line {
     height: 1px;
   }
 }
-
 </style>

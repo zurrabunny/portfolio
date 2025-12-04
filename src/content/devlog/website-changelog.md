@@ -263,6 +263,14 @@ tags: ["Process"]
 		</ul>
 	</ul>
 	
+	<h3>December 4 2025</h3>
+	<ul>
+		<li>Visitor's Lounge Tab :
+		<ul>
+		<li>fixed Drawbox Offset
+		</ul>
+	</ul>
+	
 </div>
 
 <style>

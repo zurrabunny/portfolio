@@ -3,12 +3,14 @@ const { entry } = Astro.props;
 const { title, date, description, pinned, tags } = entry.data;
 ---
 
-<article class="devlog-card"
-         data-title={title}
-         data-date={date}
-         data-body={entry.body ? entry.body : ''}
-         data-tags={tags ? tags.join(',') : ''}
-         data-pinned={pinned ? 'true' : 'false'}>
+<article
+  class="devlog-card"
+  data-title={title}
+  data-date={date}
+  data-body={entry.body || ''}
+  data-tags={tags?.join(',') || ''}
+  data-pinned={pinned ? 'true' : 'false'}
+>
 
   {pinned && <span class="pinned-badge">Pinned</span>}
 
@@ -17,10 +19,11 @@ const { title, date, description, pinned, tags } = entry.data;
 
   <div class="card-footer">
     <small class="card-date">{date}</small>
-    {tags && tags.length > 0 && (
+
+    {tags?.length > 0 && (
       <span class="card-tags">
         {tags.map(tag => (
-          <span class="modal-tag">#{tag}</span>
+          <span class="tag">#{tag}</span>
         ))}
       </span>
     )}
@@ -28,6 +31,7 @@ const { title, date, description, pinned, tags } = entry.data;
 </article>
 
 <style>
+/* ===== Card ===== */
 .devlog-card {
   padding: 0.6rem 0.8rem;
   border: 2px solid var(--border-sidebar);
@@ -36,9 +40,14 @@ const { title, date, description, pinned, tags } = entry.data;
   cursor: pointer;
   transition: background 0.2s ease;
   font-size: 0.85rem;
-  position: relative; /* for badge positioning if needed */
+  position: relative;
 }
 
+.devlog-card:hover {
+  background: var(--color-6);
+}
+
+/* ===== Pin Badge ===== */
 .pinned-badge {
   position: absolute;
   top: 6px;
@@ -50,24 +59,26 @@ const { title, date, description, pinned, tags } = entry.data;
   font-size: 0.65rem;
 }
 
+/* ===== Title & Text ===== */
 .devlog-card h2 {
+  margin: 0 0 0.3rem;
   font-size: 1rem;
-  margin: 0 0 0.3rem 0;
   color: var(--color-2);
 }
 
 .devlog-card p {
+  margin: 0 0 0.3rem;
   font-size: 0.75rem;
-  margin: 0 0 0.3rem 0;
   line-height: 1.2;
   color: var(--text-dark);
 }
 
+/* ===== Footer ===== */
 .card-footer {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
   flex-wrap: wrap;
+  gap: 0.4rem;
 }
 
 .card-date {
@@ -75,24 +86,19 @@ const { title, date, description, pinned, tags } = entry.data;
   color: var(--color-2);
 }
 
+/* ===== Tags ===== */
 .card-tags {
   display: flex;
-  gap: 0.3rem;
   flex-wrap: wrap;
+  gap: 0.3rem;
 }
 
-.modal-tag {
-  background-color: var(--color-5);
+.tag {
+  background: var(--color-5);
   color: var(--text-main);
-  font-size: 0.55rem; /* same as date */
-  font-weight: 10;
-  padding: 0.15rem 0.4rem; /* smaller padding */
+  font-size: 0.55rem;
+  padding: 0.15rem 0.4rem;
   border-radius: 999px;
   display: inline-block;
-}
-
-
-.devlog-card:hover {
-  background: var(--color-6);
 }
 </style>
