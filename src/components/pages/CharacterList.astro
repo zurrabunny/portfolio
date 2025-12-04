@@ -221,18 +221,62 @@ document.addEventListener("DOMContentLoaded", () => {
       toggle.classList.remove("open");
     }
   });
+
+  // ===== Dynamic styling for character description boxes =====
+  // Title line container
+  document.querySelectorAll('.char-description-title-line').forEach(el => {
+    el.style.display = 'flex';
+    el.style.alignItems = 'center';
+    el.style.justifyContent = 'center';
+    el.style.gap = '1rem';
+    el.style.marginBottom = '-0.5rem';
+  });
+
+  // Line inside title
+  document.querySelectorAll('.char-description-line').forEach(el => {
+    el.style.flex = '1';
+    el.style.height = '2px';
+    el.style.backgroundColor = 'var(--color-5)';
+  });
+
+  // Title text
+  document.querySelectorAll('.char-description-title').forEach(el => {
+    el.style.margin = '0';
+    el.style.color = 'var(--color-10)';
+    el.style.fontSize = '1.3rem';
+    el.style.fontWeight = '700';
+  });
+
+  // Box container
+  document.querySelectorAll('.basic-info-block').forEach(el => {
+    el.style.width = '100%';
+    el.style.marginTop = '1rem';
+  });
+
+  // Inner info content
+  document.querySelectorAll('.info-stuffs').forEach(el => {
+    el.style.padding = '1rem';
+    el.style.color = 'var(--text-dark)';
+  });
+
+  // Paragraphs inside info-stuffs
+  document.querySelectorAll('.info-stuffs p').forEach(el => {
+    el.style.margin = '0';
+    el.style.lineHeight = '1.5rem';
+  });
+
 });
 </script>
 
-
 <style>
+
 /* IMAGE INFO (UPDATED STYLE) */
 .char-image-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 320px; /* match the image width */
-  background-color: var(--color-3);
+  background-color: var(--color-9);
   border-radius: 1rem;
   border: 2px solid var(--color-2);
   padding-bottom: 1rem;
@@ -256,6 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
 .char-info-text p {
   margin: 2px 0;
   padding-left: 1.2rem;
+  
 }
 
 h1 { font-size: 1.8rem; color: var(--color-1); margin-bottom: 1rem; }
@@ -358,7 +403,7 @@ main.content {
 .char-list li:hover,
 .char-list li.active {
   background: var(--color-6);
-  color: white;
+  color: var(--color-1);
   font-weight: 600;
   border-left: 3px solid var(--color-1);
 }
@@ -488,7 +533,7 @@ main.content {
 .char-info h2 {
   margin: 0 0 0.3rem 0;
   font-size: 1.6rem;
-  color: var(--color-1);
+  color: var(--text-title);
 }
 
 .char-info h3 {
@@ -508,6 +553,7 @@ main.content {
   align-items: baseline; /* align tags to text baseline instead of center */
   gap: 1rem;
   flex-wrap: wrap;
+  color: var(--text-dark);
 }
 
 .inline-tags .modal-tag {

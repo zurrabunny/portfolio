@@ -50,41 +50,45 @@ html, body {
   /* Primary colors (lighter versions of dark-mode) */
   --color-1: #E36B79;
   --color-2: #EA7B86;
-  --color-3: #F2D2D8;
-  --color-4: #F7E1E5;
-  --color-5: #FCEAF0;
-  --color-6: #FFF5F7;
-  --color-7: #FFE6EB;
+  --color-3: #d1667f;
+  --color-4: #d9808a;
+  --color-5: #ffc9d4;
+  --color-6: #ffe0e7;
+  --color-7: #ffbfbf;
+  --color-8: #fff2f2;
+  --color-9: #ffbfd1;
+  --color-10: #E36B79;
 
   /* Backgrounds */
   --bg-main: #FFF5F7;          /* light main background */
-  --bg-sidebar: #FFE6EB;       /* lighter sidebar */
+  --bg-sidebar: #f081a4;       /* lighter sidebar */
   --container: rgba(255,255,255,0.9);
   --container-fixed: var(--bg-sidebar);
   
   /* Borders */
   --border-container: rgba(0,0,0,0.05);
-  --border-sidebar: rgba(0,0,0,0.05);
+  --border-sidebar: rgba(255, 166, 194,0.1);
 
   /* Text */
   --text-main: #2B0004;        /* keep dark for readability */
-  --text-light: #fff;
-  --text-dark: #4D1A1F;
+  --text-light: #ffffff;
+  --text-dark: #241314;
+  --text-title: #241314;
 
   /* Lines / highlights */
-  --line-dormant: #FCEAF0;
+  --line-dormant: #deb8bd;
   --line-highlight: #E36B79;
 
   /* Background grid */
-  --bg-grid-color-a: rgba(255, 201, 198,0.1);
-  --bg-grid-color-b: rgba(254, 211, 206,0.1);
+  --bg-grid-color-a: rgba(255, 196, 205,1);
+  --bg-grid-color-b: rgba(255, 179, 190,1);
 
   /* Misc */
   --invert: 0.1;
-  --graph-graient: linear-gradient(90deg, #F7E1E5, #FCEAF0);
-  --bg-bar: #F7E1E5;
+  --graph-graient: linear-gradient(90deg, #ff6987, #ff7d97);
+  --bg-bar: #634349;
 
-  --node: #EA7B86;
+  --node: #ed7284;
 }
 
 :root.dark-mode {
@@ -95,6 +99,9 @@ html, body {
   --color-5: #a05066;
   --color-6: #47212C;
   --color-7: #452530;
+  --color-8: #381f24;
+  --color-9: #421E24;
+  --color-10: #a05066;
 
   /* Backgrounds */
   --bg-main: #0d0d0d;        /* almost black main background */
@@ -110,6 +117,7 @@ html, body {
   --text-main: #FFE0EC;
   --text-light: #fff;
   --text-dark: #FFADCD;
+  --text-title: FFADCD;
 
   --line-dormant: #421E24;
   --line-highlight: #B84B68;
