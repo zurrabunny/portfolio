@@ -1,0 +1,239 @@
+<!-- Cookie Toggle -->
+<button class="cookie-toggle" id="cookie-toggle" aria-label="Cookie Clicker">
+  <svg class="icon cookie" width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20.5056 10.7754C21.1225 10.5355 21.431 10.4155 21.5176 10.2459C21.5926 10.099 21.5903 9.92446 21.5115 9.77954C21.4205 9.61226 21.109 9.50044 20.486 9.2768L4.59629 3.5728C4.0866 3.38983 3.83175 3.29835 3.66514 3.35605C3.52029 3.40621 3.40645 3.52004 3.35629 3.6649C3.29859 3.8315 3.39008 4.08635 3.57304 4.59605L9.277 20.4858C9.50064 21.1088 9.61246 21.4203 9.77973 21.5113C9.92465 21.5901 10.0991 21.5924 10.2461 21.5174C10.4157 21.4308 10.5356 21.1223 10.7756 20.5054L13.3724 13.8278C13.4194 13.707 13.4429 13.6466 13.4792 13.5957C13.5114 13.5506 13.5508 13.5112 13.5959 13.479C13.6468 13.4427 13.7072 13.4192 13.828 13.3722L20.5056 10.7754Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <svg class="icon close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <line x1="18" y1="6" x2="6" y2="18"/>
+    <line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+</button>
+
+<!-- Cookie Panel -->
+<div class="cookie-panel" id="cookie-panel" hidden>
+  <div class="cookie-count">Bubby Clicker</div>
+  <div class="divider"></div>
+  <img src="bubby.gif" alt="Bubby" class="bubby" id="bubby-click" draggable="false" />
+  <div class="divider"></div>
+  <div class="cookie-count">Bubbys : <span id="cookie-count">0</span></div>
+</div>
+
+<style>
+/* Toggle button */
+.cookie-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 72px;
+  z-index: 9999;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 12px;
+  background-color: var(--color-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.cookie-toggle:hover {
+  background-color: var(--color-2);
+}
+
+.icon {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  stroke: var(--text-main);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+/* Nudge cookie slightly lower and right */
+.cookie { 
+  opacity: 1; 
+  filter: brightness(var(--invert));
+}
+
+.close {
+  opacity: 0;
+  transform: rotate(-90deg);
+}
+
+.cookie-panel {
+  position: fixed;
+  top: 4.2rem;
+  right: 64px;
+  width: 160px;
+  padding: 14px;
+  background: var(--bg-sidebar);
+  color: var(--text-dark);
+  border: 4px solid var(--border-sidebar);
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.3);
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.cookie-panel.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.bubby {
+  width: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.06s ease;
+  filter: brightness(var(--invert));
+}
+.bubby:active {
+  transform: scale(0.98);
+}
+
+.divider {
+  margin: 10px 0 8px;
+  height: 1px;
+  background: var(--border-sidebar);
+  opacity: 0.6;
+}
+
+.cookie-count {
+  font-size: 1.1rem;
+}
+
+/* Mobile fallback: hide completely */
+@media (max-width: 900px) {
+  .cookie-toggle,
+  .cookie-panel {
+    display: none !important;
+    pointer-events: none;
+  }
+}
+</style>
+
+<script type="module" client:load>
+const toggle = document.getElementById("cookie-toggle");
+const panel = document.getElementById("cookie-panel");
+const countEl = document.getElementById("cookie-count");
+const bubby = document.getElementById("bubby-click");
+
+const cookieIcon = toggle.querySelector(".cookie");
+const closeIcon = toggle.querySelector(".close");
+
+let cookies = Number(localStorage.getItem("cookies") || 0);
+let open = localStorage.getItem("cookieOpen") === "true";
+
+countEl.textContent = cookies;
+
+// Disable entirely on mobile
+const isMobile = window.innerWidth <= 900;
+if (isMobile) {
+  toggle.style.display = "none";
+  panel.style.display = "none";
+} else {
+  syncUI();
+}
+
+function syncUI() {
+  if (open) {
+    panel.hidden = false;
+    requestAnimationFrame(() => panel.classList.add("show"));
+  } else {
+    panel.classList.remove("show");
+    setTimeout(() => { if (!open) panel.hidden = true; }, 300);
+  }
+
+  // Icons
+  cookieIcon.style.opacity = open ? "0" : "1";
+  closeIcon.style.opacity = open ? "1" : "0";
+  cookieIcon.style.transform = open ? "translate(1px,1px) rotate(90deg)" : "translate(1px,1px) rotate(0deg)";
+  closeIcon.style.transform = open ? "rotate(0deg)" : "rotate(-90deg)";
+}
+
+// Toggle panel
+toggle.addEventListener("click", () => {
+  open = !open;
+  localStorage.setItem("cookieOpen", open);
+  syncUI();
+});
+
+// Confetti
+function spawnConfetti(x, y) {
+  const colors = ["#FFB3BA","#FFDFBA","#FFFFBA","#BAFFC9","#BAE1FF","#E0BAFF","#FFFFFF"];
+  for (let i = 0; i < 4; i++) {
+    const confetti = document.createElement("div");
+    confetti.className = "confetti";
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.width = `${8 + Math.random() * 10}px`;
+    confetti.style.height = `${8 + Math.random() * 10}px`;
+    confetti.style.opacity = "0.9";
+    confetti.style.borderRadius = "3px";
+    confetti.style.left = "0px";
+    confetti.style.top = "0px";
+    confetti.style.position = "fixed";
+    confetti.style.pointerEvents = "none";
+    confetti.style.zIndex = 10000;
+    document.body.appendChild(confetti);
+
+    let posX = 0, posY = 0;
+    const velocityX = (Math.random() - 0.5) * 10;
+    let velocityY = Math.random() * -10 - 1;
+    const gravity = 0.5;
+    const rotationSpeed = (Math.random() - 0.5) * 20;
+    let rotation = 0;
+
+    function animate() {
+      velocityY += gravity;
+      posX += velocityX;
+      posY += velocityY;
+      rotation += rotationSpeed;
+      confetti.style.transform = `translate(${x + posX}px, ${y + posY}px) rotate(${rotation}deg)`;
+      if (y + posY < window.innerHeight + 720) requestAnimationFrame(animate);
+      else confetti.remove();
+    }
+    animate();
+  }
+}
+
+// Bubby click
+bubby.addEventListener("click", (e) => {
+  cookies++;
+  countEl.textContent = cookies;
+  localStorage.setItem("cookies", cookies.toString());
+
+  const audio = new Audio("bubbyboop.ogg");
+  audio.play();
+  spawnConfetti(e.clientX, e.clientY);
+
+  const randomAngle = (Math.random() - 0.5) * 80;
+  bubby.style.transform = `scale(0.85) rotate(${randomAngle}deg)`;
+
+  const duration = 400;
+  const startTime = performance.now();
+  const initialScale = 0.85;
+  const initialRotation = randomAngle;
+
+  function easeOutQuad(t) { return t * (2 - t); }
+  function easeOutElastic(t) {
+    const c4 = (Math.PI)/3;
+    return t===0?0:t===1?1:Math.pow(2,-10*t)*Math.sin((t*10-0.75)*c4)+1;
+  }
+
+  function animate(time){
+    const t = Math.min((time - startTime)/duration,1);
+    const scale = initialScale + (1 - initialScale) * easeOutQuad(t);
+    const rotation = initialRotation * (1 - easeOutElastic(t));
+    bubby.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
+    if(t < 1) requestAnimationFrame(animate);
+    else bubby.style.transform = "scale(1) rotate(0deg)";
+  }
+  requestAnimationFrame(animate);
+});
+</script>
