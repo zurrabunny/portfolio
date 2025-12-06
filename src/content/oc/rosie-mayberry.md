@@ -1,6 +1,6 @@
 ---
 name: Rosaline Mayberry
-image: /no-ref.png
+image: no-ref.png
 tags: ["Second Generation", "Lore OC"]
 age: 17
 height: 5'3"

@@ -1,6 +1,6 @@
 ---
 name: Azure Amielle
-image: /no-ref.png
+image: no-ref.png
 tags: ["Third Generation", "Protagonist", "Lore OC"]
 age: 21
 height: 5'3"

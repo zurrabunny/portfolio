@@ -1,6 +1,6 @@
 ---
 name: Aurora Valenne
-image: /no-ref.png
+image: no-ref.png
 tags: ["Second Generation", "Protagonist", "Lore OC"]
 age: undefined
 height: 5'4"

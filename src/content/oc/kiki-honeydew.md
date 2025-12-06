@@ -1,6 +1,6 @@
 ---
 name: Kiki Honeydew
-image: /no-ref.png
+image: no-ref.png
 tags: ["Second Generation", "Pets", "Lore OC"]
 age: 4 (dog years)
 height: 27 cm

@@ -1,6 +1,6 @@
 ---
 name: Lust
-image: /no-ref.png
+image: no-ref.png
 tags: ["Third Generation", "Antagonist", "Lore OC"]
 age: undefined
 height: 84"

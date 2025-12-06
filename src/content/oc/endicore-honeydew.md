@@ -1,6 +1,6 @@
 ---
 name: Endicore Honeydew
-image: /no-ref.png
+image: no-ref.png
 tags: ["Second Generation", "Lore OC"]
 age: 46
 height: 6'1"

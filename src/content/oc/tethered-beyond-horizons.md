@@ -1,6 +1,6 @@
 ---
 name: Tethered Beyond Horizons
-image: /no-ref.png
+image: no-ref.png
 tags: ["Fan OC", "Robot OC"]
 age: 10th Generation Iterator
 height: 503,300 miles (Structure) / 4'11 (Puppet)

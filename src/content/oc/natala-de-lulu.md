@@ -1,6 +1,6 @@
 ---
 name: Natala De Lulu
-image: /no-ref.png
+image: no-ref.png
 tags: ["Side OC"]
 age: 24
 height: 5'5"

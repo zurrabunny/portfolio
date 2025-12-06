@@ -1,6 +1,6 @@
 ---
 name: Chora 
-image: /no-ref.png
+image: no-ref.png
 tags: ["Side OC"]
 age: 23
 height: 5'5"

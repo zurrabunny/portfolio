@@ -1,6 +1,6 @@
 ---
 name: Bee Honeydew
-image: /no-ref.png
+image: no-ref.png
 tags: ["Second Generation", "Protagonist", "Lore OC"]
 age: 16
 height: 5'2"
