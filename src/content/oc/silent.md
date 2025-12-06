@@ -1,6 +1,6 @@
 ---
 name: Silent
-image: /images/sample.png
+image: /no-ref.png
 tags: ["First Generation", "Antagonist", "Lore OC"]
 age: undefined
 height: 5'7"

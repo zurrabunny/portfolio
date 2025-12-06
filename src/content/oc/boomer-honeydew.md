@@ -1,6 +1,6 @@
 ---
 name: Boomer Honeydew
-image: /images/sample.png
+image: /no-ref.png
 tags: ["Second Generation", "Pets", "Lore OC"]
 age: 7 (dog years)
 height: 2'1"

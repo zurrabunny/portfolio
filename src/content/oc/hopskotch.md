@@ -1,6 +1,6 @@
 ---
 name: Hopskotch Merriweather
-image: /images/sample.png
+image: /no-ref.png
 tags: ["Anthro OC", "Side OC"]
 age: 19
 height: 5'6"

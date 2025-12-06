@@ -1,6 +1,6 @@
 ---
 name: Diamond Montgomery
-image: /images/sample.png
+image: /no-ref.png
 tags: ["First Generation", "Antagonist", "Lore OC"]
 age: 42
 height: 5'9"

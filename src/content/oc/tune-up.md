@@ -1,6 +1,6 @@
 ---
 name: Tune-Up Honeydew
-image: /images/sample.png
+image: /no-ref.png
 tags: ["Second Generation", "Robot OC", "Lore OC"]
 age: undefined
 height: 4'11"

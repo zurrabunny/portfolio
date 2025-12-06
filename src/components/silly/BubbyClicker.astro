@@ -202,7 +202,7 @@ function updateSkinSelector() {
 
       // Unlock if not unlocked
       if (!wasUnlocked && cookies >= s.amount) {
-        cookies -= s.amount / 4; // Optional fractional cost
+        cookies -= Math.round(s.amount / 4);
         countEl.textContent = cookies;
         localStorage.setItem("cookies", cookies.toString());
 
@@ -256,7 +256,7 @@ function syncUI() {
 // Confetti
 function spawnConfetti(x, y) {
   const colors = ["#FFB3BA","#FFDFBA","#FFFFBA","#BAFFC9","#BAE1FF","#E0BAFF","#FFFFFF"];
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 2; i++) {
     const confetti = document.createElement("div");
     confetti.className = "confetti";
     confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];

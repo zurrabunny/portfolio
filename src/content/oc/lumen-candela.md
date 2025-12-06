@@ -1,6 +1,6 @@
 ---
 name: Lumen Candela
-image: /images/sample.png
+image: /no-ref.png
 tags: ["Fan OC"]
 age: undefined
 height: undefined

@@ -1,6 +1,6 @@
 ---
 name: Emily Doe
-image: /images/sample.png
+image: /no-ref.png
 tags: ["Anthro OC", "Side OC"]
 age: 20
 height: 5'4"

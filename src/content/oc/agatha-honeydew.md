@@ -1,6 +1,6 @@
 ---
 name: Agatha Honeydew
-image: /images/sample.png
+image: /no-ref.png
 tags: ["Second Generation", "Lore OC"]
 age: 42
 height: 5'8"
