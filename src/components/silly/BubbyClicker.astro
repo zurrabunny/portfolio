@@ -11,11 +11,18 @@
 
 <!-- Cookie Panel -->
 <div class="cookie-panel" id="cookie-panel" hidden>
-  <div class="cookie-count">Bubby Clicker</div>
-  <div class="divider"></div>
-  <img src="bubby.gif" alt="Bubby" class="bubby" id="bubby-click" draggable="false" />
-  <div class="divider"></div>
-  <div class="cookie-count">Bubbys : <span id="cookie-count">0</span></div>
+  <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+    <div>
+      <div class="cookie-count">Bubby Clicker</div>
+      <div class="divider"></div>
+      <img src="bubby/bubby.gif" alt="Bubby" class="bubby" id="bubby-click" draggable="false" />
+      <div class="divider"></div>
+      <div class="cookie-count">Bubbys : <span id="cookie-count">0</span></div>
+    </div>
+    <div id="skin-selector" style="display: flex; flex-direction: column; gap: 6px;">
+      <!-- Unlocked skins will appear here -->
+    </div>
+  </div>
 </div>
 
 <style>
@@ -64,7 +71,7 @@
   position: fixed;
   top: 4.2rem;
   right: 64px;
-  width: 160px;
+  width: 450px; /* wider for skin selector */
   padding: 14px;
   background: var(--bg-sidebar);
   color: var(--text-dark);
@@ -79,6 +86,15 @@
   pointer-events: none;
 }
 
+#skin-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 90%;
+  width: 500px;
+  overflow-y: auto;
+  padding-left: 20px;
+}
 .cookie-panel.show {
   opacity: 1;
   transform: translateY(0);
@@ -123,46 +139,119 @@ const toggle = document.getElementById("cookie-toggle");
 const panel = document.getElementById("cookie-panel");
 const countEl = document.getElementById("cookie-count");
 const bubby = document.getElementById("bubby-click");
+const skinSelector = document.getElementById("skin-selector");
 
 const cookieIcon = toggle.querySelector(".cookie");
 const closeIcon = toggle.querySelector(".close");
 
 let cookies = Number(localStorage.getItem("cookies") || 0);
 let open = localStorage.getItem("cookieOpen") === "true";
-
+let currentSkin = localStorage.getItem("bubbySkin") || "./bubby/bubby.gif";
+bubby.src = currentSkin;
 countEl.textContent = cookies;
 
-// Disable entirely on mobile
-const isMobile = window.innerWidth <= 900;
-if (isMobile) {
-  toggle.style.display = "none";
-  panel.style.display = "none";
-} else {
-  syncUI();
+// Skin list
+const skins = [
+  { amount: 0, file: "bubby.gif" },
+  { amount: 50, file: "sunflower.gif" },
+  { amount: 500, file: "bassie.gif" },
+  { amount: 999, file: "dozer.gif" },
+  { amount: 1987, file: "fnaf.gif" },
+  { amount: 2007, file: "bday.gif" },
+  { amount: 2300, file: "kookoo.gif" },
+  { amount: 2700, file: "scug.gif" },
+  { amount: 3000, file: "joey.gif" },
+];
+
+// Load unlocked skins from localStorage
+let unlockedSkins = new Set(JSON.parse(localStorage.getItem("unlockedSkins") || "[]"));
+// Auto-unlock any affordable skins
+skins.forEach(s => { if (cookies >= s.amount) unlockedSkins.add(s.file); });
+
+function updateSkinSelector() {
+  if (!skinSelector) return;
+  skinSelector.innerHTML = "";
+
+  const styles = getComputedStyle(document.documentElement);
+  const bgDefault = styles.getPropertyValue("--color-3") || "#222";
+  const bgActive = styles.getPropertyValue("--color-2") || "#444";
+  const textColor = styles.getPropertyValue("--text-main") || "#fff";
+
+  skins.forEach(s => {
+    const canUnlock = unlockedSkins.has(s.file) || cookies >= s.amount;
+    if (!canUnlock) return;
+
+    const btn = document.createElement("button");
+    btn.textContent = s.file.replace("bubby-", "").replace(".gif", "").replace(/-/g, " ");
+    btn.classList.toggle("active", s.file === currentSkin.replace("./bubby/", ""));
+    btn.style.padding = "6px 10px";
+    btn.style.margin = "2px 0";
+    btn.style.border = "2px solid transparent";
+    btn.style.borderRadius = "6px";
+    btn.style.background = s.file === currentSkin.replace("./bubby/", "") ? bgActive : bgDefault;
+    btn.style.color = textColor;
+    btn.style.cursor = "pointer";
+    btn.style.fontSize = "0.85rem";
+    btn.style.transition = "all 0.2s ease";
+
+    btn.addEventListener("mouseover", () => { btn.style.background = bgActive; });
+    btn.addEventListener("mouseout", () => { btn.style.background = s.file === currentSkin.replace("./bubby/", "") ? bgActive : bgDefault; });
+
+    btn.addEventListener("click", () => {
+      const wasUnlocked = unlockedSkins.has(s.file);
+
+      // Unlock if not unlocked
+      if (!wasUnlocked && cookies >= s.amount) {
+        cookies -= s.amount / 4; // Optional fractional cost
+        countEl.textContent = cookies;
+        localStorage.setItem("cookies", cookies.toString());
+
+        unlockedSkins.add(s.file);
+        localStorage.setItem("unlockedSkins", JSON.stringify([...unlockedSkins]));
+
+        spawnConfetti(panel.getBoundingClientRect().left + panel.offsetWidth/2,
+                      panel.getBoundingClientRect().top + panel.offsetHeight/2);
+      } else if (!wasUnlocked && cookies < s.amount) {
+        return; // Not enough cookies
+      }
+
+      // Only switch if different skin
+      if (currentSkin !== `./bubby/${s.file}`) {
+        currentSkin = `./bubby/${s.file}`;
+        bubby.src = currentSkin;
+        localStorage.setItem("bubbySkin", currentSkin);
+
+        // Play skin switch/unlock sound
+        const sound = new Audio(`./bubby/${s.file.replace(".gif", ".ogg")}`);
+        sound.play();
+      }
+
+      updateSkinSelector();
+    });
+
+    skinSelector.appendChild(btn);
+  });
 }
 
-function syncUI() {
-  if (open) {
-    panel.hidden = false;
-    requestAnimationFrame(() => panel.classList.add("show"));
-  } else {
-    panel.classList.remove("show");
-    setTimeout(() => { if (!open) panel.hidden = true; }, 300);
-  }
+// Initial render
+updateSkinSelector();
 
-  // Icons
+// Toggle panel
+const isMobile = window.innerWidth <= 900;
+if (isMobile) { toggle.style.display = "none"; panel.style.display = "none"; } 
+else { syncUI(); }
+
+toggle.addEventListener("click", () => { open = !open; localStorage.setItem("cookieOpen", open); syncUI(); });
+
+function syncUI() {
+  if (open) { panel.hidden = false; requestAnimationFrame(() => panel.classList.add("show")); }
+  else { panel.classList.remove("show"); setTimeout(() => { if (!open) panel.hidden = true; }, 300); }
+
   cookieIcon.style.opacity = open ? "0" : "1";
   closeIcon.style.opacity = open ? "1" : "0";
   cookieIcon.style.transform = open ? "translate(1px,1px) rotate(90deg)" : "translate(1px,1px) rotate(0deg)";
   closeIcon.style.transform = open ? "rotate(0deg)" : "rotate(-90deg)";
 }
-
-// Toggle panel
-toggle.addEventListener("click", () => {
-  open = !open;
-  localStorage.setItem("cookieOpen", open);
-  syncUI();
-});
 
 // Confetti
 function spawnConfetti(x, y) {
@@ -207,8 +296,9 @@ bubby.addEventListener("click", (e) => {
   cookies++;
   countEl.textContent = cookies;
   localStorage.setItem("cookies", cookies.toString());
+  updateSkinSelector();
 
-  const audio = new Audio("bubbyboop.ogg");
+  const audio = new Audio("./bubby/bubbyboop.ogg");
   audio.play();
   spawnConfetti(e.clientX, e.clientY);
 
@@ -221,10 +311,7 @@ bubby.addEventListener("click", (e) => {
   const initialRotation = randomAngle;
 
   function easeOutQuad(t) { return t * (2 - t); }
-  function easeOutElastic(t) {
-    const c4 = (Math.PI)/3;
-    return t===0?0:t===1?1:Math.pow(2,-10*t)*Math.sin((t*10-0.75)*c4)+1;
-  }
+  function easeOutElastic(t) { const c4 = (Math.PI)/3; return t===0?0:t===1?1:Math.pow(2,-10*t)*Math.sin((t*10-0.75)*c4)+1; }
 
   function animate(time){
     const t = Math.min((time - startTime)/duration,1);
@@ -232,7 +319,7 @@ bubby.addEventListener("click", (e) => {
     const rotation = initialRotation * (1 - easeOutElastic(t));
     bubby.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
     if(t < 1) requestAnimationFrame(animate);
-    else bubby.style.transform = "scale(1) rotate(0deg)";
+    else bubby.style.transform = `scale(1) rotate(0deg)`;
   }
   requestAnimationFrame(animate);
 });
