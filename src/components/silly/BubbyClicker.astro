@@ -253,6 +253,7 @@ const skins = [
   { amount: 2300, file: "kookoo.gif" },
   { amount: 2700, file: "scug.gif" },
   { amount: 3000, file: "joey.gif" },
+  { amount: 5000, file: "goober.gif" },
 ];
 
 let unlockedSkins = new Set(JSON.parse(localStorage.getItem("unlockedSkins") || "[]"));
@@ -271,7 +272,7 @@ upgradeBtn.addEventListener("click", () => {
   cookies -= upgradeCost;
   bubbysPerClick += 1;
 
-  upgradeCost = Math.ceil(upgradeCost * 1.05);
+  upgradeCost = Math.ceil(upgradeCost * 1.8);
   countEl.textContent = cookies;
   localStorage.setItem("cookies", cookies);
   localStorage.setItem("bubbysPerClick", bubbysPerClick);
