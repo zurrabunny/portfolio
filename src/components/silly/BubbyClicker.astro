@@ -18,9 +18,14 @@
       <img src="bubby/bubby.gif" alt="Bubby" class="bubby" id="bubby-click" draggable="false" />
       <div class="divider"></div>
       <div class="cookie-count">Bubbys : <span id="cookie-count">0</span></div>
+		<div class="divider"></div>
+		
+		<button id="bubby-upgrade" class="bubby-upgrade">
+		  +1 per click (100)
+		</button>
 
       <!-- Confetti Count Control -->
-      <div class="divider"></div>
+      
       <div class="confetti-panel">
         <label for="confetti-count">Confetti per click:</label>
         <input type="number" id="confetti-count" min="1" max="20" value="2">
@@ -40,6 +45,34 @@
 
 <style>
 /* Toggle button */
+
+.bubby-upgrade {
+  margin-top: 10px;
+  padding: 8px 12px;
+  width: 100%;
+  border-radius: 8px;
+  border: 2px solid var(--border-sidebar);
+  background: var(--color-3);
+  color: var(--text-main);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.05s ease;
+}
+
+.bubby-upgrade:hover {
+  background: var(--color-2);
+}
+
+.bubby-upgrade:active {
+  transform: scale(0.97);
+}
+
+.bubby-upgrade:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
 .cookie-toggle {
   position: fixed;
   top: 1rem;
@@ -188,6 +221,10 @@ const bubby = document.getElementById("bubby-click");
 const skinSelector = document.getElementById("skin-selector");
 const confettiInput = document.getElementById("confetti-count");
 const soundToggle = document.getElementById("sound-toggle");
+const upgradeBtn = document.getElementById("bubby-upgrade");
+
+let bubbysPerClick = Number(localStorage.getItem("bubbysPerClick") || 1);
+let upgradeCost = Number(localStorage.getItem("upgradeCost") || 100);
 
 const cookieIcon = toggle.querySelector(".cookie");
 const closeIcon = toggle.querySelector(".close");
@@ -220,6 +257,35 @@ const skins = [
 
 let unlockedSkins = new Set(JSON.parse(localStorage.getItem("unlockedSkins") || "[]"));
 skins.forEach(s => { if (cookies >= s.amount) unlockedSkins.add(s.file); });
+
+function updateUpgradeButton() {
+  upgradeBtn.textContent = `+1 per click (${upgradeCost})`;
+  upgradeBtn.disabled = cookies < upgradeCost;
+}
+
+updateUpgradeButton();
+
+upgradeBtn.addEventListener("click", () => {
+  if (cookies < upgradeCost) return;
+
+  cookies -= upgradeCost;
+  bubbysPerClick += 1;
+
+  upgradeCost = Math.ceil(upgradeCost * 1.1);
+  countEl.textContent = cookies;
+  localStorage.setItem("cookies", cookies);
+  localStorage.setItem("bubbysPerClick", bubbysPerClick);
+  localStorage.setItem("upgradeCost", upgradeCost);
+
+  updateUpgradeButton();
+
+  spawnConfetti(
+    panel.getBoundingClientRect().left + panel.offsetWidth / 2,
+    panel.getBoundingClientRect().top + panel.offsetHeight / 2,
+    6
+  );
+});
+
 
 function updateSkinSelector() {
   if (!skinSelector) return;
@@ -332,13 +398,15 @@ function spawnConfetti(x, y, count = 2) {
 }
 
 bubby.addEventListener("click", (e) => {
-  cookies++;
+  cookies += bubbysPerClick;
   countEl.textContent = cookies;
   localStorage.setItem("cookies", cookies.toString());
+
   updateSkinSelector();
+  updateUpgradeButton(); // ← important
 
   // Play Bubby Boop if enabled
-  if(soundToggle.checked) {
+  if (soundToggle.checked) {
     const audio = new Audio("./bubby/bubbyboop.ogg");
     audio.play();
   }
@@ -355,16 +423,21 @@ bubby.addEventListener("click", (e) => {
   const initialRotation = randomAngle;
 
   function easeOutQuad(t) { return t * (2 - t); }
-  function easeOutElastic(t) { const c4 = (Math.PI)/3; return t===0?0:t===1?1:Math.pow(2,-10*t)*Math.sin((t*10-0.75)*c4)+1; }
+  function easeOutElastic(t) {
+    const c4 = Math.PI / 3;
+    return t === 0 ? 0 : t === 1 ? 1 :
+      Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c4) + 1;
+  }
 
-  function animate(time){
-    const t = Math.min((time - startTime)/duration,1);
+  function animate(time) {
+    const t = Math.min((time - startTime) / duration, 1);
     const scale = initialScale + (1 - initialScale) * easeOutQuad(t);
     const rotation = initialRotation * (1 - easeOutElastic(t));
     bubby.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
-    if(t < 1) requestAnimationFrame(animate);
+    if (t < 1) requestAnimationFrame(animate);
     else bubby.style.transform = `scale(1) rotate(0deg)`;
   }
   requestAnimationFrame(animate);
 });
+
 </script>
