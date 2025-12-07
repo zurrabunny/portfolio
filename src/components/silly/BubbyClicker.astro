@@ -276,6 +276,7 @@ soundToggle.addEventListener("change", () => {
 // Skin list
 const skins = [
   { amount: 0, file: "bubby.gif" },
+  { amount: 666666, file: "sin.gif" },
   { amount: 50, file: "sunflower.gif" },
   { amount: 500, file: "bassie.gif" },
   { amount: 999, file: "dozer.gif" },
@@ -296,36 +297,78 @@ const skins = [
   { amount: 70000, file: "mart.gif" },
   { amount: 80000, file: "lizor.gif" },
   { amount: 90000, file: "hoglin.gif" },
+  { amount: 100000, file: "pebbles (RW).gif" },
 ];
 
 let unlockedSkins = new Set(JSON.parse(localStorage.getItem("unlockedSkins") || "[]"));
 skins.forEach(s => { if (cookies >= s.amount) unlockedSkins.add(s.file); });
 
+// Apply filter based on skin and dark mode
+function applyBubbyFilter() {
+  if (currentSkin.includes("sin.gif")) {
+    bubby.style.filter = "brightness(1)";
+  } else {
+    const styles = getComputedStyle(document.documentElement);
+    const invert = styles.getPropertyValue("--invert") || "1";
+    bubby.style.filter = `brightness(${invert})`;
+  }
+}
+
+// Update skin selector button styles according to dark mode
+function updateSkinSelectorStyles() {
+  if (!skinSelector) return;
+  const styles = getComputedStyle(document.documentElement);
+  const bgDefault = styles.getPropertyValue("--color-3") || "#222";
+  const bgActive = styles.getPropertyValue("--color-2") || "#444";
+  const textColor = styles.getPropertyValue("--text-main") || "#fff";
+
+  [...skinSelector.children].forEach(btn => {
+    const isActive = btn.classList.contains("active");
+    btn.style.background = isActive ? bgActive : bgDefault;
+    btn.style.color = textColor;
+  });
+}
+
+// Call whenever dark mode changes
+const root = document.documentElement;
+const darkObserver = new MutationObserver(() => {
+  applyBubbyFilter();
+  updateSkinSelectorStyles();
+});
+darkObserver.observe(root, { attributes: true, attributeFilter: ["class"] });
+
+// Set current skin
+function setCurrentSkin(file) {
+  currentSkin = `./bubby/${file}`;
+  bubby.src = currentSkin;
+  localStorage.setItem("bubbySkin", currentSkin);
+  applyBubbyFilter();
+
+  const sound = new Audio(`./bubby/${file.replace(".gif", ".ogg")}`);
+  if (soundToggle.checked) sound.play();
+  updateSkinSelector();
+}
+
+// Upgrade button
 function updateUpgradeButton() {
   upgradeBtn.textContent = `+1 per click (${upgradeCost})`;
   upgradeBtn.disabled = cookies < upgradeCost;
 }
-
-// Initial button setup
 updateUpgradeButton();
 
 upgradeBtn.addEventListener("click", () => {
   if (cookies < upgradeCost) return;
 
-  // Play the upgrade sound
   const upgrads = new Audio("./bubby/upgrade.ogg");
   upgrads.play();
 
-  // Upgrade logic
   cookies -= upgradeCost;
   bubbysPerClick += 1;
-
   upgradeCost = Math.ceil(upgradeCost * 1.02);
   countEl.textContent = cookies;
   localStorage.setItem("cookies", cookies);
   localStorage.setItem("bubbysPerClick", bubbysPerClick);
   localStorage.setItem("upgradeCost", upgradeCost);
-
   updateUpgradeButton();
 
   spawnConfetti(
@@ -335,8 +378,7 @@ upgradeBtn.addEventListener("click", () => {
   );
 });
 
-
-
+// Skin selector
 function updateSkinSelector() {
   if (!skinSelector) return;
   skinSelector.innerHTML = "";
@@ -347,53 +389,62 @@ function updateSkinSelector() {
   const textColor = styles.getPropertyValue("--text-main") || "#fff";
 
   skins.forEach(s => {
-    const canUnlock = unlockedSkins.has(s.file) || cookies >= s.amount;
-    if (!canUnlock) return;
+  const canUnlock = unlockedSkins.has(s.file) || cookies >= s.amount;
+  if (!canUnlock) return;
 
-    const btn = document.createElement("button");
-    btn.textContent = s.file.replace("bubby-", "").replace(".gif", "").replace(/-/g, " ");
-    btn.classList.toggle("active", s.file === currentSkin.replace("./bubby/", ""));
-    btn.style.padding = "6px 10px";
-    btn.style.margin = "2px 0";
-    btn.style.border = "2px solid transparent";
-    btn.style.borderRadius = "6px";
-    btn.style.background = s.file === currentSkin.replace("./bubby/", "") ? bgActive : bgDefault;
-    btn.style.color = textColor;
-    btn.style.cursor = "pointer";
-    btn.style.fontSize = "0.85rem";
-    btn.style.transition = "all 0.2s ease";
+  const btn = document.createElement("button");
+  btn.textContent = s.file.replace("bubby-", "").replace(".gif", "").replace(/-/g, " ");
+  btn.classList.toggle("active", s.file === currentSkin.replace("./bubby/", ""));
+  btn.style.padding = "6px 10px";
+  btn.style.margin = "2px 0";
+  btn.style.border = "2px solid transparent";
+  btn.style.borderRadius = "6px";
+  btn.style.color = styles.getPropertyValue("--text-main") || "#fff";
+  btn.style.cursor = "pointer";
+  btn.style.fontSize = "0.85rem";
+  btn.style.transition = "all 0.2s ease";
 
-    btn.addEventListener("mouseover", () => { btn.style.background = bgActive; });
-    btn.addEventListener("mouseout", () => { btn.style.background = s.file === currentSkin.replace("./bubby/", "") ? bgActive : bgDefault; });
+  // Helper to update background correctly
+  function updateBtnBackground() {
+    const styles = getComputedStyle(document.documentElement);
+    const bgDefault = styles.getPropertyValue("--color-3") || "#222";
+    const bgActive = styles.getPropertyValue("--color-2") || "#444";
+    btn.style.background = btn.classList.contains("active") ? bgActive : bgDefault;
+  }
 
-    btn.addEventListener("click", () => {
-      const wasUnlocked = unlockedSkins.has(s.file);
-      if (!wasUnlocked && cookies >= s.amount) {
-        cookies -= Math.round(s.amount / 1.5);
-        countEl.textContent = cookies;
-        localStorage.setItem("cookies", cookies.toString());
-        unlockedSkins.add(s.file);
-        localStorage.setItem("unlockedSkins", JSON.stringify([...unlockedSkins]));
-        spawnConfetti(panel.getBoundingClientRect().left + panel.offsetWidth/2,
-                      panel.getBoundingClientRect().top + panel.offsetHeight/2);
-      } else if (!wasUnlocked && cookies < s.amount) return;
+  updateBtnBackground();
 
-      if (currentSkin !== `./bubby/${s.file}`) {
-        currentSkin = `./bubby/${s.file}`;
-        bubby.src = currentSkin;
-        localStorage.setItem("bubbySkin", currentSkin);
-        const sound = new Audio(`./bubby/${s.file.replace(".gif", ".ogg")}`);
-        if(soundToggle.checked) sound.play();
-      }
-      updateSkinSelector();
-    });
-
-    skinSelector.appendChild(btn);
+  btn.addEventListener("mouseover", () => {
+    const styles = getComputedStyle(document.documentElement);
+    const bgActive = styles.getPropertyValue("--color-2") || "#444";
+    btn.style.background = bgActive;
   });
-}
 
+  btn.addEventListener("mouseout", updateBtnBackground);
+
+  btn.addEventListener("click", () => {
+    const wasUnlocked = unlockedSkins.has(s.file);
+    if (!wasUnlocked && cookies >= s.amount) {
+      cookies -= Math.round(s.amount / 1.5);
+      countEl.textContent = cookies;
+      localStorage.setItem("cookies", cookies.toString());
+      unlockedSkins.add(s.file);
+      localStorage.setItem("unlockedSkins", JSON.stringify([...unlockedSkins]));
+      spawnConfetti(panel.getBoundingClientRect().left + panel.offsetWidth/2,
+                    panel.getBoundingClientRect().top + panel.offsetHeight/2);
+    } else if (!wasUnlocked && cookies < s.amount) return;
+
+    setCurrentSkin(s.file);
+    updateSkinSelector(); // refresh all buttons
+  });
+
+  skinSelector.appendChild(btn);
+});
+
+}
 updateSkinSelector();
 
+// Panel toggle
 const isMobile = window.innerWidth <= 900;
 if (isMobile) { toggle.style.display = "none"; panel.style.display = "none"; } 
 else { syncUI(); }
@@ -410,6 +461,7 @@ function syncUI() {
   closeIcon.style.transform = open ? "rotate(0deg)" : "rotate(-90deg)";
 }
 
+// Confetti
 function spawnConfetti(x, y, count = 2) {
   const colors = ["#FFB3BA","#FFDFBA","#FFFFBA","#BAFFC9","#BAE1FF","#E0BAFF","#FFFFFF"];
   for (let i = 0; i < count; i++) {
@@ -447,15 +499,15 @@ function spawnConfetti(x, y, count = 2) {
   }
 }
 
+// Bubby click
 bubby.addEventListener("click", (e) => {
   cookies += bubbysPerClick;
   countEl.textContent = cookies;
   localStorage.setItem("cookies", cookies.toString());
 
   updateSkinSelector();
-  updateUpgradeButton(); // ← important
+  updateUpgradeButton();
 
-  // Play Bubby Boop if enabled
   if (soundToggle.checked) {
     const audio = new Audio("./bubby/bubbyboop.ogg");
     audio.play();
@@ -490,4 +542,83 @@ bubby.addEventListener("click", (e) => {
   requestAnimationFrame(animate);
 });
 
+// Ensure parent has relative positioning
+bubby.parentElement.style.position = bubby.parentElement.style.position || 'relative';
+
+function spawnSinParticle() {
+  if (!currentSkin.includes("sin.gif")) return;
+
+  const rect = bubby.getBoundingClientRect();
+  const parentRect = bubby.parentElement.getBoundingClientRect();
+
+  // Center coordinates relative to parent
+  const centerX = rect.left + rect.width / 2 - parentRect.left;
+  const centerY = rect.top + rect.height / 2 - parentRect.top;
+
+  const size = 130 + Math.random() * 40;
+  const borderThickness = 4;
+
+  // Container for both particles
+  const container = document.createElement("div");
+  container.style.position = "absolute";
+  container.style.pointerEvents = "none";
+  container.style.left = `${centerX - size / 2}px`;
+  container.style.top = `${centerY - size / 2}px`;
+  container.style.width = `${size}px`;
+  container.style.height = `${size}px`;
+  bubby.parentElement.appendChild(container);
+
+  // Red outline (behind)
+  const redOutline = document.createElement("div");
+  redOutline.style.position = "absolute";
+  redOutline.style.border = `${borderThickness}px solid red`;
+  redOutline.style.borderRadius = "50%";
+  redOutline.style.width = "100%";
+  redOutline.style.height = "100%";
+  redOutline.style.boxSizing = "border-box";
+  redOutline.style.zIndex = "-2";
+  container.appendChild(redOutline);
+
+  // Black circle (on top of red)
+  const blackCircle = document.createElement("div");
+  blackCircle.style.position = "absolute";
+  blackCircle.style.borderRadius = "50%";
+  blackCircle.style.backgroundColor = "black";
+  blackCircle.style.inset = `${borderThickness}px`; // stay inside red outline
+  blackCircle.style.zIndex = "-1"; // above red
+  container.appendChild(blackCircle);
+
+  // Movement
+  const velocityX = (Math.random() - 0.2) * 4;
+  const velocityY = -2 - Math.random(); // upward
+  const shrinkRate = 0.97;
+
+  let posX = centerX - size / 2;
+  let posY = centerY - size / 2;
+  let currentSize = size;
+
+  function animate() {
+    posX += velocityX;
+    posY += velocityY;
+    currentSize *= shrinkRate;
+
+    container.style.left = `${posX}px`;
+    container.style.top = `${posY}px`;
+    container.style.width = `${currentSize}px`;
+    container.style.height = `${currentSize}px`;
+
+    if (currentSize > 2) requestAnimationFrame(animate);
+    else container.remove();
+  }
+
+  animate();
+}
+
+// Continuous spawn
+setInterval(spawnSinParticle, 80);
+
+
+// Initial setup
+applyBubbyFilter();
+updateSkinSelectorStyles();
 </script>
