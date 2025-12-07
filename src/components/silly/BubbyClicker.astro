@@ -293,6 +293,9 @@ const skins = [
   { amount: 40000, file: "cat.gif" },
   { amount: 50000, file: "idi.gif" },
   { amount: 60000, file: "tune up.gif" },
+  { amount: 70000, file: "mart.gif" },
+  { amount: 80000, file: "lizor.gif" },
+  { amount: 90000, file: "hoglin.gif" },
 ];
 
 let unlockedSkins = new Set(JSON.parse(localStorage.getItem("unlockedSkins") || "[]"));
@@ -317,7 +320,7 @@ upgradeBtn.addEventListener("click", () => {
   cookies -= upgradeCost;
   bubbysPerClick += 1;
 
-  upgradeCost = Math.ceil(upgradeCost * 1.1);
+  upgradeCost = Math.ceil(upgradeCost * 1.02);
   countEl.textContent = cookies;
   localStorage.setItem("cookies", cookies);
   localStorage.setItem("bubbysPerClick", bubbysPerClick);
@@ -366,7 +369,7 @@ function updateSkinSelector() {
     btn.addEventListener("click", () => {
       const wasUnlocked = unlockedSkins.has(s.file);
       if (!wasUnlocked && cookies >= s.amount) {
-        cookies -= Math.round(s.amount);
+        cookies -= Math.round(s.amount / 1.5);
         countEl.textContent = cookies;
         localStorage.setItem("cookies", cookies.toString());
         unlockedSkins.add(s.file);
