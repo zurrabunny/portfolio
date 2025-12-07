@@ -311,7 +311,7 @@ upgradeBtn.addEventListener("click", () => {
   cookies -= upgradeCost;
   bubbysPerClick += 1;
 
-  upgradeCost = Math.ceil(upgradeCost * 1.8);
+  upgradeCost = Math.ceil(upgradeCost * 1.1);
   countEl.textContent = cookies;
   localStorage.setItem("cookies", cookies);
   localStorage.setItem("bubbysPerClick", bubbysPerClick);
