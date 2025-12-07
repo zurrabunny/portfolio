@@ -303,11 +303,17 @@ function updateUpgradeButton() {
   upgradeBtn.disabled = cookies < upgradeCost;
 }
 
+// Initial button setup
 updateUpgradeButton();
 
 upgradeBtn.addEventListener("click", () => {
   if (cookies < upgradeCost) return;
 
+  // Play the upgrade sound
+  const upgrads = new Audio("./bubby/upgrade.ogg");
+  upgrads.play();
+
+  // Upgrade logic
   cookies -= upgradeCost;
   bubbysPerClick += 1;
 
@@ -325,6 +331,7 @@ upgradeBtn.addEventListener("click", () => {
     6
   );
 });
+
 
 
 function updateSkinSelector() {
