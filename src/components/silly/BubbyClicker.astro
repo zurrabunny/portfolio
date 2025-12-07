@@ -117,7 +117,7 @@
   position: fixed;
   top: 4.2rem;
   right: 64px;
-  width: 450px; /* wider for skin selector */
+  width: 550px; /* wider for skin selector */
   padding: 14px;
   background: var(--bg-sidebar);
   color: var(--text-dark);
@@ -136,11 +136,41 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  max-height: 90%;
-  width: 500px;
+
+  width: 450px;
+
+  /* exactly ~10 items visible */
+  max-height: 500px;
+  height: 500px;
+
+  padding-left: 40px;
+  padding-right: 6px;
+
   overflow-y: auto;
-  padding-left: 20px;
+  overflow-x: hidden;
 }
+
+
+/* Optional: scrollbar styling (Chrome / Edge / Safari) */
+#skin-selector::-webkit-scrollbar {
+  width: 8px;
+}
+
+#skin-selector::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#skin-selector::-webkit-scrollbar-thumb {
+  background-color: var(--color-3);
+  border-radius: 6px;
+}
+
+/* Firefox scrollbar */
+#skin-selector {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-3) transparent;
+}
+
 .cookie-panel.show {
   opacity: 1;
   transform: translateY(0);
@@ -256,10 +286,10 @@ const skins = [
   { amount: 5000, file: "goober.gif" },
   { amount: 10000, file: "bee.gif" },
   { amount: 15000, file: "fat.gif" },
-  { amount: 15000, file: "marcz.gif" },
-  { amount: 20000, file: "zua.gif" },
-  { amount: 25000, file: "emma.gif" },
-  { amount: 35000, file: "cat.gif" },
+  { amount: 20000, file: "marcz.gif" },
+  { amount: 25000, file: "zua.gif" },
+  { amount: 30000, file: "emma.gif" },
+  { amount: 40000, file: "cat.gif" },
   { amount: 50000, file: "idi.gif" },
   { amount: 60000, file: "tune up.gif" },
 ];
