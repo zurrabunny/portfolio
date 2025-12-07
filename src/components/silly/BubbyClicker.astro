@@ -366,7 +366,7 @@ function updateSkinSelector() {
     btn.addEventListener("click", () => {
       const wasUnlocked = unlockedSkins.has(s.file);
       if (!wasUnlocked && cookies >= s.amount) {
-        cookies -= Math.round(s.amount / 4);
+        cookies -= Math.round(s.amount);
         countEl.textContent = cookies;
         localStorage.setItem("cookies", cookies.toString());
         unlockedSkins.add(s.file);
