@@ -329,7 +329,7 @@ function updateSkinSelectorStyles() {
   });
 }
 
-// Call whenever dark mode changes
+// Observe dark mode changes
 const root = document.documentElement;
 const darkObserver = new MutationObserver(() => {
   applyBubbyFilter();
@@ -404,14 +404,12 @@ function updateSkinSelector() {
   btn.style.fontSize = "0.85rem";
   btn.style.transition = "all 0.2s ease";
 
-  // Helper to update background correctly
   function updateBtnBackground() {
     const styles = getComputedStyle(document.documentElement);
     const bgDefault = styles.getPropertyValue("--color-3") || "#222";
     const bgActive = styles.getPropertyValue("--color-2") || "#444";
     btn.style.background = btn.classList.contains("active") ? bgActive : bgDefault;
   }
-
   updateBtnBackground();
 
   btn.addEventListener("mouseover", () => {
@@ -419,7 +417,6 @@ function updateSkinSelector() {
     const bgActive = styles.getPropertyValue("--color-2") || "#444";
     btn.style.background = bgActive;
   });
-
   btn.addEventListener("mouseout", updateBtnBackground);
 
   btn.addEventListener("click", () => {
@@ -435,12 +432,11 @@ function updateSkinSelector() {
     } else if (!wasUnlocked && cookies < s.amount) return;
 
     setCurrentSkin(s.file);
-    updateSkinSelector(); // refresh all buttons
+    updateSkinSelector();
   });
 
   skinSelector.appendChild(btn);
 });
-
 }
 updateSkinSelector();
 
@@ -461,13 +457,22 @@ function syncUI() {
   closeIcon.style.transform = open ? "rotate(0deg)" : "rotate(-90deg)";
 }
 
-// Confetti
+// New helper to detect dark mode
+function isDarkMode() {
+  // Change "dark-mode" to whatever class your site actually uses
+  return document.documentElement.classList.contains("dark-mode");
+}
+
+// Confetti function with dynamic dark/light mode colors
 function spawnConfetti(x, y, count = 2) {
-  const colors = ["#FFB3BA","#FFDFBA","#FFFFBA","#BAFFC9","#BAE1FF","#E0BAFF","#FFFFFF"];
   for (let i = 0; i < count; i++) {
     const confetti = document.createElement("div");
     confetti.className = "confetti";
-    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+    const lightColors = ["#FFB3BA","#FFDFBA","#FFFFBA","#BAFFC9","#BAE1FF","#E0BAFF","#FFFFFF"];
+    const darkColors = ["#FF6B6B","#FFA86B","#FFF56B","#6BFF8F","#6BD0FF","#B36BFF","#FF6BE3"];
+
+    confetti.style.backgroundColor = (isDarkMode() ? lightColors : darkColors)[Math.floor(Math.random() * 7)];
     confetti.style.width = `${8 + Math.random() * 10}px`;
     confetti.style.height = `${8 + Math.random() * 10}px`;
     confetti.style.opacity = "0.9";
@@ -551,14 +556,12 @@ function spawnSinParticle() {
   const rect = bubby.getBoundingClientRect();
   const parentRect = bubby.parentElement.getBoundingClientRect();
 
-  // Center coordinates relative to parent
   const centerX = rect.left + rect.width / 2 - parentRect.left;
   const centerY = rect.top + rect.height / 2 - parentRect.top;
 
   const size = 130 + Math.random() * 40;
   const borderThickness = 4;
 
-  // Container for both particles
   const container = document.createElement("div");
   container.style.position = "absolute";
   container.style.pointerEvents = "none";
@@ -568,7 +571,6 @@ function spawnSinParticle() {
   container.style.height = `${size}px`;
   bubby.parentElement.appendChild(container);
 
-  // Red outline (behind)
   const redOutline = document.createElement("div");
   redOutline.style.position = "absolute";
   redOutline.style.border = `${borderThickness}px solid red`;
@@ -579,18 +581,16 @@ function spawnSinParticle() {
   redOutline.style.zIndex = "-2";
   container.appendChild(redOutline);
 
-  // Black circle (on top of red)
   const blackCircle = document.createElement("div");
   blackCircle.style.position = "absolute";
   blackCircle.style.borderRadius = "50%";
   blackCircle.style.backgroundColor = "black";
-  blackCircle.style.inset = `${borderThickness}px`; // stay inside red outline
-  blackCircle.style.zIndex = "-1"; // above red
+  blackCircle.style.inset = `${borderThickness}px`;
+  blackCircle.style.zIndex = "-1";
   container.appendChild(blackCircle);
 
-  // Movement
   const velocityX = (Math.random() - 0.2) * 4;
-  const velocityY = -2 - Math.random(); // upward
+  const velocityY = -2 - Math.random();
   const shrinkRate = 0.97;
 
   let posX = centerX - size / 2;
@@ -617,8 +617,6 @@ function spawnSinParticle() {
 // Continuous spawn
 setInterval(spawnSinParticle, 80);
 
-
-// Initial setup
 applyBubbyFilter();
 updateSkinSelectorStyles();
 </script>

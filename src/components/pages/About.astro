@@ -102,34 +102,34 @@ import Container from "/src/components/Container.astro";
           </button>
           <div class="accordion-body">
             <!-- Big Five Chart -->
-<div class="big-five-chart">
-  <h3>Personality Test (Big Five Inventory)</h3>
+			<div class="big-five-chart">
+			  <h3>Personality Test (Big Five Inventory)</h3>
 
-  <div class="bar" data-value="3.50">
-    <span>Openness to Experience</span>
-    <div class="bar-fill" data-value="3.50">3.50</div>
-  </div>
+			  <div class="bar" data-value="3.50">
+				<span>Openness to Experience</span>
+				<div class="bar-fill" data-value="3.50">3.50</div>
+			  </div>
 
-  <div class="bar" data-value="3.89">
-    <span>Conscientiousness</span>
-    <div class="bar-fill" data-value="3.89">3.89</div>
-  </div>
+			  <div class="bar" data-value="3.89">
+				<span>Conscientiousness</span>
+				<div class="bar-fill" data-value="3.89">3.89</div>
+			  </div>
 
-  <div class="bar" data-value="3.13">
-    <span>Extraversion</span>
-    <div class="bar-fill" data-value="3.13">3.13</div>
-  </div>
+			  <div class="bar" data-value="3.13">
+				<span>Extraversion</span>
+				<div class="bar-fill" data-value="3.13">3.13</div>
+			  </div>
 
-  <div class="bar" data-value="4.44">
-    <span>Agreeableness</span>
-    <div class="bar-fill" data-value="4.44">4.44</div>
-  </div>
+			  <div class="bar" data-value="4.44">
+				<span>Agreeableness</span>
+				<div class="bar-fill" data-value="4.44">4.44</div>
+			  </div>
 
-  <div class="bar" data-value="2.25">
-    <span>Neuroticism</span>
-    <div class="bar-fill" data-value="2.25">2.25</div>
-  </div>
-</div>
+			  <div class="bar" data-value="2.25">
+				<span>Neuroticism</span>
+				<div class="bar-fill" data-value="2.25">2.25</div>
+			  </div>
+			</div>
 
 			<p>I’m calm and kind. I stay organized, don’t get upset easily, and like being helpful. I’m more quiet than outgoing, but I can be social when needed. I’m also a creative person while staying practical.</p>
 			<h3>My Character Strengths (VIA Strengths)</h3>
@@ -296,32 +296,38 @@ import Container from "/src/components/Container.astro";
           </div>
         </div>
 
-		<div class="accordion-item">
-          <button class="accordion-header">
-            Testimonials
-            <span class="arrow">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M7 10l5 5 5-5H7z"/>
-              </svg>
-            </span>
-          </button>
-          <div class="accordion-body">
-            
-			<!-- Feedback Display -->
-			<div class="feedback-card">
-				  <h3>Feedback from Sir Ross</h3>
-				  <feedback-role>Storyboard & Animation Instructor, CIIT College of Arts and Technology</feedback-role>
-			  <blockquote class="feedback-text">
+<div class="accordion-item">
+  <button class="accordion-header">
+    Testimonials
+    <span class="arrow">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M7 10l5 5 5-5H7z"/>
+      </svg>
+    </span>
+  </button>
+
+  <div class="accordion-body">
+
+    <div class="testimonial-gallery">
+
+      <div class="testimonial-track">
+
+        <div class="testimonial active">
+          <h5>Feedback from Sir Ross</h5>
+          <feedback-role>Storyboard & Animation Instructor, CIIT College of Arts and Technology</feedback-role>
+          <blockquote class="feedback-text">
 				“If you continue doing this kind of level of animatic work consistently, it will only take you 1 to 2 years tops get to work with international studios.<br><br>
 
 				Try putting your animatics on instagram, twitter and cara account (just for business sake) tag Titmouse, Line Studios, Lemon Sky studios. <br><br>
 
 				Keep making short animatics and short animation exercises for action and fights. Even roughs and tie downs just post it. ”
 			  </blockquote>
-			  
-				<h3>Review from PiggyKropotkin</h3>
-			<feedback-role>Head of RainworldMC</feedback-role>
-			  <blockquote class="feedback-text">
+        </div>
+
+        <div class="testimonial">
+          <h5>Review from PiggyKropotkin</h5>
+          <feedback-role>Head of RainworldMC</feedback-role>
+          <blockquote class="feedback-text">
 				“You’re incredibly talented, and everything you’ve created so far shows that.<br><br>
 
 				You have plenty of time to grow, learn, and figure out what you really enjoy. Even if it feels overwhelming now, there’s no rush, you can take things step by step.<br><br>
@@ -332,10 +338,12 @@ import Container from "/src/components/Container.astro";
 
 				Go at your own pace, focus on what you love, and trust that it will all come together.”
 			  </blockquote>
-			  
-			  	<h3>Review from An Anonymous Scientist</h3>
-			<feedback-role>Client and Long Time Friend</feedback-role>
-			  <blockquote class="feedback-text">
+        </div>
+
+        <div class="testimonial">
+          <h5>Review from an Anonymous Scientist</h5>
+          <feedback-role>Client and Long Time Friend</feedback-role>
+          <blockquote class="feedback-text">
 				“You're a big man with big dreams,
 				from all the talents you have
 				now to your awesome personality,
@@ -343,38 +351,49 @@ import Container from "/src/components/Container.astro";
 				far you've came and i'm glad to be
 				here and support you”
 			  </blockquote>
-			  
-			   	<h3>Review from An Anonymous Cat</h3>
-			<feedback-role>Client and Long Time Friend</feedback-role>
-			  <blockquote class="feedback-text">
+        </div>
+
+        <div class="testimonial">
+          <h5>Review from an Anonymous Cat</h5>
+          <feedback-role>Client and Long Time Friend</feedback-role>
+          <blockquote class="feedback-text">
 				“A kind, and an integral person.
 				Skilled in cartoony styles, and anthropomorphic animals in different styles.
 				Comes up with creative ideas and experienced at storyboarding”
 			  </blockquote>
-			  
-			  
-			  
-				<h3>Review from An Anonymous Axolotl</h3>
-			<feedback-role>Client and Long Time Friend</feedback-role>
-			  <blockquote class="feedback-text">
+        </div>
+
+        <div class="testimonial">
+          <h5>Review from an Anonymous Axolotl</h5>
+          <feedback-role>Client and Long Time Friend</feedback-role>
+          <blockquote class="feedback-text">
 				“Youre probably one of the most
 				trusted, talented and just
 				frickin amazing people I've met!”
 			  </blockquote>
-			  
-			  	<h3>Review from An Anonymous Chicken</h3>
-			<feedback-role>Client and Long Time Friend</feedback-role>
-			  <blockquote class="feedback-text">
+        </div>
+
+        <div class="testimonial">
+          <h5>Review from an Anonymous Chicken</h5>
+          <feedback-role>Client and Long Time Friend</feedback-role>
+          <blockquote class="feedback-text">
 				“You continue to amaze me with
 				your art and talent! and I will
 				continue to support you ♡”
-			  </blockquote>
-			  
-			</div>
-			
-			<!-- Feedback Display -->
-			
+		  </blockquote>
         </div>
+
+          <div class="testimonial-dots"></div>
+  </div>
+
+  <button class="nav-btn left">‹</button>
+  <button class="nav-btn right">›</button>
+</div>
+
+    </div>
+  </div>
+</div>
+
 		
       </div>
     </section>
@@ -382,37 +401,135 @@ import Container from "/src/components/Container.astro";
 </main>
 
 <script>
-  document.querySelectorAll(".accordion-header").forEach((header) => {
-    header.addEventListener("click", () => {
-      const body = header.nextElementSibling;
-      const isOpen = header.classList.contains("active");
+// ---------- ACCORDION ----------
+document.querySelectorAll(".accordion-header").forEach((header) => {
+  header.addEventListener("click", () => {
+    const body = header.nextElementSibling;
+    const isOpen = header.classList.contains("active");
 
-      // close all
-      document.querySelectorAll(".accordion-header").forEach((h) => h.classList.remove("active"));
-      document.querySelectorAll(".accordion-body").forEach((b) => {
-        b.style.height = 0;
-        b.style.opacity = 0;
-      });
-
-      if (!isOpen) {
-        header.classList.add("active");
-        body.style.height = body.scrollHeight + "px";
-        body.style.opacity = 1;
-
-        // animate bars if present
-        if (body.querySelector(".big-five-chart")) {
-          body.querySelectorAll(".bar-fill").forEach((bar) => {
-            const value = parseFloat(bar.dataset.value);
-            bar.style.width = "0%";
-            setTimeout(() => {
-              bar.style.width = (value / 7) * 100 + "%";
-            }, 100);
-          });
-        }
-      }
+    // close all
+    document.querySelectorAll(".accordion-header").forEach((h) =>
+      h.classList.remove("active")
+    );
+    document.querySelectorAll(".accordion-body").forEach((b) => {
+      b.style.height = 0;
+      b.style.opacity = 0;
     });
+
+    if (!isOpen) {
+      header.classList.add("active");
+      body.style.height = body.scrollHeight + "px";
+      body.style.opacity = 1;
+
+      // animate bars if present
+      // animate bars if present
+		if (body.querySelector(".big-five-chart")) {
+		  body.querySelectorAll(".bar-fill").forEach((bar, i) => {
+			const value = parseFloat(bar.dataset.value);
+
+			// reset width and remove transition to re-trigger animation
+			bar.style.transition = "none";
+			bar.style.width = "0%";
+
+			// force reflow
+			bar.offsetWidth;
+
+			// apply transition and animate to target width with ease-out
+			bar.style.transition = "width 0.9s ease-out";
+			setTimeout(() => {
+			  bar.style.width = (value / 7) * 100 + "%";
+			}, 50 + i * 50); // optional stagger
+		  });
+		}
+    }
+  });
+});
+
+
+  // ---------- TESTIMONIAL GALLERY ----------
+  const testimonials = document.querySelectorAll(".testimonial");
+  const prevBtn = document.querySelector(".nav-btn.left");
+  const nextBtn = document.querySelector(".nav-btn.right");
+  const dotsContainer = document.querySelector(".testimonial-dots");
+
+  let index = 0;
+
+  // inject CSS styles for dots
+  const style = document.createElement('style');
+  style.textContent = `
+    .testimonial-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+	  margin-bottom: 1rem;
+    }
+    .testimonial-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--color-4);
+      opacity: 0.5;
+      cursor: pointer;
+      transition: opacity 0.3s, transform 0.3s;
+      display: inline-block;
+    }
+    .testimonial-dots span.active {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+  `;
+  document.head.appendChild(style);
+
+  // create dots dynamically
+  testimonials.forEach((_, i) => {
+    const dot = document.createElement("span");
+    if (i === index) dot.classList.add("active");
+    dot.addEventListener("click", () => {
+      index = i;
+      showTestimonial(index);
+    });
+    dotsContainer.appendChild(dot);
+  });
+
+  function updateDots() {
+    const dots = dotsContainer.querySelectorAll("span");
+    dots.forEach((dot, i) => {
+      dot.classList.toggle("active", i === index);
+    });
+  }
+
+  function updateAccordionHeight() {
+    const openHeader = document.querySelector(".accordion-header.active");
+    if (!openHeader) return;
+
+    const body = openHeader.nextElementSibling;
+
+    // force recalculation
+    body.style.height = "auto";
+    const newHeight = body.scrollHeight;
+    body.style.height = newHeight + "px";
+  }
+
+  function showTestimonial(i) {
+    testimonials.forEach((t) => t.classList.remove("active"));
+    testimonials[i].classList.add("active");
+
+    updateDots(); // update the pagination dots
+    requestAnimationFrame(updateAccordionHeight);
+  }
+
+  prevBtn.addEventListener("click", () => {
+    index = (index - 1 + testimonials.length) % testimonials.length;
+    showTestimonial(index);
+  });
+
+  nextBtn.addEventListener("click", () => {
+    index = (index + 1) % testimonials.length;
+    showTestimonial(index);
   });
 </script>
+
 
 <style>
 main.content {
@@ -464,6 +581,23 @@ h4 {
   gap: 0.55rem;
   font-weight: 600;
 }
+
+h5 {
+  font-size: 1.3rem;
+  color: var(--color-2);
+  margin-bottom: 0.5rem;
+  margin-top: 1.3rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* ✅ THIS */
+  gap: 0.55rem;
+  font-weight: 600;
+  align-self: center;
+  text-align: center;
+  width: 100%; /* ✅ IMPORTANT */
+}
+
 
 .bio-card p {
   font-size: 0.9rem;
@@ -601,6 +735,7 @@ h4::after {
   border-radius: 0.5rem;
   background: var(--bg-bar);
   z-index: 0;
+  padding-bottom: 0.4rem;
 }
 
 /* bar fill itself */
@@ -613,6 +748,7 @@ h4::after {
   font-size: 0.85rem;
   font-weight: 600;
   padding-right: 0.5rem;
+  padding-bottom: 0.4rem;
   transition: width 1s ease-in-out;
   z-index: 1;
   width: 0%;
@@ -662,6 +798,60 @@ h4::after {
 }
 
 /* ---------- Feedback Display ---------- */
+
+/* Optional navigation arrows */
+.nav-btn {
+  position: absolute;
+  top: 20px;
+  font-size: 1.3rem;
+  color: var(--color-3);
+  background: var(--color-5);
+  border: none;
+  padding: 0rem 1rem 0.4rem 1rem;
+  border: 2px solid var(--color-5);
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 0.5rem;
+  user-select: none;
+}
+
+.nav-btn:hover {
+	color: var(--text-dark);
+	background: var(--color-3);
+}
+
+
+.nav-btn.left { left: 1rem; }
+.nav-btn.right { right: 1rem; }
+
+.testimonial-gallery {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+}
+
+.testimonial-track {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.testimonial {
+  display: none;
+  animation: fade 0.3s ease;
+}
+
+.testimonial.active {
+  display: block;
+}
+
+@keyframes fade {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
 .feedback-card {
   padding: 0rem 1.25rem 1rem;
 }
@@ -676,12 +866,14 @@ feedback-role {
   font-size: 1rem;
   color: var(--color-2);
   padding-bottom: 0rem;
+  text-align: center; /* centers the text horizontally */
+  display: block;     /* ensures block-level behavior for alignment */
 }
 
 .feedback-text {
   font-style: italic;
   line-height: 1.6;
-  background: var(--line-dormant);
+  background: var(--color-9);
   margin: 0rem;
   color: var(--text-dark);
   border-left: 4px solid var(--color-2);
