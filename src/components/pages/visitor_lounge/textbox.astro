@@ -1,5 +1,5 @@
 <style>
-/* ---------- Split layout ---------- */
+/* ================= Split Layout ================= */
 #main-wrapper {
   display: flex;
   gap: 1rem;
@@ -10,7 +10,7 @@
   overflow: hidden;
 }
 
-/* ---------- Left: Textbox area ---------- */
+/* ================= Left: Textbox Area ================= */
 #textbox-wrapper {
   flex: 1;
   display: flex;
@@ -25,28 +25,31 @@
 }
 
 #username {
+  width: 95.5%;
+  padding: 0.6rem;
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+  border: 2px solid var(--color-6);
   border-radius: 0.8rem;
   background: var(--color-6);
-  padding: 0.6rem;
-  width: 95%;
-  margin-bottom: 1rem;
   color: var(--text-dark);
-  border: 2px solid var(--color-6);
+  font-size: 16px;
 }
 
 #textcanvas {
-  border-color: var(--color-6);
+  width: 100%;
+  width: 100%;
+  min-height: 80px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 2px solid var(--color-6);
   border-radius: 0.8rem;
   background: var(--color-6);
-  padding: 1rem;
-  min-height: 200px;
-  width: 100%;
-  box-sizing: border-box;
-  resize: vertical;
   font-size: 16px;
   color: var(--text-dark);
-  margin-bottom: 1rem;
   font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
 }
 
 #text-controls {
@@ -57,18 +60,42 @@
   flex-wrap: wrap;
 }
 
-.text-button {
-  background: var(--color-5);
-  color: var(--color-3);
-  border: 2px solid var(--color-5);
-  border-radius: 0.8rem;
+#text-submit-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  justify-content: center;
+}
+
+/* ---------------- Buttons ---------------- */
+.text-button,
+.refresh-btn {
   padding: 0.6rem 1rem;
   margin: 0.5rem 0.25rem;
   font-weight: 600;
   cursor: pointer;
+  border-radius: 0.8rem;
+  border: 2px solid var(--color-5);
   transition: all 0.25s ease;
 }
+
+.text-button {
+  background: var(--color-5);
+  color: var(--color-3);
+}
+
 .text-button:hover {
+  background: var(--color-3);
+  color: var(--text-main);
+  border-color: var(--color-2);
+}
+
+.refresh-btn {
+  background: var(--color-5);
+  color: var(--color-3);
+}
+
+.refresh-btn:hover {
   background: var(--color-3);
   color: var(--text-main);
   border-color: var(--color-2);
@@ -81,50 +108,28 @@
   font-family: inherit;
 }
 
-#text-submit-header {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  justify-content: center;
-}
-
-.refresh-btn {
-  background: var(--color-5);
-  color: var(--color-3);
-  border: 2px solid var(--color-5);
-  border-radius: 0.8rem;
-  padding: 0.6rem 1rem;
-  margin: 0.5rem 0.25rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-.refresh-btn:hover {
-  background: var(--color-3);
-  color: var(--text-main);
-  border-color: var(--color-2);
-}
-
-
-/* ---------- Right: Messages area ---------- */
+/* ================= Right: Messages Area ================= */
 #text-gallery-wrapper {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
   background: var(--color-6);
   border-left: 2px solid var(--color-6);
   border-radius: 0.8rem;
-  overflow-y: auto;
   padding: 1rem;
-  display: flex;
-  flex-direction: column;
+  overflow-y: auto;
   margin-top: 1rem;
-  gap: 0.75rem;
+}
+
+.text-container-wrapper {
+  position: relative;
 }
 
 .text-container {
+  padding: 0.75rem;
   border: 2px solid #444;
   border-radius: 0.8rem;
-  padding: 0.75rem;
   background: #eee;
   color: #000;
   white-space: pre-wrap;
@@ -132,44 +137,88 @@
 }
 
 .text-timestamp {
+  margin-top: 0.4rem;
   font-size: 0.8rem;
   color: #555;
-  margin-top: 0.4rem;
   font-family: inherit;
 }
 
-/* MOBILE */
+/* ================= Mobile Responsiveness ================= */
 @media (max-width: 900px) {
-  #main-wrapper { flex-direction: column; height: auto; max-width: 100%; }
-  #textbox-wrapper { width: 100%; padding: 0.75rem; }
-  #username { width: 100%; font-size: 1rem; }
-  #textcanvas { min-height: 150px; width: 100%; font-size: 15px; }
-  #text-controls { gap: 0.4rem; }
-  .text-button { padding: 0.5rem 0.8rem; font-size: 0.9rem; }
-  #text-gallery-wrapper { width: 100%; height: 350px; margin-top: 0.5rem; border-left: none; border-top: 2px solid var(--color-6); padding: 0.75rem; }
-  .text-container { padding: 0.6rem; font-size: 0.9rem; }
-  .text-timestamp { font-size: 0.75rem; }
+
+  #main-wrapper {
+    flex-direction: column;
+    height: auto;
+    max-width: 100%;
+  }
+
+  #textbox-wrapper {
+    width: 100%;
+    padding: 0.75rem;
+  }
+
+  #username {
+    width: 92%;
+    font-size: 1rem;
+  }
+
+  #textcanvas {
+    min-height: 150px;
+    width: 100%;
+    font-size: 15px;
+  }
+
+  #text-controls {
+    gap: 0.4rem;
+  }
+
+  .text-button {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  #text-gallery-wrapper {
+    width: 90%;
+    height: 350px;
+    margin-top: 0.5rem;
+    border-left: none;
+    padding: 0.75rem;
+	font-size: 12px;
+  }
+
+  .text-container {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  .text-timestamp {
+    font-size: 0.75rem;
+  }
 }
 </style>
 
 <div id="main-wrapper">
+
+  <!-- Left: Text Input -->
   <div id="textbox-wrapper">
-    <input id="username" placeholder="Enter your name...">
+    <input id="username" placeholder="Enter your name..." />
     <textarea id="textcanvas" placeholder="Type your text here..."></textarea>
-	
-	<div id="text-controls">
-	  <div id="text-submit-header">
-		<button id="text-submit" class="text-button">Submit Text</button>
-		<button id="refreshTexts" class="refresh-btn">Refresh Board</button>
-	  </div>
-	</div>
+
+    <div id="text-controls">
+      <div id="text-submit-header">
+        <button id="text-submit" class="text-button">Submit Text</button>
+        <button id="refreshTexts" class="refresh-btn">Refresh Board</button>
+      </div>
+    </div>
 
     <div id="text-status"></div>
   </div>
 
+  <!-- Right: Message Gallery -->
   <div id="text-gallery-wrapper">
     <div id="text-gallery">Loading texts...</div>
   </div>
+
 </div>
 
 <script>
@@ -218,7 +267,11 @@ function addTextToGallery(name, text, timestamp, liked = false) {
     heart.style.cursor = "pointer";
     heart.style.pointerEvents = "auto"; 
     heart.style.zIndex = "10";
-
+	
+	if (window.innerWidth <= 900) {
+        heart.style.display = "none";
+    }
+	
     // Create hover bubble
     const bubble = document.createElement("div");
     bubble.textContent = "Liked by Zurrabunny!";

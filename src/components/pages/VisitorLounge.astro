@@ -30,10 +30,10 @@ import Textbox from "./visitor_lounge/textbox.astro";
       </div>
 
       <div id="textbox" class="tab-panel">
-        <Textbox />
-		<div id="text-rules">
-			<p>NOTE : The message board is for feedback / compliments / criticisms of my service / website!<br><strong>Do not contact me here under any circumstances.</strong><br>"One Question - One Answer" messages are allowed though,<br>Thank you! :D</p>
+	  <div id="text-rules">
+			<p>NOTE : The message board is for feedback / compliments / criticisms of my service / website! <strong>Do not contact me here under any circumstances.</strong> "One Question - One Answer" messages are allowed though, Thank you! :D</p>
 			</div>
+        <Textbox />
       </div>
     </div>
 
@@ -74,7 +74,7 @@ main.content {
 #text-rules {
   padding: 0.5rem;
   width: 74%;
-  font-size: 16px;
+  font-size: 12px;
   color: var(--text-dark);
   margin: 0 auto; /* centers it */
   text-align: center;    /* centers the text */
@@ -94,15 +94,6 @@ p, ul, li {
   color: var(--text-dark);
 }
 
-main.content {
-  flex: 1;
-  margin-left: 260px;
-  padding: 2rem;
-  background: none;
-  color: var(--text-dark);
-  position: relative;
-  z-index: 1;
-}
 
 h1 { 
   font-size: 1.8rem; 
@@ -130,7 +121,8 @@ h1 {
 @media (max-width: 900px) {
   main.content {
     margin-left: 0;
-    padding: 1rem;
+    margin-top: 0.5rem;
+    padding: 0rem;
   }
 
   h1 {

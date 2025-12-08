@@ -249,6 +249,8 @@ const musicItems = [
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const players = document.querySelectorAll(".music-player");
+  const allAudios = Array.from(document.querySelectorAll(".music-player audio"));
+
   const currentlyPlaying = document.querySelector(".now-playing");
   const npTrackTitle = currentlyPlaying.querySelector(".track-title");
   const currentlyPlayingText = currentlyPlaying.querySelector(".track-info");
@@ -300,6 +302,8 @@ if (loopBtn) {
 
   let currentAudio = null;
   let currentPlayer = null;
+  let masterVolume = 1;
+
 
   // Default album art and text
   musicPic.src = "music/dark.png";
@@ -384,8 +388,10 @@ if (loopBtn) {
       });
 
       currentAudio = audio;
-      currentPlayer = player;
-      audio.play();
+		currentPlayer = player;
+		audio.volume = masterVolume;
+		audio.play();
+
       player.classList.add("playing");
 
       musicPic.src = cover;
@@ -486,8 +492,10 @@ if (loopBtn) {
   npContainer.addEventListener("click", (e) => handleScrubMove(e));
 
   volumeSlider?.addEventListener("input", (e) => {
-    if (currentAudio) currentAudio.volume = parseFloat(e.target.value);
-  });
+	  masterVolume = parseFloat(e.target.value);
+	  allAudios.forEach(audio => audio.volume = masterVolume);
+	});
+
 
   sidebarCP.addEventListener("click", () => {
     window.dispatchEvent(new CustomEvent("switchContent", { detail: { target: "work" } }));

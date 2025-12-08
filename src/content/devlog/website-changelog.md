@@ -13,7 +13,7 @@ tags: ["Process"]
 	<li>added Container
 	<li>added Checkerboard Background
 	<li>added About Tab
-	<li>added Work Tab
+	<li>added Works Tab
 		<ul>
 		<li>added Illustrations category
 		<li>added Animations category
@@ -81,7 +81,7 @@ tags: ["Process"]
 	<h3>November 9 2025</h3>
 	<ul>
 	<li>added Contacts Tab
-	<li>Work Tab :
+	<li>Works Tab :
 		<ul>
 		<li>added Music Player
 		<li>added Video Player
@@ -152,7 +152,7 @@ tags: ["Process"]
 		<li>added Personal Bio
 		</ul>
 		
-	<li>Work Tab :
+	<li>Works Tab :
 		<ul>
 		<li>reworked Music Tab
 		</ul>
@@ -175,7 +175,7 @@ tags: ["Process"]
 	<h3>November 22 2025</h3>
 	<ul>
 	<li>added Mobile Adjustments ( it wasnt fun )
-	<li>Work Tab :
+	<li>Works Tab :
 		<ul>
 		<li>added Music Loop Button
 		</ul>
@@ -280,7 +280,15 @@ tags: ["Process"]
 	<ul>
 		<li>About Tab :
 		<ul>
-		<li>added Testimony Gallery
+		<li>reworked Testimony Gallery
+		</ul>
+	</ul>
+	
+	<h3>December 9 2025</h3>
+	<ul>
+		<li>Works Tab :
+		<ul>
+		<li>reworked Volume Slider
 		</ul>
 	</ul>
 	

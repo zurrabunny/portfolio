@@ -37,52 +37,92 @@ const { class: extraClass } = Astro.props;
 
 .volume-control {
   position: fixed;
-  top: 120px; /* above the currently playing */
-  right: -10px;
-  width: 0;            /* collapsed initially */
-  height: 100px;
-  opacity: 0;           /* invisible initially */
+  top: 70px; /* above currently playing */
+  right: 0px;
+  margin-right: 17px;
+  width: 0;
+  height: 150px;
+  opacity: 0;
   z-index: 999;
-  pointer-events: none; /* prevent interaction when hidden */
-  transition: width 0.4s ease, opacity 0.4s ease;
+  pointer-events: none;
+  transition: width 0.4s ease, opacity 0.4s ease, box-shadow 0.3s ease;
+  background: var(--color-8);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
 }
 
 .volume-control.active {
-  width: 100px;         /* expanded width for vertical slider */
-  opacity: 1;           /* fully visible */
-  pointer-events: auto; /* enable interaction */
-}
-
-.volume-control input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  background: var(--color-2);
-  border-radius: 50%;
-  cursor: pointer;
-  border: 2px solid var(--text-dark);
-}
-
-.volume-control input[type="range"]::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  background: var(--color-2);
-  border-radius: 50%;
-  cursor: pointer;
-  border: 2px solid #fff;
+  width: 20px; /* slightly wider for slider */
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .volume-control input[type="range"] {
   -webkit-appearance: none;
-  width: 100px;          /* width visually, rotated */
-  height: 12px;          /* slider thickness */
+  width: 150px;           /* length of slider */
+  height: 12px;           /* thickness */
   transform: rotate(-90deg);
-  transform-origin: center;
-  background: var(--color-2);
+  transform-origin: 50% 50%;
+  background: linear-gradient(90deg, var(--color-3), var(--color-1));
   border-radius: 6px;
   cursor: pointer;
   outline: none;
+  margin: 0;
+  padding: 0;
+  transition: background 0.3s ease;
+}
+
+.volume-control input[type="range"]:hover {
+  background: linear-gradient(90deg, var(--color-3), var(--color-1));
+}
+
+/* WebKit track */
+.volume-control input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 12px;
+  background: linear-gradient(90deg, var(--color-3), var(--color-1));
+  border-radius: 6px;
+}
+
+/* WebKit thumb */
+.volume-control input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--color-6);
+  border-radius: 50%;
+  border: 3px solid var(--color-1);
+  cursor: pointer;
+  margin-top: -4px; /* center thumb on rotated track */
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+/* Firefox track */
+.volume-control input[type="range"]::-moz-range-track {
+  height: 12px;
+  background: linear-gradient(90deg, var(--color-3), var(--color-1));
+  border-radius: 6px;
+}
+
+/* Firefox thumb */
+.volume-control input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--color-1);
+  border-radius: 50%;
+  border: 3px solid #fff;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.volume-control input[type="range"]::-moz-range-thumb:hover {
+  background: var(--color-2);
+  transform: scale(1.1);
 }
 
 .currently-playing {
