@@ -254,6 +254,7 @@ const confettiInput = document.getElementById("confetti-count");
 const soundToggle = document.getElementById("sound-toggle");
 const upgradeBtn = document.getElementById("bubby-upgrade");
 
+let sinParticleInterval = null;
 let bubbysPerClick = Number(localStorage.getItem("bubbysPerClick") || 1);
 let upgradeCost = Number(localStorage.getItem("upgradeCost") || 100);
 
@@ -449,14 +450,31 @@ else { syncUI(); }
 toggle.addEventListener("click", () => { open = !open; localStorage.setItem("cookieOpen", open); syncUI(); });
 
 function syncUI() {
-  if (open) { panel.hidden = false; requestAnimationFrame(() => panel.classList.add("show")); }
-  else { panel.classList.remove("show"); setTimeout(() => { if (!open) panel.hidden = true; }, 300); }
+  if (open) {
+    panel.hidden = false;
+    requestAnimationFrame(() => panel.classList.add("show"));
+
+    // ✅ START sin particles when opened
+    startSinParticles();
+  } else {
+    panel.classList.remove("show");
+
+    // ✅ STOP + DELETE sin particles when closed
+    stopSinParticles();
+
+    setTimeout(() => {
+      if (!open) panel.hidden = true;
+    }, 300);
+  }
 
   cookieIcon.style.opacity = open ? "0" : "1";
   closeIcon.style.opacity = open ? "1" : "0";
-  cookieIcon.style.transform = open ? "translate(1px,1px) rotate(90deg)" : "translate(1px,1px) rotate(0deg)";
+  cookieIcon.style.transform = open
+    ? "translate(1px,1px) rotate(90deg)"
+    : "translate(1px,1px) rotate(0deg)";
   closeIcon.style.transform = open ? "rotate(0deg)" : "rotate(-90deg)";
 }
+
 
 // New helper to detect dark mode
 function isDarkMode() {
@@ -560,16 +578,18 @@ function spawnSinParticle() {
   const centerX = rect.left + rect.width / 2 - parentRect.left;
   const centerY = rect.top + rect.height / 2 - parentRect.top;
 
-  const size = 130 + Math.random() * 40;
+  const finalSize = 150 + Math.random() * 40;
   const borderThickness = 4;
 
   const container = document.createElement("div");
+  container.className = "sin-particle";
   container.style.position = "absolute";
   container.style.pointerEvents = "none";
-  container.style.left = `${centerX - size / 2}px`;
-  container.style.top = `${centerY - size / 2}px`;
-  container.style.width = `${size}px`;
-  container.style.height = `${size}px`;
+  container.style.left = `${centerX}px`;
+  container.style.top = `${centerY}px`;
+  container.style.width = `0px`;     // start SMALL
+  container.style.height = `0px`;
+  container.style.transformOrigin = "center";
   bubby.parentElement.appendChild(container);
 
   const redOutline = document.createElement("div");
@@ -590,33 +610,60 @@ function spawnSinParticle() {
   blackCircle.style.zIndex = "-1";
   container.appendChild(blackCircle);
 
-  const velocityX = (Math.random() - 0.2) * 4;
+  const velocityX = (Math.random() - 0.5) * 2;
   const velocityY = -2 - Math.random();
-  const shrinkRate = 0.97;
 
-  let posX = centerX - size / 2;
-  let posY = centerY - size / 2;
-  let currentSize = size;
+  let posX = centerX;
+  let posY = centerY;
+  let currentSize = 4;                 // tiny start
+  let phase = "grow";                  // grow → shrink
 
   function animate() {
     posX += velocityX;
     posY += velocityY;
-    currentSize *= shrinkRate;
 
-    container.style.left = `${posX}px`;
-    container.style.top = `${posY}px`;
+    // --- SIZE PHASES ---
+    if (phase === "grow") {
+      currentSize += (finalSize - currentSize) * 0.25;
+
+      if (currentSize > finalSize * 0.95) {
+        phase = "shrink";
+      }
+    } else {
+      currentSize *= 0.97;
+    }
+
+    container.style.left = `${posX - currentSize / 2}px`;
+    container.style.top = `${posY - currentSize / 2}px`;
     container.style.width = `${currentSize}px`;
     container.style.height = `${currentSize}px`;
 
-    if (currentSize > 2) requestAnimationFrame(animate);
-    else container.remove();
+    if (currentSize > 2) {
+      requestAnimationFrame(animate);
+    } else {
+      container.remove();
+    }
   }
 
   animate();
 }
 
-// Continuous spawn
-setInterval(spawnSinParticle, 80);
+
+function startSinParticles() {
+  if (sinParticleInterval) return;
+  sinParticleInterval = setInterval(spawnSinParticle, 100);
+}
+
+function stopSinParticles() {
+  if (sinParticleInterval) {
+    clearInterval(sinParticleInterval);
+    sinParticleInterval = null;
+  }
+
+  // Delete all existing particles instantly
+  document.querySelectorAll(".sin-particle").forEach(p => p.remove());
+}
+
 
 applyBubbyFilter();
 updateSkinSelectorStyles();
