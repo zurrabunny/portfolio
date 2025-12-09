@@ -563,8 +563,20 @@ document.addEventListener('DOMContentLoaded', () => {
   autoSpaceNodes();
   updateLines();
   window.addEventListener('resize', () => {
+    // Initialize
+autoSpaceNodes();
+updateLines();
+
+// Auto-adjust on window resize
+let resizeTimeout;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(() => {
     autoSpaceNodes();
     updateLines();
+  }, 50); // small debounce to prevent overfiring
+});
+
   });
 });
 </script>

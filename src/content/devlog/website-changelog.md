@@ -286,9 +286,14 @@ tags: ["Process"]
 	
 	<h3>December 9 2025</h3>
 	<ul>
-		<li>Works Tab :
+	<li>renamed Growth and Goals Tab to Study Zone
+	<li>Works Tab :
 		<ul>
 		<li>reworked Volume Slider
+		</ul>
+	<li>Study Zone Tab :
+		<ul>
+		<li>added Class Schedule Sub-Tab
 		</ul>
 	</ul>
 	

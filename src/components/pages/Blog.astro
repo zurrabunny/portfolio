@@ -2,6 +2,7 @@
 import Container from "../Container.astro";
 import LifeMap from "./blog_modules/LifeMap.astro";
 import ToDos from "./blog_modules/ToDos.astro";
+import ClassSchedule from "./blog_modules/ClassSchedule.astro";
 ---
 
 <main class="content">
@@ -10,7 +11,7 @@ import ToDos from "./blog_modules/ToDos.astro";
     <!-- Title -->
     <div class="goal-title-line">
       <div class="goal-line"></div>
-      <h1 id="goal-title">My Growth and Goals</h1>
+      <h1 id="goal-title">Study Zone</h1>
       <div class="goal-line"></div>
     </div>
   
@@ -18,6 +19,7 @@ import ToDos from "./blog_modules/ToDos.astro";
     <div class="growth-goal-tab">
       <button class="goal-btn active" data-goal="goal-life-map">Life Map</button>
       <button class="goal-btn" data-goal="goal-to-do">To-Do List</button>
+      <button class="goal-btn" data-goal="goal-schedule">Class Schedule</button>
     </div>
   
     <!-- TAB CONTENT -->
@@ -43,6 +45,16 @@ import ToDos from "./blog_modules/ToDos.astro";
 		  This section shows a table of my ongoing tasks and deadlines!<br>
 		</p>
         <ToDos />
+      </div>
+	  
+	  <div id="goal-schedule" class="goal-panel">
+	    <div class="todo-header">
+		  <h3>Class Schedule</h3>
+		</div>
+	    <p class="goal-description">
+		  This section shows my schedule! Keep this in mind if you want to contact / meet up with me! :]<br>
+		</p>
+        <ClassSchedule />
       </div>
     </div>
     

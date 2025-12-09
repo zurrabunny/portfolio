@@ -1,0 +1,171 @@
+<div class="card">
+  <div class="schedule-wrapper">
+    <table class="schedule-table" id="classSchedule">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Sun</th>
+          <th>Mon</th>
+          <th>Tue</th>
+          <th>Wed</th>
+          <th>Thu</th>
+          <th>Fri</th>
+          <th>Sat</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+.schedule-wrapper {
+  overflow-x: auto;
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.schedule-table th,
+.schedule-table td {
+  padding: 0.6rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid var(--color-5);
+  font-size: 0.85rem;
+}
+
+.schedule-table th {
+  background-color: var(--color-2);
+  color: var(--text-dark);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.schedule-table td {
+  background-color: var(--color-6);
+  color: var(--text-dark);
+}
+
+.schedule-table tbody tr:nth-child(even) td {
+  background-color: var(--color-7);
+}
+
+.schedule-table td:not(:first-child):not(:empty) {
+  background-color: var(--color-1);
+  font-weight: 600;
+  border-radius: 6px;
+}
+</style>
+
+<script>
+const scheduleSheetURL =
+  "https://docs.google.com/spreadsheets/d/1Xgy7YlIDukXz44HE62RaW-0nUAeTc1HBSOGlZbVVz1A/export?format=csv";
+
+async function loadSchedule() {
+  try {
+    const response = await fetch(scheduleSheetURL);
+    const csvText = await response.text();
+    const rows = csvText.split("\n").slice(1).map(r => r.split(","));
+
+    const tbody = document.querySelector("#classSchedule tbody");
+    const table = document.querySelector("#classSchedule");
+
+    // Make spacing between rows
+    table.style.borderCollapse = "separate";
+    table.style.borderSpacing = "0 -2px"; // vertical spacing between rows
+
+    tbody.innerHTML = "";
+
+    const skipCell = {};
+
+    rows.forEach((cols, rowIndex) => {
+      const time = cols[1]?.trim();
+      if (!time) return;
+
+      const tr = document.createElement("tr");
+
+      // transparent row background; td will have card style
+      tr.style.backgroundColor = "transparent";
+
+      // Time cell
+      const timeTd = document.createElement("td");
+      timeTd.textContent = time;
+      timeTd.style.fontWeight = "70";
+	  timeTd.style.fontSize = "12px";
+      timeTd.style.textAlign = "center";
+      timeTd.style.padding = "2px";
+      timeTd.style.borderRadius = "4px";
+      timeTd.style.backgroundColor = rowIndex % 2 === 0 ? "var(--color-7)" : "var(--color-7)";
+      tr.appendChild(timeTd);
+
+      // Days C–I
+      for (let col = 2; col <= 8; col++) {
+        const key = `${rowIndex}-${col}`;
+        if (skipCell[key]) continue;
+
+        const rawValue = cols[col]?.trim();
+        const value = rawValue === "-" ? "" : rawValue;
+
+        if (rawValue === "-") {
+          const td = document.createElement("td");
+          td.style.backgroundColor = rowIndex % 2 === 0 ? "var(--color-6)" : "var(--color-7)";
+          td.style.borderRadius = "4px";
+          td.style.padding = "2px";
+          td.style.opacity = "0.3";
+          tr.appendChild(td);
+          continue;
+        }
+
+        if (value) {
+          let rowspan = 1;
+          let nextRow = rowIndex + 1;
+
+          while (
+            rows[nextRow] &&
+            (!rows[nextRow][col] || rows[nextRow][col].trim() === "")
+          ) {
+            skipCell[`${nextRow}-${col}`] = true;
+            rowspan++;
+            nextRow++;
+          }
+
+          const td = document.createElement("td");
+          td.textContent = value;
+          td.rowSpan = rowspan;
+          td.style.backgroundColor = "var(--color-7)";
+          td.style.fontWeight = "300";
+          td.style.fontSize = "12px";
+          td.style.textAlign = "center";
+          td.style.verticalAlign = "middle";
+          td.style.borderRadius = "4px";
+          td.style.boxShadow = "inset 0 0 0 2px var(--color-2)";
+          td.style.boxSizing = "border-box";
+          td.style.overflow = "hidden";
+          td.style.padding = "2px"; // inner space
+
+          tr.appendChild(td);
+        } else {
+          const td = document.createElement("td");
+          td.style.backgroundColor = rowIndex % 2 === 0 ? "var(--color-6)" : "var(--color-7)";
+          td.style.borderRadius = "4px";
+          td.style.padding = "2px";
+		  td.style.opacity = "0.3";
+          tr.appendChild(td);
+        }
+      }
+
+      tbody.appendChild(tr);
+    });
+  } catch (err) {
+    console.error("Schedule load failed:", err);
+  }
+}
+
+window.addEventListener("DOMContentLoaded", loadSchedule);
+</script>
