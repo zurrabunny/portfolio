@@ -297,6 +297,14 @@ tags: ["Process"]
 		</ul>
 	</ul>
 	
+	<h3>December 10 2025</h3>
+	<ul>
+		<li>Works Tab :
+		<ul>
+		<li>renamed Animation to Animation Loops
+		<li>renamed Storyboard to Animated Scenes
+		</ul>
+	</ul>
 	
 </div>
 

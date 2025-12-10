@@ -12,9 +12,9 @@ import Storyboards from "./work_modules/Storyboards.astro";
   <Container variant="static">
     <div class="tabs">
       <button data-tab="Illustrations" class="active">Illustrations</button>
-      <button data-tab="Animation">Animation</button>
+      <button data-tab="Animation">Animation Loops</button>
       <button data-tab="3D">3D</button>
-      <button data-tab="Storyboard">Storyboard</button>
+      <button data-tab="Storyboard">Animated Scenes</button>
       <button data-tab="Music">Music</button>
     </div>
 
@@ -67,7 +67,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const title = document.getElementById("tab-title");
   const lines = document.querySelectorAll(".title-divider .line");
   const tagFilter = document.getElementById("tagFilter");
-
+	
+const displayNames = {
+  Illustrations: "Illustrations",
+  Animation: "Animated Loops",
+  "3D": "3D",
+  Storyboard: "Animated Scenes",
+  Music: "Music"
+};
+	
   let activeTag = "All";
 
   // Wrap title letters
@@ -87,27 +95,37 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   wrapTitleLetters();
 
-  // Animate title letters
-  const animateTitle = (text) => {
-    const letters = Array.from(title.querySelectorAll("span"));
-    letters.forEach((span, i) => {
-      span.textContent = text[i] || "";
-      span.style.opacity = 0;
-      span.style.animation = "none";
-      setTimeout(() => {
-        span.style.animation = `fadeInUp ${animationSpeed}s forwards`;
-      }, i * staggerDelay * 1000);
-    });
+const animateTitle = (text) => {
+  // Clear old letters
+  title.innerHTML = "";
 
-    lines.forEach((line, i) => {
-      line.style.opacity = 0;
-      line.style.transform = "scaleX(0)";
-      line.style.animation = "none";
-      setTimeout(() => {
-        line.style.animation = `lineIn ${animationSpeed}s forwards`;
-      }, i * staggerDelay * 1000);
-    });
-  };
+  // Wrap new letters
+  text.split("").forEach(char => {
+    const span = document.createElement("span");
+    span.textContent = char === " " ? "\u00A0" : char; // use non-breaking space
+    span.style.display = "inline-block";
+    span.style.opacity = 0;
+    title.appendChild(span);
+  });
+
+  const letters = Array.from(title.querySelectorAll("span"));
+  letters.forEach((span, i) => {
+    span.style.opacity = 0;
+    span.style.animation = "none";
+    setTimeout(() => {
+      span.style.animation = `fadeInUp ${animationSpeed}s forwards`;
+    }, i * staggerDelay * 1000);
+  });
+
+  lines.forEach((line, i) => {
+    line.style.opacity = 0;
+    line.style.transform = "scaleX(0)";
+    line.style.animation = "none";
+    setTimeout(() => {
+      line.style.animation = `lineIn ${animationSpeed}s forwards`;
+    }, i * staggerDelay * 1000);
+  });
+};
 
   // Animate gallery items (with stagger)
   const animateGalleryItems = (items) => {
@@ -289,7 +307,7 @@ setupTagFilterMobile();
         animateGalleryItems(items);
       }
 
-      animateTitle(selected);
+      animateTitle(displayNames[selected]);
 
       if (selected === "Music") animateMusicPlayers();
     });
@@ -312,8 +330,11 @@ main.content {
 
 .tabs {
   display: flex;
+  justify-content: center;
   gap: 1rem;
-  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+  margin-top: 0;
 }
 .tabs button {
   background: var(--container);
@@ -328,7 +349,7 @@ main.content {
   font-size: 1.2rem;
 }
 .tabs button.active {
-  background: var(--color-4);
+  background: var(--color-1);
   color: var(--text-main);
   border-color: var(--color-1);
 }
