@@ -153,7 +153,8 @@ async function loadSchedule() {
           }
 
           const td = document.createElement("td");
-          td.textContent = value;
+          td.textContent = value.replace(/_/g, "\n");
+          td.style.whiteSpace = "pre-line";
           td.rowSpan = rowspan;
           td.style.backgroundColor = "var(--color-7)";
           td.style.fontWeight = "300";
