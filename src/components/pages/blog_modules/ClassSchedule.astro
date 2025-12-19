@@ -143,37 +143,46 @@ async function loadSchedule() {
         }
 
         if (value) {
-          let rowspan = 1;
-          let nextRow = rowIndex + 1;
+			let rowspan = 1;
+			let nextRow = rowIndex + 1;
 
-          while (rows[nextRow] && (!rows[nextRow][col] || rows[nextRow][col].trim() === "")) {
-            skipCell[`${nextRow}-${col}`] = true;
-            rowspan++;
-            nextRow++;
-          }
+			while (rows[nextRow] && (!rows[nextRow][col] || rows[nextRow][col].trim() === "")) {
+				skipCell[`${nextRow}-${col}`] = true;
+				rowspan++;
+				nextRow++;
+			}
 
-          const td = document.createElement("td");
-          td.textContent = value.replace(/_/g, "\n");
-          td.style.whiteSpace = "pre-line";
-          td.rowSpan = rowspan;
-          td.style.backgroundColor = "var(--color-7)";
-          td.style.fontWeight = "300";
-          td.style.fontSize = "12px";
-          td.style.textAlign = "center";
-          td.style.verticalAlign = "middle";
-          td.style.borderRadius = "4px";
-          td.style.boxShadow = "inset 0 0 0 2px var(--color-2)";
-          td.style.padding = "2px";
+			const td = document.createElement("td");
+			td.rowSpan = rowspan;
+			td.style.whiteSpace = "pre-line";
+			td.style.fontWeight = "300";
+			td.style.fontSize = "12px";
+			td.style.textAlign = "center";
+			td.style.verticalAlign = "middle";
+			td.style.borderRadius = "4px";
+			td.style.boxShadow = "inset 0 0 0 2px var(--color-2)";
+			td.style.padding = "2px";
 
-          tr.appendChild(td);
-        } else {
-          const td = document.createElement("td");
-          td.style.backgroundColor = rowIndex % 2 === 0 ? "var(--color-6)" : "var(--color-7)";
-          td.style.borderRadius = "4px";
-          td.style.padding = "2px";
-          td.style.opacity = "0.3";
-          tr.appendChild(td);
-        }
+			if (value === "///") {
+				// Apply diagonal pattern
+				td.style.backgroundColor = "var(--color-7)";
+				td.style.backgroundImage = "repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(0,0,0,0.1) 5px, rgba(0,0,0,0.1) 10px)";
+			} else {
+				// Regular cell
+				td.textContent = value.replace(/_/g, "\n");
+				td.style.backgroundColor = "var(--color-7)";
+			}
+
+			tr.appendChild(td);
+		} else {
+			const td = document.createElement("td");
+			td.style.backgroundColor = rowIndex % 2 === 0 ? "var(--color-6)" : "var(--color-7)";
+			td.style.borderRadius = "4px";
+			td.style.padding = "2px";
+			td.style.opacity = "0.3";
+			tr.appendChild(td);
+		}
+
       }
 
       tbody.appendChild(tr);

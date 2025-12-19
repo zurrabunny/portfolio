@@ -39,7 +39,7 @@ alias: ["Rosaline","Rosie", "Princess (Rosaline's Mom)"]
   </div>
 
   <div class="info-stuffs">
-  a
+  Rosie is cheerful, kind, and easy to talk to. She loves making her friends feel safe and happy, and she’s always ready to listen or help. She’s patient and encouraging, though a little shy with new people. With friends, she’s playful, supportive, and comforting.
   </div>
 
   <div class="char-description-title-line">
