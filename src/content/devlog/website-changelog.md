@@ -306,6 +306,16 @@ tags: ["Process"]
 		</ul>
 	</ul>
 	
+	<h3>January 2 2026</h3>
+	<ul>
+		<li>Volume Slider :
+		<ul>
+		<li>reworked Volume Slider
+		<li>added NIGHTCORE MODE !1!!!!1!!1
+		</ul>
+	</ul>
+	
+	
 </div>
 
 <style>

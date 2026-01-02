@@ -1,0 +1,223 @@
+---
+// MusicControls.astro
+---
+
+<div class="volume-container">
+  <div class="volume-control" data-tab="Music">
+    <div class="volume-inner-layout">
+      <div class="control-group">
+        <label>VOL</label>
+        <input id="volume-slider" type="range" min="0" max="1" step="0.01" value="1" orient="vertical">
+      </div>
+      
+      <div class="control-group speed-group">
+        <div id="speed-menu" class="speed-menu">
+          <button class="speed-opt" data-speed="0.25">0.25x</button>
+          <button class="speed-opt" data-speed="0.9">0.9x</button>
+          <button class="speed-opt" data-speed="1.0">1x</button>
+          <button class="speed-opt" data-speed="1.25">1.25x</button>
+          <button class="speed-opt" data-speed="1.5">1.5x</button>
+        </div>
+        <button id="speed-toggle" class="speed-btn" title="nightcore mode 1!1!!!! o-o">SPD</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const speedBtn = document.getElementById('speed-toggle');
+    const speedMenu = document.getElementById('speed-menu');
+    const volSlider = document.getElementById('volume-slider') as HTMLInputElement;
+    let currentSpeed = 1.0;
+
+    function applyAudioSettings(audio) {
+      // If speed is not 1.0, we disable pitch preservation for the effect
+      audio.preservesPitch = (currentSpeed === 1.0); 
+      audio.playbackRate = currentSpeed;
+      audio.volume = parseFloat(volSlider.value);
+    }
+
+    // Toggle Menu Visibility
+    speedBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      speedMenu?.classList.toggle('show');
+    });
+
+    // Handle Speed Selection
+    document.querySelectorAll('.speed-opt').forEach(opt => {
+      opt.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        currentSpeed = parseFloat(target.dataset.speed || "1.0");
+        
+        // Visual feedback
+        document.querySelectorAll('.speed-opt').forEach(b => b.classList.remove('active'));
+        target.classList.add('active');
+        speedBtn?.classList.toggle('active', currentSpeed !== 1.0);
+        
+        // Apply to all audio
+        document.querySelectorAll('audio').forEach(audio => applyAudioSettings(audio));
+        
+        // Hide menu after selection
+        speedMenu?.classList.remove('show');
+      });
+    });
+
+    // Close menu if clicking elsewhere
+    document.addEventListener('click', () => speedMenu?.classList.remove('show'));
+
+    // Volume Slider
+    volSlider?.addEventListener('input', () => {
+      const vol = parseFloat(volSlider.value);
+      document.querySelectorAll('audio').forEach(audio => audio.volume = vol);
+    });
+
+    // Observer for dynamic tracks
+    const observer = new MutationObserver(() => {
+      document.querySelectorAll('audio').forEach(audio => applyAudioSettings(audio));
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  });
+</script>
+
+<style>
+  .volume-container {
+    position: fixed;
+    top: 70px;
+    right: 17px;
+    z-index: 1000;
+  }
+
+  .volume-control {
+    width: 35px;
+    height: 240px;
+    transform: translateX(2px);
+    background: var(--color-8);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px 5px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+
+  :global(.volume-control.active) {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .volume-inner-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    position: relative;
+  }
+
+  .control-group label {
+    font-size: 8px;
+    font-weight: bold;
+    color: var(--text-main);
+    opacity: 0.7;
+    margin-bottom: 1rem;
+  }
+
+  /* --- SPEED MENU STYLES --- */
+  .speed-menu {
+    position: absolute;
+    bottom: -15px; /* Sits above the SPD button */
+    right: 50px;  /* Pops out to the left of the sidebar */
+    background: var(--color-8);
+    border: 2px solid var(--color-4);
+    border-radius: 8px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(10px);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: -4px 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .speed-menu.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+  }
+
+  .speed-opt {
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    font-size: 10px;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    text-align: center;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+
+  .speed-opt:hover {
+    background: var(--color-3);
+  }
+
+  .speed-opt.active {
+    background: var(--color-6);
+    color: var(--color-2);
+    font-weight: bold;
+  }
+
+  /* --- VOLUME SLIDER & BUTTON --- */
+  #volume-slider {
+    -webkit-appearance: none;
+    width: 150px;
+    height: 8px;
+    transform: rotate(-90deg) translateY(1px) translateX(-20px);
+    transform-origin: 50% 50%;
+    background: linear-gradient(90deg, var(--color-3), var(--color-1));
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 45px 0;
+  }
+
+  .speed-btn {
+    background: var(--color-1);
+    color: var(--text-main);
+    border: 2px solid var(--color-4);
+    border-radius: 6px;
+    font-size: 8px;
+    width: 32px;
+    height: 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .speed-btn.active {
+    background: var(--color-6);
+    color: var(--color-2);
+    box-shadow: 0 0 8px var(--color-6);
+  }
+
+  #volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--color-6);
+    border-radius: 50%;
+    border: 3px solid var(--color-1);
+  }
+</style>
