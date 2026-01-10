@@ -18,7 +18,7 @@
           <button class="speed-opt" data-speed="1.1">1.1x</button>
           <button class="speed-opt" data-speed="1.25">1.25x</button>
         </div>
-        <button id="speed-toggle" class="speed-btn" title="nightcore mode 1!1!!!! o-o">SPD</button>
+        <button id="speed-toggle" class="control-btn" title="nightcore mode 1!1!!!! o-o">SPD</button>
       </div>
     </div>
   </div>
@@ -32,47 +32,35 @@
     let currentSpeed = 1.0;
 
     function applyAudioSettings(audio) {
-      // If speed is not 1.0, we disable pitch preservation for the effect
       audio.preservesPitch = (currentSpeed === 1.0); 
       audio.playbackRate = currentSpeed;
       audio.volume = parseFloat(volSlider.value);
     }
 
-    // Toggle Menu Visibility
     speedBtn?.addEventListener('click', (e) => {
       e.stopPropagation();
       speedMenu?.classList.toggle('show');
     });
 
-    // Handle Speed Selection
     document.querySelectorAll('.speed-opt').forEach(opt => {
       opt.addEventListener('click', (e) => {
         const target = e.target as HTMLElement;
         currentSpeed = parseFloat(target.dataset.speed || "1.0");
-        
-        // Visual feedback
         document.querySelectorAll('.speed-opt').forEach(b => b.classList.remove('active'));
         target.classList.add('active');
         speedBtn?.classList.toggle('active', currentSpeed !== 1.0);
-        
-        // Apply to all audio
         document.querySelectorAll('audio').forEach(audio => applyAudioSettings(audio));
-        
-        // Hide menu after selection
         speedMenu?.classList.remove('show');
       });
     });
 
-    // Close menu if clicking elsewhere
     document.addEventListener('click', () => speedMenu?.classList.remove('show'));
 
-    // Volume Slider
     volSlider?.addEventListener('input', () => {
       const vol = parseFloat(volSlider.value);
       document.querySelectorAll('audio').forEach(audio => audio.volume = vol);
     });
 
-    // Observer for dynamic tracks
     const observer = new MutationObserver(() => {
       document.querySelectorAll('audio').forEach(audio => applyAudioSettings(audio));
     });
@@ -90,7 +78,7 @@
 
   .volume-control {
     width: 35px;
-    height: 240px;
+    height: 220px; /* Increased to fit both buttons comfortably */
     transform: translateX(2px);
     background: var(--color-8);
     border-radius: 12px;
@@ -133,11 +121,35 @@
     margin-bottom: 1rem;
   }
 
+  /* Shared Button Style (Matches your original Speed Button) */
+  .control-btn {
+    background: var(--color-7);
+    color: var(--text-main);
+    border: 2px solid var(--color-4);
+    border-radius: 6px;
+    font-size: 8px;
+    width: 32px;
+    height: 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 4px; /* Space between buttons */
+  }
+
+  .control-btn:hover {
+    background: var(--color-3);
+  }
+
+  .control-btn.active {
+    background: var(--color-1);
+    color: var(--text-main);
+    box-shadow: 0 0 8px var(--color-6);
+  }
+
   /* --- SPEED MENU STYLES --- */
   .speed-menu {
     position: absolute;
-    bottom: -15px; /* Sits above the SPD button */
-    right: 50px;  /* Pops out to the left of the sidebar */
+    bottom: 35px; /* Adjusted to pop up above the SPD button */
+    right: 45px;
     background: var(--color-8);
     border: 2px solid var(--color-4);
     border-radius: 8px;
@@ -181,7 +193,7 @@
     font-weight: bold;
   }
 
-  /* --- VOLUME SLIDER & BUTTON --- */
+  /* --- VOLUME SLIDER --- */
   #volume-slider {
     -webkit-appearance: none;
     width: 150px;
@@ -192,24 +204,6 @@
     border-radius: 4px;
     cursor: pointer;
     margin: 45px 0;
-  }
-
-  .speed-btn {
-    background: var(--color-1);
-    color: var(--text-main);
-    border: 2px solid var(--color-4);
-    border-radius: 6px;
-    font-size: 8px;
-    width: 32px;
-    height: 24px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .speed-btn.active {
-    background: var(--color-6);
-    color: var(--color-2);
-    box-shadow: 0 0 8px var(--color-6);
   }
 
   #volume-slider::-webkit-slider-thumb {

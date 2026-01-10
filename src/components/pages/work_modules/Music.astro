@@ -27,14 +27,21 @@ const musicItems = [
 ---
 
 <div class="music-container">
-  <!-- Playlist -->
   <div class="music-playlist">
     {musicItems.map((item) => (
       <div class="music-player" data-bpm={item.bpm} data-cover={`music/${item.cover}`}>
-        <div class="track-title">{item.title}</div>
-        <div class="music-info">
-          <p>{item.artist}</p>
+        <div class="track-content">
+          <div class="track-title">{item.title}</div>
+          <div class="music-info">
+            <p>{item.artist}</p>
+          </div>
         </div>
+
+        <div class="star-selection" title="Include in Loop">
+          <input type="checkbox" class="star-check" />
+          <div class="star-icon"></div>
+        </div>
+
         <audio>
           <source src={`music/${item.src}`} />
         </audio>
@@ -42,7 +49,6 @@ const musicItems = [
     ))}
   </div>
 
-  <!-- Now Playing -->
   <div class="now-playing">
     <div class="music-cover">
       <img class="np-cover music-pic" src="" alt="Album Art" />
@@ -51,464 +57,529 @@ const musicItems = [
       <h2 class="track-title">Nothing</h2>
       <p class="track-info">Nothing</p>
     </div>
-	<div class="player-controls">
-	  <button class="play-btn np-play">
-		<img class="play-icon" src="play.svg" alt="Play" />
-		<img class="pause-icon" src="pause.svg" alt="Pause" style="display:none;" />
-	  </button>
-	  <div class="progress-container np-progress-container">
-		<div class="progress-bar np-progress"></div>
-	  </div>
-	  <button class="loop-btn" title="Toggle Loop Mode">
-	    <img class="loop-icon" src="loop-none.svg" alt="Loop Mode" />
-	  </button>
-	</div>
+    <div class="player-controls">
+      <button class="play-btn np-play">
+        <img class="play-icon" src="play.svg" alt="Play" />
+        <img class="pause-icon" src="pause.svg" alt="Pause" style="display:none;" />
+      </button>
+      <div class="progress-container np-progress-container">
+        <div class="progress-bar np-progress"></div>
+      </div>
+      <button class="loop-btn" title="Toggle Loop Mode">
+        <img class="loop-icon" src="loop-none.svg" alt="Loop Mode" />
+      </button>
+    </div>
   </div>
 </div>
 
 <style>
-
-.loop-btn {
-  background: var(--line-dormant);
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-
-.loop-btn img {
-  width: 20px;
-  height: 20px;
-  filter: brightness(0) invert(1);
-}
-
-.loop-btn.active {
-  background: var(--color-4);
-}
-
-
-.music-container {
-  display: flex;
-  gap: 1rem;
-  width: 100%;
-}
-
-/* Playlist */
-.music-playlist {
-  display: flex;
-  flex-direction: column;
-  gap: 0rem;
-  width: 60%;
-  max-height: 550px;
-  overflow-y: auto;
-  padding-right: 0.25rem;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-2) transparent;
-}
-
-.music-playlist::-webkit-scrollbar {
-  width: 8px;
-}
-
-.music-playlist::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.music-playlist::-webkit-scrollbar-thumb {
-  background-color: var(--color-2);
-  border-radius: 4px;
-}
-
-.music-player {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: var(--container);
-  border: 2px solid var(--border-container);
-  border-radius: 0.6rem;
-  padding: 0.5rem 0.75rem;
-  height: 50px;
-  transition: 0.15s;
-  cursor: pointer;
-}
-
-.music-player:hover {
-  background: var(--color-7);
-}
-
-.music-player.playing {
-  border-color: var(--color-5);
-  background: var(--color-6);
-}
-
-.track-title {
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.music-info p {
-  font-size: 0.75rem;
-  margin: 0.1rem 0 0 0;
-  color: var(--color-2);
-}
-
-/* Now Playing Panel */
-.now-playing {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-.now-playing .music-cover img {
-  width: 300px;
-  height: 300px;
-  border-radius: 1rem;
-  object-fit: cover;
-}
-
-.now-playing .music-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center text horizontally */
-  text-align: center;  /* Ensure text is centered */
-}
-
-.now-playing .music-info h2 {
-  margin: 0.25rem 0 0 0;
-  font-size: 1.5rem;
-}
-
-.now-playing .music-info p {
-  font-size: 1rem;
-  color: var(--color-2);
-  margin: 0.15rem 0 0 0;
-}
-
-.now-playing .player-controls {
-  display: flex;
-  gap: 0.5rem;
-  width: 100%;
-  max-width: 400px;
-  align-items: center;
-}
-
-.play-btn {
-  background: var(--color-4);
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-
-.play-btn img {
-  width: 20px;
-  height: 20px;
-}
-
-.np-progress-container {
-  flex: 1;
-  height: 8px;
-  background: rgba(0,0,0,0.25);
-  border-radius: 4px;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.np-progress {
-  height: 100%;
-  width: 0%;
-  background: var(--color-2);
-  transition: width 0.05s linear;
-}
-
-/* Mobile adjustments */
-@media (max-width: 900px) {
-  .music-container {
-    flex-direction: column;
-    gap: 0.75rem;
+  .loop-btn {
+    background: var(--line-dormant);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
   }
-  .music-playlist {
+
+  .loop-btn img {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1);
+  }
+
+  .loop-btn.active {
+    background: var(--color-4);
+  }
+
+  .music-container {
+    display: flex;
+    gap: 1rem;
     width: 100%;
   }
-  .now-playing .music-cover img {
-    width: 200px;
-    height: 200px;
+
+  /* Playlist */
+  .music-playlist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 60%;
+    max-height: 550px;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-2) transparent;
   }
-}
+
+  .music-playlist::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .music-playlist::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .music-playlist::-webkit-scrollbar-thumb {
+    background-color: var(--color-2);
+    border-radius: 4px;
+  }
+
+  .music-player {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--container);
+    border: 2px solid var(--border-container);
+    border-radius: 0.6rem;
+    padding: 0.5rem 0.75rem;
+    height: 50px;
+    transition: 0.15s;
+    cursor: pointer;
+  }
+
+  .track-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .music-player:hover {
+    background: var(--color-7);
+  }
+
+  .music-player.playing {
+    border-color: var(--color-5);
+    background: var(--color-6);
+  }
+
+  /* Star Selection Styles */
+  .star-selection {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .star-check {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  .star-icon {
+    width: 20px;
+    height: 20px;
+    background-color: var(--color-6);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    transition: 0.2s;
+  }
+
+  .star-check:checked+.star-icon {
+    background-color: var(--color-4);
+    transform: scale(1.1);
+  }
+
+  .star-check:hover+.star-icon {
+    background-color: var(--color-5);
+  }
+
+  .track-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .music-info p {
+    font-size: 0.75rem;
+    margin: 0.1rem 0 0 0;
+    color: var(--color-2);
+  }
+
+  /* Now Playing Panel */
+  .now-playing {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .now-playing .music-cover img {
+    width: 300px;
+    height: 300px;
+    border-radius: 1rem;
+    object-fit: cover;
+  }
+
+  .now-playing .music-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .now-playing .music-info h2 {
+    margin: 0.25rem 0 0 0;
+    font-size: 1.5rem;
+  }
+
+  .now-playing .music-info p {
+    font-size: 1rem;
+    color: var(--color-2);
+    margin: 0.15rem 0 0 0;
+  }
+
+  .now-playing .player-controls {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 400px;
+    align-items: center;
+  }
+
+  .play-btn {
+    background: var(--color-4);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .play-btn img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .np-progress-container {
+    flex: 1;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .np-progress {
+    height: 100%;
+    width: 0%;
+    background: var(--color-2);
+    transition: width 0.05s linear;
+  }
+
+  @media (max-width: 900px) {
+    .music-container {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .music-playlist {
+      width: 100%;
+    }
+
+    .now-playing .music-cover img {
+      width: 200px;
+      height: 200px;
+    }
+  }
 </style>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const players = document.querySelectorAll(".music-player");
-  const allAudios = Array.from(document.querySelectorAll(".music-player audio"));
+  document.addEventListener("DOMContentLoaded", () => {
+    const players = document.querySelectorAll(".music-player");
+    const allAudios = Array.from(document.querySelectorAll(".music-player audio"));
 
-  const currentlyPlaying = document.querySelector(".now-playing");
-  const npTrackTitle = currentlyPlaying.querySelector(".track-title");
-  const currentlyPlayingText = currentlyPlaying.querySelector(".track-info");
-  const musicPic = currentlyPlaying.querySelector(".music-pic");
-  const npProgress = currentlyPlaying.querySelector(".np-progress");
-  const npContainer = currentlyPlaying.querySelector(".np-progress-container");
-  const playBtn = currentlyPlaying.querySelector(".np-play");
-  const playIcon = playBtn.querySelector(".play-icon");
-  const pauseIcon = playBtn.querySelector(".pause-icon");
+    const currentlyPlaying = document.querySelector(".now-playing");
+    const npTrackTitle = currentlyPlaying.querySelector(".track-title");
+    const currentlyPlayingText = currentlyPlaying.querySelector(".track-info");
+    const musicPic = currentlyPlaying.querySelector(".music-pic");
+    const npProgress = currentlyPlaying.querySelector(".np-progress");
+    const npContainer = currentlyPlaying.querySelector(".np-progress-container");
+    const playBtn = currentlyPlaying.querySelector(".np-play");
+    const playIcon = playBtn.querySelector(".play-icon");
+    const pauseIcon = playBtn.querySelector(".pause-icon");
 
-  // Sidebar currently-playing
-  const sidebarCP = document.querySelector(".currently-playing");
-  const sidebarPic = sidebarCP.querySelector(".music-pic");
-  const sidebarText = sidebarCP.querySelector(".track-info");
-  sidebarText.style.fontSize = "0.8rem";
+    // Sidebar elements
+    const sidebarCP = document.querySelector(".currently-playing");
+    const sidebarPic = sidebarCP?.querySelector(".music-pic");
+    const sidebarText = sidebarCP?.querySelector(".track-info");
+    if (sidebarText) sidebarText.style.fontSize = "0.8rem";
 
-const loopBtn = currentlyPlaying.querySelector(".loop-btn");
-const loopIcon = loopBtn.querySelector(".loop-icon");
+    const loopBtn = currentlyPlaying.querySelector(".loop-btn");
+    const loopIcon = loopBtn.querySelector(".loop-icon");
 
-let loopMode = "none"; // "none", "track", "playlist"
+    const volumeControl = document.querySelector(".volume-control");
+    const volumeSlider = volumeControl?.querySelector("#volume-slider");
 
-if (loopBtn) {
-  loopBtn.addEventListener("click", () => {
-    // Cycle through the three modes
-    if (loopMode === "none") loopMode = "playlist";
-    else if (loopMode === "playlist") loopMode = "track";
-    else loopMode = "none";
+    let loopMode = "none";
+    let currentAudio = null;
+    let currentPlayer = null;
+    let masterVolume = 1;
 
-    // Update icon
-    switch(loopMode) {
-      case "none":
-        loopIcon.src = "loop-none.svg";
-        loopBtn.classList.remove("active");
-        break;
-      case "track":
-        loopIcon.src = "loop.svg";
-        loopBtn.classList.add("active");
-        break;
-      case "playlist":
-        loopIcon.src = "loop-playlist.svg";
-        loopBtn.classList.add("active");
-        break;
-    }
-  });
-}
+    // --- LOCAL STORAGE LOGIC ---
+    const STORAGE_KEY = "music_starred_tracks";
+    
+    const getSavedStars = () => {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? JSON.parse(saved) : [];
+    };
 
-  const volumeControl = document.querySelector(".volume-control");
-  const volumeSlider = volumeControl?.querySelector("#volume-slider");
+    const saveStarStatus = (title, isStarred) => {
+      let starred = getSavedStars();
+      if (isStarred) {
+        if (!starred.includes(title)) starred.push(title);
+      } else {
+        starred = starred.filter(t => t !== title);
+      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(starred));
+    };
 
-  let currentAudio = null;
-  let currentPlayer = null;
-  let masterVolume = 1;
+    // Initialization: Load saved stars
+    const starredTitles = getSavedStars();
+    players.forEach(player => {
+      const title = player.querySelector(".track-title").textContent;
+      const checkbox = player.querySelector(".star-check");
+      if (starredTitles.includes(title)) {
+        checkbox.checked = true;
+      }
+    });
 
-
-  // Default album art and text
-  musicPic.src = "music/dark.png";
-  sidebarPic.src = "tuneup.gif";
-  npTrackTitle.textContent = "Nothing";
-  currentlyPlayingText.textContent = "Nothing";
-  sidebarText.textContent = "Nothing";
-
-  const updateUI = () => {
-    const anyPlaying = currentAudio && !currentAudio.paused;
-    currentlyPlaying?.classList.toggle("active", anyPlaying);
-    sidebarCP?.classList.toggle("active", anyPlaying);
-    volumeControl?.classList.toggle("active", anyPlaying);
-  };
-
-  const updateNPProgress = () => {
-    if (!currentAudio) return;
-    const percent = currentAudio.currentTime / currentAudio.duration || 0;
-    npProgress.style.width = `${percent * 100}%`;
-    requestAnimationFrame(updateNPProgress);
-  };
-
-  // Bop animation
-  const startBop = (el, bpm) => {
-    if (!el) return;
-    el.classList.add("bopping");
-    el.style.animationDuration = `${60 / bpm}s`;
-  };
-  const stopBop = (el) => el?.classList.remove("bopping");
-
-  const playCurrent = () => {
-    if (!currentAudio) return;
-    currentAudio.play();
-    playIcon.style.display = "none";
-    pauseIcon.style.display = "block";
-    currentPlayer?.classList.add("playing");
-    const bpm = parseFloat(currentPlayer?.dataset.bpm) || 120;
-    startBop(musicPic, bpm);
-    startBop(sidebarPic, bpm);
-    updateUI();
-  };
-
-  const pauseCurrent = () => {
-    if (!currentAudio) return;
-    currentAudio.pause();
-    playIcon.style.display = "block";
-    pauseIcon.style.display = "none";
-    currentPlayer?.classList.remove("playing");
-    stopBop(musicPic);
-    stopBop(sidebarPic);
-    updateUI();
-  };
-
-  const resetNowPlaying = () => {
+    // Default UI setup
+    musicPic.src = "music/dark.png";
+    if (sidebarPic) sidebarPic.src = "tuneup.gif";
     npTrackTitle.textContent = "Nothing";
     currentlyPlayingText.textContent = "Nothing";
-    musicPic.src = "music/dark.png";
-    sidebarText.textContent = "Nothing";
-    playIcon.style.display = "block";
-    pauseIcon.style.display = "none";
-    npProgress.style.width = "0%";
-    stopBop(musicPic);
-    stopBop(sidebarPic);
-    currentAudio = null;
-    currentPlayer = null;
-    updateUI();
-  };
+    if (sidebarText) sidebarText.textContent = "Nothing";
 
-  // Setup players
-  players.forEach((player) => {
-    const audio = player.querySelector("audio");
-    const bpm = parseFloat(player.dataset.bpm) || 120;
-    const titleText = player.querySelector(".track-title").textContent;
-    const artistText = player.querySelector("p").textContent;
-    const cover = player.dataset.cover;
+    if (loopBtn) {
+      loopBtn.addEventListener("click", () => {
+        if (loopMode === "none") loopMode = "playlist";
+        else if (loopMode === "playlist") loopMode = "track";
+        else loopMode = "none";
 
-    player.addEventListener("click", () => {
-      players.forEach((p) => {
-        const a = p.querySelector("audio");
-        if (a !== audio) a.pause();
-        p.classList.remove("playing");
+        switch (loopMode) {
+          case "none":
+            loopIcon.src = "loop-none.svg";
+            loopBtn.classList.remove("active");
+            break;
+          case "track":
+            loopIcon.src = "loop.svg";
+            loopBtn.classList.add("active");
+            break;
+          case "playlist":
+            loopIcon.src = "loop-playlist.svg";
+            loopBtn.classList.add("active");
+            break;
+        }
       });
+    }
 
-      currentAudio = audio;
-		currentPlayer = player;
-		audio.volume = masterVolume;
-		audio.play();
+    const updateUI = () => {
+      const anyPlaying = currentAudio && !currentAudio.paused;
+      currentlyPlaying?.classList.toggle("active", anyPlaying);
+      sidebarCP?.classList.toggle("active", anyPlaying);
+      volumeControl?.classList.toggle("active", anyPlaying);
+    };
 
-      player.classList.add("playing");
+    const updateNPProgress = () => {
+      if (!currentAudio) return;
+      const percent = currentAudio.currentTime / currentAudio.duration || 0;
+      npProgress.style.width = `${percent * 100}%`;
+      requestAnimationFrame(updateNPProgress);
+    };
 
-      musicPic.src = cover;
-      npTrackTitle.textContent = titleText;
-      currentlyPlayingText.textContent = artistText;
+    const startBop = (el, bpm) => {
+      if (!el) return;
+      el.classList.add("bopping");
+      el.style.animationDuration = `${60 / bpm}s`;
+    };
+    const stopBop = (el) => el?.classList.remove("bopping");
 
-      sidebarPic.src = "tuneup.gif";
-      sidebarText.textContent = titleText;
-
+    const playCurrent = () => {
+      if (!currentAudio) return;
+      currentAudio.play();
       playIcon.style.display = "none";
       pauseIcon.style.display = "block";
-
+      currentPlayer?.classList.add("playing");
+      const bpm = parseFloat(currentPlayer?.dataset.bpm) || 120;
       startBop(musicPic, bpm);
-      startBop(sidebarPic, bpm);
-      updateNPProgress();
+      if (sidebarPic) startBop(sidebarPic, bpm);
       updateUI();
-    });
-
-    player.addEventListener("mouseenter", () => {
-      if (player === currentPlayer) return;
-      musicPic.src = cover;
-      npTrackTitle.textContent = titleText;
-      currentlyPlayingText.textContent = artistText;
-    });
-
-    player.addEventListener("mouseleave", () => {
-      if (currentPlayer) {
-        musicPic.src = currentPlayer.dataset.cover;
-        npTrackTitle.textContent = currentPlayer.querySelector(".track-title").textContent;
-        currentlyPlayingText.textContent = currentPlayer.querySelector("p").textContent;
-      } else {
-        musicPic.src = "music/dark.png";
-        npTrackTitle.textContent = "Nothing";
-        currentlyPlayingText.textContent = "Nothing";
-      }
-    });
-
-	audio.addEventListener("ended", () => {
-	  player.classList.remove("playing");
-	  if (!currentPlayer) return;
-
-	  if (loopMode === "track") {
-		currentAudio.currentTime = 0;
-		playCurrent();
-	  } else if (loopMode === "playlist") {
-		let currentIndex = Array.from(players).indexOf(currentPlayer);
-		let nextIndex = (currentIndex + 1) % players.length;
-		players[nextIndex].click();
-	  } else if (loopMode === "none") {
-		// Deselect the song
-		resetNowPlaying();
-		player.classList.remove("playing"); // ensure the player is visually deselected
-	  }
-	});
-
-  });
-
-  playBtn.addEventListener("click", () => {
-    if (!currentAudio) return;
-    currentAudio.paused ? playCurrent() : pauseCurrent();
-  });
-
-  // Scrubbing
-  let isScrubbing = false;
-  const getPercent = (e) => {
-    const rect = npContainer.getBoundingClientRect();
-    const offsetX = e.clientX ?? e.touches[0].clientX;
-    return Math.max(0, Math.min(1, (offsetX - rect.left) / rect.width));
-  };
-
-  const handleScrubMove = (e) => {
-    if (!currentAudio) return;
-    currentAudio.currentTime = getPercent(e) * currentAudio.duration;
-  };
-
-  const handleScrubEnd = () => {
-    isScrubbing = false;
-    document.removeEventListener("mousemove", handleScrubMove);
-    document.removeEventListener("mouseup", handleScrubEnd);
-    document.removeEventListener("touchmove", handleScrubMove);
-    document.removeEventListener("touchend", handleScrubEnd);
-  };
-
-  npContainer.addEventListener("mousedown", (e) => {
-    isScrubbing = true;
-    handleScrubMove(e);
-    document.addEventListener("mousemove", handleScrubMove);
-    document.addEventListener("mouseup", handleScrubEnd);
-  });
-
-  npContainer.addEventListener("touchstart", (e) => {
-    isScrubbing = true;
-    handleScrubMove(e);
-    document.addEventListener("touchmove", handleScrubMove);
-    document.addEventListener("touchend", handleScrubEnd);
-  });
-
-  npContainer.addEventListener("click", (e) => handleScrubMove(e));
-
-  volumeSlider?.addEventListener("input", (e) => {
-	  masterVolume = parseFloat(e.target.value);
-	  allAudios.forEach(audio => audio.volume = masterVolume);
-	});
-
-
-  sidebarCP.addEventListener("click", () => {
-    window.dispatchEvent(new CustomEvent("switchContent", { detail: { target: "work" } }));
-    const scrollToWebsiteTop = () => {
-      const mainContent = document.querySelector("main, #main-container, body");
-      if (!mainContent) {
-        requestAnimationFrame(scrollToWebsiteTop);
-        return;
-      }
-      mainContent.scrollIntoView({ behavior: "smooth", block: "start" });
     };
-    requestAnimationFrame(scrollToWebsiteTop);
+
+    const pauseCurrent = () => {
+      if (!currentAudio) return;
+      currentAudio.pause();
+      playIcon.style.display = "block";
+      pauseIcon.style.display = "none";
+      currentPlayer?.classList.remove("playing");
+      stopBop(musicPic);
+      if (sidebarPic) stopBop(sidebarPic);
+      updateUI();
+    };
+
+    const resetNowPlaying = () => {
+      npTrackTitle.textContent = "Nothing";
+      currentlyPlayingText.textContent = "Nothing";
+      musicPic.src = "music/dark.png";
+      if (sidebarText) sidebarText.textContent = "Nothing";
+      playIcon.style.display = "block";
+      pauseIcon.style.display = "none";
+      npProgress.style.width = "0%";
+      stopBop(musicPic);
+      if (sidebarPic) stopBop(sidebarPic);
+      currentAudio = null;
+      currentPlayer = null;
+      updateUI();
+    };
+
+    players.forEach((player) => {
+      const audio = player.querySelector("audio");
+      const bpm = parseFloat(player.dataset.bpm) || 120;
+      const titleText = player.querySelector(".track-title").textContent;
+      const artistText = player.querySelector("p").textContent;
+      const cover = player.dataset.cover;
+      const starCheckbox = player.querySelector(".star-check");
+
+      // Handle Star Interactions
+      starCheckbox.addEventListener("change", (e) => {
+        saveStarStatus(titleText, e.target.checked);
+      });
+
+      player.querySelector(".star-selection").addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+
+      player.addEventListener("click", () => {
+        players.forEach((p) => {
+          const a = p.querySelector("audio");
+          if (a !== audio) a.pause();
+          p.classList.remove("playing");
+        });
+
+        currentAudio = audio;
+        currentPlayer = player;
+        audio.volume = masterVolume;
+        audio.play();
+
+        player.classList.add("playing");
+        musicPic.src = cover;
+        npTrackTitle.textContent = titleText;
+        currentlyPlayingText.textContent = artistText;
+        if (sidebarPic) sidebarPic.src = "tuneup.gif";
+        if (sidebarText) sidebarText.textContent = titleText;
+        playIcon.style.display = "none";
+        pauseIcon.style.display = "block";
+
+        startBop(musicPic, bpm);
+        if (sidebarPic) startBop(sidebarPic, bpm);
+        updateNPProgress();
+        updateUI();
+      });
+
+      player.addEventListener("mouseenter", () => {
+        if (player === currentPlayer) return;
+        musicPic.src = cover;
+        npTrackTitle.textContent = titleText;
+        currentlyPlayingText.textContent = artistText;
+      });
+
+      player.addEventListener("mouseleave", () => {
+        if (currentPlayer) {
+          musicPic.src = currentPlayer.dataset.cover;
+          npTrackTitle.textContent = currentPlayer.querySelector(".track-title").textContent;
+          currentlyPlayingText.textContent = currentPlayer.querySelector("p").textContent;
+        } else {
+          musicPic.src = "music/dark.png";
+          npTrackTitle.textContent = "Nothing";
+          currentlyPlayingText.textContent = "Nothing";
+        }
+      });
+
+      audio.addEventListener("ended", () => {
+        player.classList.remove("playing");
+        if (!currentPlayer) return;
+
+        if (loopMode === "track") {
+          currentAudio.currentTime = 0;
+          playCurrent();
+        } else if (loopMode === "playlist") {
+          const pArray = Array.from(players);
+          let currentIndex = pArray.indexOf(currentPlayer);
+          let nextFound = false;
+
+          for (let i = 1; i <= pArray.length; i++) {
+            let checkIdx = (currentIndex + i) % pArray.length;
+            if (pArray[checkIdx].querySelector(".star-check").checked) {
+              pArray[checkIdx].click();
+              nextFound = true;
+              break;
+            }
+          }
+          if (!nextFound) resetNowPlaying();
+        } else {
+          resetNowPlaying();
+        }
+      });
+    });
+
+    playBtn.addEventListener("click", () => {
+      if (!currentAudio) return;
+      currentAudio.paused ? playCurrent() : pauseCurrent();
+    });
+
+    volumeSlider?.addEventListener("input", (e) => {
+      masterVolume = parseFloat(e.target.value);
+      allAudios.forEach(audio => audio.volume = masterVolume);
+    });
+
+    // Integrated Scrubbing
+    const handleScrub = (e) => {
+      if (!currentAudio) return;
+      const rect = npContainer.getBoundingClientRect();
+      const clientX = e.clientX ?? e.touches?.[0]?.clientX;
+      const percent = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      currentAudio.currentTime = percent * currentAudio.duration;
+    };
+
+    npContainer.addEventListener("mousedown", (e) => {
+      handleScrub(e);
+      const move = (ev) => handleScrub(ev);
+      const end = () => {
+        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseup", end);
+      };
+      document.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", end);
+    });
+    
+    npContainer.addEventListener("touchstart", (e) => {
+      handleScrub(e);
+      const move = (ev) => handleScrub(ev);
+      const end = () => {
+        document.removeEventListener("touchmove", move);
+        document.removeEventListener("touchend", end);
+      };
+      document.addEventListener("touchmove", move);
+      document.addEventListener("touchend", end);
+    });
+
+    npContainer.addEventListener("click", handleScrub);
+
+    sidebarCP?.addEventListener("click", () => {
+      window.dispatchEvent(new CustomEvent("switchContent", { detail: { target: "work" } }));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   });
-});
 </script>

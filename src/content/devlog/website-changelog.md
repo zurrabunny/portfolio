@@ -315,6 +315,14 @@ tags: ["Process"]
 		</ul>
 	</ul>
 	
+	<h3>January 10 2026</h3>
+	<ul>
+		<li>Works Tab :
+		<ul>
+		<li>added Loop Queue (select the stars to add them in a queue)
+		</ul>
+	</ul>
+	
 	
 </div>
 
