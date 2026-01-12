@@ -4,6 +4,7 @@ import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
-  base: '',
+  site: 'https://zurrabunny.github.io/portfolio/',
+  base: '/portfolio/',
   integrations: [mdx()],
 });

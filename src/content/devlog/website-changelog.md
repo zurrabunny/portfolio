@@ -325,7 +325,8 @@ tags: ["Process"]
 	
 	<h3>January 12 2026</h3>
 	<ul>
-		<li>Simplified the website url!! ( it will redirect you if you use the old one :o) )
+		<li>added URL Fragments
+		<li>added 404 page
 	</ul>
 	
 	
