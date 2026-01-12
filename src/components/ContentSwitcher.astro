@@ -76,28 +76,26 @@ const sections = {
 };
 
 /** * EDITABLE URL MAP
- * Key: The internal ID (e.g., 'work')
- * Value: What you want to see in the URL (e.g., 'portfolio')
+ * Change the text on the right to change what appears after the #
  */
 const urlMap = {
   about: "about",
-  work: "portfolio",
-  blog: "studystuffs",
+  work: "portfolio",      // Result: .../portfolio/#portfolio
+  blog: "studystuffs",    // Result: .../portfolio/#studystuffs
   contact: "contact",
   devlog: "blogs",
   visitor: "lounge",
-  oc: "characters"
+  oc: "characters"        // Result: .../portfolio/#characters
 };
 
 const navTabs = document.querySelectorAll('.sidebar .tab');
 
-// Helper to find the internal ID based on the URL string
+// Helper to find the internal container ID based on the URL fragment
 function getInternalIdFromUrl(urlSlug) {
   return Object.keys(urlMap).find(key => urlMap[key] === urlSlug) || 'about';
 }
 
-function switchContent(target) {
-  // 1. Get the pretty URL name from our map
+function switchContent(target, updateHistory = true) {
   const prettyUrl = urlMap[target] || target;
 
   Object.keys(sections).forEach(key => {
@@ -107,8 +105,10 @@ function switchContent(target) {
       section.classList.add('show');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       
-      // 2. Update the URL hash with the PRETTY name
-      history.pushState(null, null, `#${prettyUrl}`);
+      // Update the URL hash
+      if (updateHistory) {
+        history.pushState(null, null, `#${prettyUrl}`);
+      }
     } else {
       section.classList.remove('show');
       section.classList.add('hide');
@@ -120,29 +120,31 @@ function switchContent(target) {
 navTabs.forEach(tab => {
   tab.addEventListener('click', e => {
     e.preventDefault();
-    // Assuming your sidebar tabs still use data-target="work", etc.
-    switchContent(tab.dataset.target);
+    const target = tab.dataset.target;
+    switchContent(target);
   });
 });
 
-// Handle Deep Linking (Check URL on load)
+// INITIAL LOAD: Handle Deep Linking
 window.addEventListener('DOMContentLoaded', () => {
   const hash = window.location.hash.replace('#', '');
   if (hash) {
-    // Convert the URL slug back to our internal ID
     const internalId = getInternalIdFromUrl(hash);
-    switchContent(internalId);
+    switchContent(internalId, false); // Don't push state on first load
+  } else {
+    // Default to about if no hash is provided
+    switchContent('about', false);
   }
 });
 
-// Handle Browser Back/Forward buttons
+// BROWSER NAVIGATION: Handle Back/Forward buttons
 window.addEventListener('popstate', () => {
   const hash = window.location.hash.replace('#', '');
   const internalId = getInternalIdFromUrl(hash);
-  switchContent(internalId);
+  switchContent(internalId, false); // Don't push a new state when navigating back
 });
 
-// Dropdown event
+// Custom Event Listener
 window.addEventListener('switchContent', e => {
   switchContent(e.detail.target);
 });
