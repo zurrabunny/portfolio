@@ -68,17 +68,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const lines = document.querySelectorAll(".title-divider .line");
   const tagFilter = document.getElementById("tagFilter");
 	
-const displayNames = {
-  Illustrations: "Illustrations",
-  Animation: "Animated Loops",
-  "3D": "3D",
-  Storyboard: "Animated Scenes",
-  Music: "Music"
-};
+  const displayNames = {
+    Illustrations: "Illustrations",
+    Animation: "Animated Loops",
+    "3D": "3D",
+    Storyboard: "Animated Scenes",
+    Music: "Music"
+  };
 	
   let activeTag = "All";
 
-  // Wrap title letters
+  // --- PERSISTENCE LOGIC ---
+  // 1. Get saved tab from localStorage or default to "Illustrations"
+  const savedTab = localStorage.getItem("activePortfolioTab") || "Illustrations";
+
+  // --- UI Functions ---
   const wrapTitleLetters = () => {
     if (!title.dataset.wrapped) {
       const text = title.textContent;
@@ -95,39 +99,31 @@ const displayNames = {
   };
   wrapTitleLetters();
 
-const animateTitle = (text) => {
-  // Clear old letters
-  title.innerHTML = "";
+  const animateTitle = (text) => {
+    title.innerHTML = "";
+    text.split("").forEach(char => {
+      const span = document.createElement("span");
+      span.textContent = char === " " ? "\u00A0" : char;
+      span.style.display = "inline-block";
+      span.style.opacity = 0;
+      title.appendChild(span);
+    });
 
-  // Wrap new letters
-  text.split("").forEach(char => {
-    const span = document.createElement("span");
-    span.textContent = char === " " ? "\u00A0" : char; // use non-breaking space
-    span.style.display = "inline-block";
-    span.style.opacity = 0;
-    title.appendChild(span);
-  });
+    const letters = Array.from(title.querySelectorAll("span"));
+    letters.forEach((span, i) => {
+      setTimeout(() => {
+        span.style.animation = `fadeInUp ${animationSpeed}s forwards`;
+      }, i * staggerDelay * 1000);
+    });
 
-  const letters = Array.from(title.querySelectorAll("span"));
-  letters.forEach((span, i) => {
-    span.style.opacity = 0;
-    span.style.animation = "none";
-    setTimeout(() => {
-      span.style.animation = `fadeInUp ${animationSpeed}s forwards`;
-    }, i * staggerDelay * 1000);
-  });
+    lines.forEach((line, i) => {
+      line.style.animation = "none";
+      setTimeout(() => {
+        line.style.animation = `lineIn ${animationSpeed}s forwards`;
+      }, i * staggerDelay * 1000);
+    });
+  };
 
-  lines.forEach((line, i) => {
-    line.style.opacity = 0;
-    line.style.transform = "scaleX(0)";
-    line.style.animation = "none";
-    setTimeout(() => {
-      line.style.animation = `lineIn ${animationSpeed}s forwards`;
-    }, i * staggerDelay * 1000);
-  });
-};
-
-  // Animate gallery items (with stagger)
   const animateGalleryItems = (items) => {
     items.forEach((item, index) => {
       item.style.opacity = 0;
@@ -141,43 +137,27 @@ const animateTitle = (text) => {
     });
   };
 
-  // Animate music players
   const animateMusicPlayers = () => {
     const players = document.querySelectorAll("#music .music-player");
     players.forEach((player, i) => {
       const delay = i * staggerDelay * 1000;
       player.style.opacity = 0;
-      player.style.animation = "none";
       setTimeout(() => {
         player.style.animation = `fadeInUp ${animationSpeed}s forwards`;
       }, delay);
-      const info = player.querySelector(".music-info");
-      if (info) {
-        info.style.opacity = 0;
-        info.style.animation = "none";
-        setTimeout(() => {
-          info.style.animation = `fadeInUp ${animationSpeed}s forwards`;
-        }, delay + (staggerDelay * 1000 / 2));
-      }
     });
   };
 
-// Wait for items to exist
-function waitForItems(selector, callback) {
-  const items = document.querySelectorAll(selector);
-  if (items.length) {
-    callback(items);
-  } else {
-    setTimeout(() => waitForItems(selector, callback), 100);
+  function waitForItems(selector, callback) {
+    const items = document.querySelectorAll(selector);
+    if (items.length) callback(items);
+    else setTimeout(() => waitForItems(selector, callback), 100);
   }
-}
 
-// Generate tag buttons (only once)
-function generateTagButtons() {
-  waitForItems("#illustrations .bento-item", (items) => {
-    if (!tagFilter) return;
+  function generateTagButtons() {
+    waitForItems("#illustrations .bento-item", (items) => {
+      if (!tagFilter || tagFilter.dataset.generated) return;
 
-    if (!tagFilter.dataset.generated) {
       const allTags = new Set(["All"]);
       items.forEach(item => {
         const tags = item.dataset.tags?.split(",").map(t => t.trim()) || [];
@@ -190,21 +170,18 @@ function generateTagButtons() {
         btn.dataset.tag = tag;
         btn.textContent = tag;
         btn.className = "tag-btn";
+        if (tag === activeTag) btn.classList.add("active");
         tagFilter.appendChild(btn);
 
-        if (tag === activeTag) btn.classList.add("active");
-
         btn.addEventListener("click", () => {
-          document.querySelectorAll(".tag-btn")?.forEach(b => b.classList.remove("active"));
+          document.querySelectorAll(".tag-btn").forEach(b => b.classList.remove("active"));
           btn.classList.add("active");
           activeTag = tag;
-
           items.forEach(item => {
             const itemTags = item.dataset.tags?.split(",").map(t => t.trim()) || [];
             if (tag === "All" || itemTags.includes(tag)) {
               item.style.display = "inline-block";
               item.style.opacity = 1;
-              item.style.transform = "scale(1)";
             } else {
               item.style.display = "none";
               item.style.opacity = 0;
@@ -212,72 +189,32 @@ function generateTagButtons() {
           });
         });
       });
-
       tagFilter.dataset.generated = "true";
-    }
-  });
-}
-
-// Animate tags (stagger, always on tab switch)
-function animateTagButtons() {
-  if (!tagFilter) return;
-  const buttons = tagFilter.querySelectorAll(".tag-btn");
-  buttons.forEach((btn, i) => {
-    btn.style.opacity = 0;
-    btn.style.transform = "translateY(10px)";
-    btn.style.transition = "none";
-
-    setTimeout(() => {
-      btn.style.transition = "opacity 0.4s, transform 0.4s";
-      btn.style.opacity = 1;
-      btn.style.transform = "translateY(0)";
-    }, i * staggerDelay * 4000);
-  });
-}
-
-// ---------- MOBILE SUPPORT ----------
-function setupTagFilterMobile() {
-  if (!tagFilter) return;
-
-  // On mobile, allow horizontal scrolling instead of wrapping
-  const mq = window.matchMedia("(max-width: 900px)");
-  function applyMobileStyles(e) {
-    if (e.matches) {
-      tagFilter.style.display = "flex";
-      tagFilter.style.flexWrap = "nowrap";
-      tagFilter.style.overflowX = "auto";
-      tagFilter.style.gap = "0.5rem";
-      tagFilter.style.padding = "0.5rem 0";
-      tagFilter.querySelectorAll(".tag-btn").forEach(btn => {
-        btn.style.flex = "0 0 auto";
-        btn.style.minWidth = "60px";
-      });
-    } else {
-      // Reset desktop styles
-      tagFilter.style.display = "flex";
-      tagFilter.style.flexWrap = "wrap";
-      tagFilter.style.overflowX = "visible";
-      tagFilter.style.gap = "1rem";
-      tagFilter.querySelectorAll(".tag-btn").forEach(btn => {
-        btn.style.flex = "initial";
-        btn.style.minWidth = "initial";
-      });
-    }
+    });
   }
 
-  applyMobileStyles(mq);
-  mq.addEventListener("change", applyMobileStyles);
-}
+  function animateTagButtons() {
+    if (!tagFilter) return;
+    const buttons = tagFilter.querySelectorAll(".tag-btn");
+    buttons.forEach((btn, i) => {
+      btn.style.opacity = 0;
+      btn.style.transform = "translateY(10px)";
+      setTimeout(() => {
+        btn.style.transition = "opacity 0.4s, transform 0.4s";
+        btn.style.opacity = 1;
+        btn.style.transform = "translateY(0)";
+      }, i * staggerDelay * 4000);
+    });
+  }
 
-// Initialize
-generateTagButtons();
-animateTagButtons();
-setupTagFilterMobile();
-
-  // Tab click
+  // Tab click logic
   tabs.forEach(tab => {
     tab.addEventListener("click", () => {
       const selected = tab.dataset.tab;
+      
+      // 2. Save choice to local storage
+      localStorage.setItem("activePortfolioTab", selected);
+
       tabs.forEach(t => t.classList.remove("active"));
       tab.classList.add("active");
 
@@ -288,33 +225,23 @@ setupTagFilterMobile();
       if (selected === "Illustrations") {
         tagFilter.style.display = "flex";
         generateTagButtons();
-        animateTagButtons(); // reset and stagger animation on each tab switch
-
-        const items = sections["Illustrations"].querySelectorAll(".bento-item");
-        animateGalleryItems(items);
-
-        items.forEach(item => {
-          const itemTags = item.dataset.tags?.split(",").map(t => t.trim()) || [];
-          if (!(activeTag === "All" || itemTags.includes(activeTag))) {
-            item.style.display = "none";
-            item.style.opacity = 0;
-          }
-        });
+        animateTagButtons();
       } else {
         tagFilter.style.display = "none";
-
-        const items = sections[selected].querySelectorAll(".bento-item");
-        animateGalleryItems(items);
       }
 
+      const items = sections[selected].querySelectorAll(".bento-item");
+      animateGalleryItems(items);
       animateTitle(displayNames[selected]);
-
       if (selected === "Music") animateMusicPlayers();
     });
   });
 
-  // Default tab
-  document.querySelector('.tabs button[data-tab="Illustrations"]')?.click();
+  // 3. Initialize by clicking the saved tab (or default)
+  const initialTabBtn = document.querySelector(`.tabs button[data-tab="${savedTab}"]`);
+  if (initialTabBtn) {
+    initialTabBtn.click();
+  }
 });
 </script>
 

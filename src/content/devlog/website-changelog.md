@@ -319,8 +319,13 @@ tags: ["Process"]
 	<ul>
 		<li>Works Tab :
 		<ul>
-		<li>added Loop Queue (select the stars to add them in a queue)
+		<li>added Music Loop Queue (select the stars to add them in a queue)
 		</ul>
+	</ul>
+	
+	<h3>January 12 2026</h3>
+	<ul>
+		<li>Simplified the website url!! ( it will redirect you if you use the old one :o) )
 	</ul>
 	
 	
