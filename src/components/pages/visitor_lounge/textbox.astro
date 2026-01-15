@@ -1,111 +1,73 @@
 <style>
-/* ================= Split Layout ================= */
+/* ================= Root & Transitions ================= */
+#main-wrapper * { box-sizing: border-box; }
+
 #main-wrapper {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   max-width: 2000px;
-  height: 600px;
+  height: 650px;
   background: transparent;
   border-radius: 1rem;
-  overflow: hidden;
 }
 
 /* ================= Left: Textbox Area ================= */
 #textbox-wrapper {
-  flex: 1;
+  flex: 0 0 350px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
   background: transparent;
-  padding: 1rem;
-  box-sizing: border-box;
-  border-radius: 1rem;
-  overflow: hidden;
+  padding: 0.5rem;
 }
 
-#username {
-  width: 95.5%;
-  padding: 0.6rem;
-  padding-left: 1rem;
-  margin-bottom: 1rem;
+#username, #textcanvas {
+  width: 100%;
   border: 2px solid var(--color-6);
   border-radius: 0.8rem;
   background: var(--color-6);
   color: var(--text-dark);
   font-size: 16px;
-}
-
-#textcanvas {
-  width: 100%;
-  width: 100%;
-  min-height: 80px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border: 2px solid var(--color-6);
-  border-radius: 0.8rem;
-  background: var(--color-6);
-  font-size: 16px;
-  color: var(--text-dark);
   font-family: inherit;
-  resize: vertical;
-  box-sizing: border-box;
+  margin-bottom: 0.5rem;
+  transition: border-color 0.2s;
 }
 
-#text-controls {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-}
+#username { padding: 0.8rem 1rem; }
+#textcanvas { flex-grow: 1; padding: 1rem; resize: none; }
+#username:focus, #textcanvas:focus { outline: none; border-color: var(--color-5); }
 
-#text-submit-header {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  justify-content: center;
+#char-counter {
+  font-size: 0.75rem;
+  text-align: right;
+  margin-bottom: 0.75rem;
+  color: #888;
 }
 
 /* ---------------- Buttons ---------------- */
-.text-button,
-.refresh-btn {
-  padding: 0.6rem 1rem;
-  margin: 0.5rem 0.25rem;
+.text-button, .refresh-btn {
+  padding: 0.75rem;
   font-weight: 600;
   cursor: pointer;
   border-radius: 0.8rem;
   border: 2px solid var(--color-5);
+  background: var(--color-5);
+  color: var(--color-3);
   transition: all 0.25s ease;
+  text-align: center;
 }
 
-.text-button {
-  background: var(--color-5);
-  color: var(--color-3);
-}
-
-.text-button:hover {
-  background: var(--color-3);
-  color: var(--text-main);
-  border-color: var(--color-2);
-}
-
-.refresh-btn {
-  background: var(--color-5);
-  color: var(--color-3);
-}
-
-.refresh-btn:hover {
+.text-button:hover, .refresh-btn:hover {
   background: var(--color-3);
   color: var(--text-main);
   border-color: var(--color-2);
 }
 
 #text-status {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #555;
-  margin-bottom: 0.5rem;
-  font-family: inherit;
+  margin-top: 0.5rem;
+  text-align: center;
+  min-height: 1.2rem;
 }
 
 /* ================= Right: Messages Area ================= */
@@ -113,232 +75,180 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
   background: var(--color-6);
-  border-left: 2px solid var(--color-6);
-  border-radius: 0.8rem;
-  padding: 1rem;
-  overflow-y: auto;
-  margin-top: 1rem;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  overflow: hidden;
 }
 
-.text-container-wrapper {
+#text-gallery {
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+/* Custom Scrollbar */
+#text-gallery::-webkit-scrollbar { width: 6px; }
+#text-gallery::-webkit-scrollbar-thumb { background: var(--color-5); border-radius: 10px; }
+
+/* The containers and replies are now styled via JS classes */
+.text-container {
+  padding: 1.2rem;
+  border-radius: 12px;
+  color: #333;
+  white-space: pre-wrap;
+  margin-bottom: 1rem;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  border: 1px solid rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
   position: relative;
 }
 
-.text-container {
-  padding: 0.75rem;
-  border: 2px solid #444;
-  border-radius: 0.8rem;
-  background: #eee;
-  color: #000;
-  white-space: pre-wrap;
-  font-family: inherit;
-}
+.text-container:hover { transform: translateY(-2px); }
 
 .text-timestamp {
-  margin-top: 0.4rem;
-  font-size: 0.8rem;
-  color: #555;
-  font-family: inherit;
+  margin-top: 0.6rem;
+  font-size: 0.7rem;
+  color: #888;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-/* ================= Mobile Responsiveness ================= */
+.reply-box {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  border-left: 4px solid var(--color-5);
+  background: rgba(255,255,255,0.4);
+  border-radius: 4px 8px 8px 4px;
+  font-size: 0.9rem;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
 @media (max-width: 900px) {
-
-  #main-wrapper {
-    flex-direction: column;
-    height: auto;
-    max-width: 100%;
-  }
-
-  #textbox-wrapper {
-    width: 100%;
-    padding: 0.75rem;
-  }
-
-  #username {
-    width: 92%;
-    font-size: 1rem;
-  }
-
-  #textcanvas {
-    min-height: 150px;
-    width: 100%;
-    font-size: 15px;
-  }
-
-  #text-controls {
-    gap: 0.4rem;
-  }
-
-  .text-button {
-    padding: 0.5rem 0.8rem;
-    font-size: 0.9rem;
-  }
-
-  #text-gallery-wrapper {
-    width: 90%;
-    height: 350px;
-    margin-top: 0.5rem;
-    border-left: none;
-    padding: 0.75rem;
-	font-size: 12px;
-  }
-
-  .text-container {
-    padding: 0.6rem;
-    font-size: 0.9rem;
-  }
-
-  .text-timestamp {
-    font-size: 0.75rem;
-  }
+  #main-wrapper { flex-direction: column; height: auto; }
+  #textbox-wrapper { flex: none; width: 100%; }
+  #text-gallery-wrapper { height: 500px; }
 }
 </style>
 
 <div id="main-wrapper">
-
-  <!-- Left: Text Input -->
   <div id="textbox-wrapper">
-    <input id="username" placeholder="Enter your name..." />
-    <textarea id="textcanvas" placeholder="Type your text here..."></textarea>
-
+    <input id="username" placeholder="Enter your name..." maxlength="30" />
+    <textarea id="textcanvas" placeholder="Type your text here..." maxlength="500"></textarea>
+    <div id="char-counter">0 / 500</div>
+    
     <div id="text-controls">
-      <div id="text-submit-header">
-        <button id="text-submit" class="text-button">Submit Text</button>
-        <button id="refreshTexts" class="refresh-btn">Refresh Board</button>
+      <div id="text-submit-header" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+        <button id="text-submit" class="text-button">Submit</button>
+        <button id="refreshTexts" class="refresh-btn">Refresh</button>
       </div>
+      <div id="text-status"></div>
     </div>
-
-    <div id="text-status"></div>
   </div>
 
-  <!-- Right: Message Gallery -->
   <div id="text-gallery-wrapper">
-    <div id="text-gallery">Loading texts...</div>
+    <div style="font-weight: bold; margin-bottom: 1rem; color: var(--color-2); font-size: 1.2rem; display: flex; align-items: center; gap: 10px;">
+      Community Board <span id="boardCount" style="font-size: 0.8rem; background: var(--color-5); color: white; padding: 2px 8px; border-radius: 10px;">0</span>
+    </div>
+    <div id="text-gallery">Loading...</div>
   </div>
-
 </div>
 
 <script>
-// CONFIG
 const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdljLgmcLVCqx9Hwf2D49ZgDRYDEXkTV8w-7WyW1SLkTkMcdw/formResponse";
 const ENTRY_ID = "entry.1206257935";
 const GOOGLE_SHEET_CSV = "https://docs.google.com/spreadsheets/d/1cHqp4SpzJ-yAYaDDxwvrQvH0XYV1K09Tdcc-aXd7-gs/export?format=csv";
 
 const textCanvas = document.getElementById("textcanvas");
+const charCounter = document.getElementById("char-counter");
 const statusText = document.getElementById("text-status");
 const gallery = document.getElementById("text-gallery");
+
+// Character Counter Logic
+textCanvas.addEventListener("input", () => {
+  const len = textCanvas.value.length;
+  charCounter.textContent = `${len} / 500`;
+  charCounter.style.color = len >= 480 ? "red" : "#888";
+});
 
 function formatTimestamp(date) {
   const d = date || new Date();
   return `${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}/${d.getFullYear()} – ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
 }
 
-function addTextToGallery(name, text, timestamp, liked = false) {
-  const wrapper = document.createElement("div");
-  wrapper.className = "text-container-wrapper";
-  wrapper.style.position = "relative"; // ensure relative positioning
-
+function createTextElement(name, text, timestamp, liked, bgColor, replyText) {
+  // 1. Main Message Container Styling
   const container = document.createElement("div");
   container.className = "text-container";
+  
+  // Apply Spacing and Background Styles in JS
+  container.style.backgroundColor = bgColor;
+  container.style.marginBottom = "1.5rem"; // Space between messages
+  container.style.padding = "1.25rem";
+  container.style.borderRadius = "12px";
+  container.style.position = "relative";
+  container.style.transition = "transform 0.2s ease, box-shadow 0.2s ease";
+  container.style.border = "1px solid var(--color-5)";
 
-  const message = document.createElement("div");
-  message.textContent = `${name}: ${text}`;
+  // 2. Name and Message Text
+  const messageBody = document.createElement("div");
+  messageBody.style.color = "var(--text-dark, #333)";
+  messageBody.style.lineHeight = "1.5";
+  messageBody.style.wordBreak = "break-word";
+  
+  const nameSpan = document.createElement("strong");
+  nameSpan.textContent = `${name}: `;
+  nameSpan.style.color = "var(--color-2, #000)";
+  
+  const textSpan = document.createElement("span");
+  textSpan.textContent = text;
+  
+  messageBody.appendChild(nameSpan);
+  messageBody.appendChild(textSpan);
+  container.appendChild(messageBody);
 
+  // 3. Timestamp Styling
   const time = document.createElement("div");
   time.className = "text-timestamp";
   time.textContent = timestamp || formatTimestamp();
-
-  container.appendChild(message);
+  time.style.marginTop = "0.75rem";
+  time.style.fontSize = "0.7rem";
+  time.style.opacity = "0.7";
   container.appendChild(time);
-  wrapper.appendChild(container);
 
-  // Add heart if liked
+  // 4. Nested Reply (Inside the same spaced container)
+  if (replyText) {
+    const replyBox = document.createElement("div");
+    replyBox.className = "reply-box";
+    replyBox.textContent = `ZurraBunny: ${replyText}`;
+    
+    // Reply-specific JS styling
+    replyBox.style.marginTop = "1rem";
+    replyBox.style.padding = "0.75rem";
+    replyBox.style.fontSize = "0.85rem";
+    replyBox.style.background = "transparent";
+    replyBox.style.borderRadius = "8px";
+    replyBox.style.borderLeft = "4px solid var(--color-5)";
+    
+    container.appendChild(replyBox);
+  }
+
+  // 5. Heart Icon Position
   if (liked) {
     const heart = document.createElement("img");
-    heart.src = "heart.svg"; // path to your heart SVG
+    heart.src = "heart.svg"; 
     heart.style.position = "absolute";
-    heart.style.top = "-4px";     
-    heart.style.right = "-10px";   
-    heart.style.width = "30px";    
-    heart.style.height = "30px";   
-    heart.style.cursor = "pointer";
-    heart.style.pointerEvents = "auto"; 
-    heart.style.zIndex = "10";
-	
-	if (window.innerWidth <= 900) {
-        heart.style.display = "none";
-    }
-	
-    // Create hover bubble
-    const bubble = document.createElement("div");
-    bubble.textContent = "Liked by Zurrabunny!";
-    bubble.style.position = "absolute";
-    bubble.style.bottom = "100%";
-    bubble.style.right = "50%";
-    bubble.style.transform = "translateX(50%)";
-    bubble.style.background = "var(--color-5)";
-    bubble.style.color = "white";
-    bubble.style.padding = "4px 8px";
-    bubble.style.borderRadius = "6px";
-    bubble.style.fontSize = "0.7rem";
-    bubble.style.whiteSpace = "nowrap";
-    bubble.style.pointerEvents = "none";
-    bubble.style.opacity = "0";
-    bubble.style.transition = "opacity 0.2s";
-
-    // Show bubble on hover
-    heart.addEventListener("mouseenter", () => bubble.style.opacity = "1");
-    heart.addEventListener("mouseleave", () => bubble.style.opacity = "0");
-
-    wrapper.appendChild(heart);
-    wrapper.appendChild(bubble);
+    heart.style.top = "-8px";
+    heart.style.right = "-8px";
+    heart.style.width = "32px";
+    heart.style.height = "32px";
+    heart.style.zIndex = "2";
+    if (window.innerWidth <= 900) heart.style.display = "none";
+    container.appendChild(heart);
   }
 
-  gallery.appendChild(wrapper);
-
-  gallery.scrollTop = gallery.scrollHeight;
+  return container;
 }
-
-
-
-// SUBMIT HANDLER
-document.getElementById("text-submit").addEventListener("click", async () => {
-  const name = document.getElementById("username").value.trim();
-  const text = textCanvas.value.trim();
-
-  if (!name) {
-    statusText.textContent = "Please enter your name first.";
-    return;
-  }
-
-  // ❌ Block sending when the name is "ZurraBunny"
-  if (name.toLowerCase() === "zurrabunny") {
-    statusText.textContent = "You cant use my name! >:^";
-    return;
-  }
-
-  if (!text) return;
-
-
-  const timestamp = formatTimestamp();
-  const combined = `${name}: ${text} || ${timestamp}`;
-  statusText.textContent = "Submitting...";
-
-  const formData = new FormData();
-  formData.append(ENTRY_ID, combined);
-
-  try {
-    await fetch(GOOGLE_FORM_URL, { method: "POST", body: formData, mode: "no-cors" });
-    addTextToGallery(name, text, timestamp);
-    textCanvas.value = "";
-    statusText.textContent = "Submitted successfully!";
-  } catch (err) {
-    statusText.textContent = "Error submitting text.";
-  }
-});
 
 async function fetchTexts() {
   try {
@@ -346,8 +256,10 @@ async function fetchTexts() {
     const csvText = await response.text();
     const rows = csvText.split("\n").slice(1);
     gallery.innerHTML = "";
+    
+    let validRowCount = 0;
 
-    rows.forEach(row => {
+    rows.forEach((row) => {
       const columns = row.split(",");
       if (columns.length < 2) return;
 
@@ -355,57 +267,54 @@ async function fetchTexts() {
       if (!raw) return;
 
       let [mainText, timestamp] = raw.split("||");
-      if (!mainText || mainText.trim() === "") return;
-
       const name = mainText.split(":")[0] || "Anonymous";
       const messageText = mainText.split(":").slice(1).join(":").trim();
       if (!messageText) return;
 
       const liked = columns[2] && columns[2].trim().toLowerCase() === "true";
-
-      // Column D → your reply
       const replyText = columns[3] ? columns[3].trim() : "";
 
-      // wrapper for everything (message + reply + divider)
-      const block = document.createElement("div");
+      // Alternating Colors
+      const bgColor = validRowCount % 2 === 0 ? "var(--color-6)" : "var(--color-7, #ffffff)";
+      validRowCount++;
 
-      // message
-      addTextToGallery(name, messageText, timestamp, liked);
-
-      // reply (if exists)
-      if (replyText !== "") {
-        const replyBox = document.createElement("div");
-        replyBox.style.margin = "6px 0 10px 20px";
-        replyBox.style.padding = "10px";
-        replyBox.style.border = "1px solid var(--color-4)";
-        replyBox.style.background = "var(--color-6)";
-        replyBox.style.borderRadius = "6px";
-        replyBox.style.color = "var(--text-dark)";
-        replyBox.textContent = `ZurraBunny replied: ${replyText}`;
-        gallery.appendChild(replyBox);
-      }
-
-      // ✅ divider always goes LAST → right under reply or message
-      const divider = document.createElement("hr");
-      divider.style.border = "0";
-      divider.style.height = "1px";
-      divider.style.background = "var(--color-4)";
-      divider.style.margin = "0.5rem 0";
-
-      gallery.appendChild(divider);
+      const messageEl = createTextElement(name, messageText, timestamp, liked, bgColor, replyText);
+      gallery.appendChild(messageEl);
     });
 
+    document.getElementById("boardCount").textContent = validRowCount;
     gallery.scrollTop = gallery.scrollHeight;
-
   } catch (err) {
-    gallery.textContent = "Failed to load texts.";
+    gallery.textContent = "Unable to load messages.";
   }
 }
 
-document.getElementById("refreshTexts")?.addEventListener("click", () => {
-  fetchTexts(); // reloads messages
+document.getElementById("text-submit").addEventListener("click", async () => {
+  const name = document.getElementById("username").value.trim();
+  const text = textCanvas.value.trim();
+
+  if (!name || name.toLowerCase() === "zurrabunny") {
+    statusText.textContent = !name ? "Name required!" : "Name reserved! >:^";
+    return;
+  }
+  if (!text || text.length > 500) return;
+
+  statusText.textContent = "Sending...";
+  const timestamp = formatTimestamp();
+  const formData = new FormData();
+  formData.append(ENTRY_ID, `${name}: ${text} || ${timestamp}`);
+
+  try {
+    await fetch(GOOGLE_FORM_URL, { method: "POST", body: formData, mode: "no-cors" });
+    textCanvas.value = "";
+    charCounter.textContent = "0 / 500";
+    statusText.textContent = "Sent!";
+    fetchTexts(); 
+  } catch (err) {
+    statusText.textContent = "Error sending.";
+  }
 });
 
-
+document.getElementById("refreshTexts").addEventListener("click", fetchTexts);
 fetchTexts();
 </script>

@@ -329,6 +329,25 @@ tags: ["Process"]
 		<li>added 404 page
 	</ul>
 	
+	<h3>January 16 2026</h3>
+	<ul>
+		<li>made most of the tabs use a wide container :
+			<ul>
+			<li>Study Zone
+			<li>Blogs
+			<li>OC Compendium
+			<li>Visitor's Lounge
+			<li>Contacts
+			</ul>
+		<li>Study Zone Tab :
+			<ul>
+			<li>remade To-Do Layout
+			</ul>
+		<li>Visitor's Lounge Tab :
+			<ul>
+			<li>remade Message Board Layout
+			</ul>
+	</ul>
 	
 </div>
 
