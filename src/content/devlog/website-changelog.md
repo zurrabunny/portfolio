@@ -346,6 +346,15 @@ tags: ["Process"]
 		<li>Visitor's Lounge Tab :
 			<ul>
 			<li>remade Message Board Layout
+			<li>remade Drawing Board Layout
+			<li>added som brushes :
+			<ul>
+				<li>Marker
+				<li>Calligraphy
+				<li>Watercolor
+				<li>Airbrush
+				<li>Eraser
+			</ul>
 			</ul>
 	</ul>
 	
