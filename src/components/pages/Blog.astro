@@ -8,52 +8,49 @@ import ClassSchedule from "./blog_modules/ClassSchedule.astro";
 <main class="content">
   <Container variant="static" class="flowchart-container">
   
-    <!-- Title -->
     <div class="goal-title-line">
       <div class="goal-line"></div>
       <h1 id="goal-title">Study Zone</h1>
       <div class="goal-line"></div>
     </div>
   
-    <!-- TAB BUTTONS -->
     <div class="growth-goal-tab">
       <button class="goal-btn active" data-goal="goal-life-map">Life Map</button>
       <button class="goal-btn" data-goal="goal-to-do">To-Do List</button>
       <button class="goal-btn" data-goal="goal-schedule">Class Schedule</button>
     </div>
   
-    <!-- TAB CONTENT -->
     <div class="goal-content">
       <div id="goal-life-map" class="goal-panel active">
-	  <div class="todo-header">
-	    <h3>Life Map</h3>
-		</div>
-		<p class="goal-description">
-		  This section shows how I plan to grow, the skills I’m building,
-		  challenges I face, and goals I aim to reach. It tracks my progress year by year!! >:D<br>
-		  Click on the nodes to trace their path and view their SMART overview!<br>
-		</p>
+        <div class="todo-header">
+          <h3>Life Map</h3>
+        </div>
+        <p class="goal-description">
+          This section shows how I plan to grow, the skills I’m building,
+          challenges I face, and goals I aim to reach. It tracks my progress year by year!! >:D<br>
+          Click on the nodes to trace their path and view their SMART overview!<br>
+        </p>
         <LifeMap />
       </div>
 
       <div id="goal-to-do" class="goal-panel">
-	    <div class="todo-header">
-		  <h3>To-Do List</h3>
-		  <button id="refreshTodo" class="refresh-btn">Refresh</button>
-		</div>
-	    <p class="goal-description">
-		  This section shows my ongoing art and website tasks and their deadlines!<br>
-		</p>
+        <div class="todo-header">
+          <h3>To-Do List</h3>
+          <button id="refreshTodo" class="refresh-btn">Refresh</button>
+        </div>
+        <p class="goal-description">
+          This section shows my ongoing art and website tasks and their deadlines!<br>
+        </p>
         <ToDos />
       </div>
-	  
-	  <div id="goal-schedule" class="goal-panel">
-	    <div class="todo-header">
-		  <h3>Class Schedule</h3>
-		</div>
-	    <p class="goal-description">
-		  This section shows my schedule! Keep this in mind if you want to contact / meet up with me! :]<br>
-		</p>
+      
+      <div id="goal-schedule" class="goal-panel">
+        <div class="todo-header">
+          <h3>Class Schedule</h3>
+        </div>
+        <p class="goal-description">
+          This section shows my schedule! Keep this in mind if you want to contact / meet up with me! :]<br>
+        </p>
         <ClassSchedule />
       </div>
     </div>
@@ -70,8 +67,10 @@ document.querySelectorAll(".goal-btn").forEach(btn => {
 
     // Set new active
     btn.classList.add("active");
-    const panelId = btn.dataset.goal;
-    document.getElementById(panelId).classList.add("active");
+    const panelId = (btn as HTMLElement).dataset.goal;
+    if (panelId) {
+      document.getElementById(panelId)?.classList.add("active");
+    }
   });
 });
 </script>
@@ -101,7 +100,7 @@ h3 {
   font-size: 1.3rem;
   color: var(--color-2);
   font-weight: 600;
-  line-height: 0; /* <— FIX: aligns it to center */
+  line-height: 0;
 }
 
 
@@ -170,9 +169,28 @@ h3 {
   color: var(--text-dark);
 }
 
-/* ---------- Panels ---------- */
-.goal-content .goal-panel { display: none; }
-.goal-content .goal-panel.active { display: block; }
+/* ---------- Panels (FADE UP LOGIC) ---------- */
+.goal-content .goal-panel { 
+  display: none; 
+  opacity: 0;
+  transform: translateY(1px);
+}
+
+.goal-content .goal-panel.active { 
+  display: block; 
+  animation: fadeUp 0.2s ease-out forwards;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(1px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {

@@ -358,11 +358,22 @@ tags: ["Process"]
 			</ul>
 	</ul>
 	
+	<h3>January 18 2026</h3>
+	<ul>
+		<li>added Silly Button
+		<li>added ADHD
+		<li>Study Zone Tab :
+		<ul>
+			<li>added transitions
+		</ul>
+	</ul>
+	
 </div>
 
 <style>
 .changelog h3 {
   margin-top: 0rem;
+  margin-bottom: 0rem;
   color: var(--color-2);
   font-size: 1rem;
   line-height: 1.4;

@@ -1,0 +1,298 @@
+---
+// Gambling.astro
+---
+
+<button class="slot-toggle" id="slot-toggle" aria-label="Slot Machine">
+  <span class="slot-icon-text">🎰</span>
+  <svg class="icon close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <line x1="18" y1="6" x2="6" y2="18"/>
+    <line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+</button>
+
+<div class="slot-panel" id="slot-panel" hidden>
+  <div class="panel-content">
+    <div class="slot-title">Bubby Slots</div>
+    <div class="divider"></div>
+    
+    <div class="slots-display">
+      <div class="reel" id="reel-1">🐾</div>
+      <div class="reel" id="reel-2">🐾</div>
+      <div class="reel" id="reel-3">🐾</div>
+    </div>
+    
+    <div class="divider"></div>
+    <div class="slot-info">
+      <div class="slot-cost-text">Cost: 50 Bubbys</div>
+      <button id="spin-btn" class="bubby-upgrade">SPIN!</button>
+      <div id="slot-status" class="status-message">Good Luck! 🍀</div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Toggle button - Matched to your style */
+.slot-toggle {
+  position: fixed;
+  z-index: 9999;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 12px;
+  background-color: var(--color-8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.slot-toggle:hover {
+  background-color: var(--color-2);
+}
+
+.slot-icon-text {
+  font-size: 1.4rem;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.icon {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  stroke: var(--text-main);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.close {
+  opacity: 0;
+  transform: rotate(-90deg);
+}
+
+/* Panel - Matched to your style */
+.slot-panel {
+  position: fixed;
+  top: 4.4rem;
+  right: 0px;
+  width: 320px;
+  padding: 20px;
+  background: var(--bg-sidebar);
+  color: var(--text-dark);
+  border: 4px solid var(--color-6);
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.3);
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.slot-panel.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.slot-title {
+  font-size: 1.1rem;
+}
+
+/* Slot Specific Styles */
+.slots-display {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.reel {
+  width: 65px;
+  height: 80px;
+  background: var(--color-3);
+  border: 3px solid var(--color-6);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  transition: transform 0.1s;
+}
+
+.spinning {
+  animation: reel-blur 0.1s infinite linear;
+}
+
+@keyframes reel-blur {
+  0% { filter: blur(0); transform: translateY(0); }
+  50% { filter: blur(2px); transform: translateY(2px); }
+  100% { filter: blur(0); transform: translateY(0); }
+}
+
+.status-message {
+  margin-top: 10px;
+  font-weight: bold;
+  min-height: 1.2em;
+}
+
+.divider {
+  margin: 10px 0 8px;
+  height: 1px;
+  background: var(--border-sidebar);
+  opacity: 0.6;
+}
+
+.bubby-upgrade {
+  margin-top: 10px;
+  padding: 8px 12px;
+  width: 100%;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background: var(--color-3);
+  color: var(--text-main);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.05s ease;
+}
+
+.bubby-upgrade:hover:not(:disabled) {
+  background: var(--color-1);
+}
+
+.bubby-upgrade:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .slot-toggle, .slot-panel { display: none !important; }
+}
+</style>
+
+<script type="module" client:load>
+const toggle = document.getElementById("slot-toggle");
+const panel = document.getElementById("slot-panel");
+const spinBtn = document.getElementById("spin-btn");
+const status = document.getElementById("slot-status");
+const closeIcon = toggle.querySelector(".close");
+const slotIcon = toggle.querySelector(".slot-icon-text");
+const reels = [
+  document.getElementById("reel-1"),
+  document.getElementById("reel-2"),
+  document.getElementById("reel-3")
+];
+
+const icons = ["🐾", "🌻", "🦴", "✨", "🍒", "💎"];
+let open = false;
+let isSpinning = false;
+let reelIntervals = [null, null, null]; // To track the erratic switching
+
+function syncUI() {
+  if (open) {
+    panel.hidden = false;
+    requestAnimationFrame(() => panel.classList.add("show"));
+  } else {
+    panel.classList.remove("show");
+    setTimeout(() => { if (!open) panel.hidden = true; }, 300);
+  }
+  
+  slotIcon.style.opacity = open ? "0" : "1";
+  closeIcon.style.opacity = open ? "1" : "0";
+  slotIcon.style.transform = open ? "scale(0) rotate(90deg)" : "scale(1) rotate(0deg)";
+  closeIcon.style.transform = open ? "rotate(0deg)" : "rotate(-90deg)";
+}
+
+toggle.addEventListener("click", () => {
+  open = !open;
+  syncUI();
+});
+
+// Sound helper for symbols
+function playBoop() {
+  const audio = new Audio("./bubby/bubbyboop.ogg");
+  audio.volume = 0.4; // Lowered slightly so it's not overwhelming during fast spins
+  audio.play().catch(() => {}); // Catch prevents errors if browser blocks audio
+}
+
+spinBtn.addEventListener("click", () => {
+  if (isSpinning) return;
+  
+  let cookies = Number(localStorage.getItem("cookies") || 0);
+  
+  if (cookies < 50) {
+    status.textContent = "Need 50 Bubbys! 😿";
+    return;
+  }
+
+  cookies -= 50;
+  updateGlobalCurrency(cookies);
+  
+  isSpinning = true;
+  spinBtn.disabled = true;
+  status.textContent = "Spinning...";
+  
+  reels.forEach((r, i) => {
+    // Erratic icon switching
+    setTimeout(() => {
+      r.classList.add("spinning");
+      reelIntervals[i] = setInterval(() => {
+        const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+        r.textContent = randomIcon;
+        playBoop();
+      }, 70 + (Math.random() * 50)); // Randomize speed slightly for errant feel
+    }, i * 150);
+  });
+
+  setTimeout(stopReels, 2000);
+});
+
+function stopReels() {
+  const results = [];
+  reels.forEach((r, i) => {
+    setTimeout(() => {
+      // Clear the erratic interval
+      clearInterval(reelIntervals[i]);
+      r.classList.remove("spinning");
+      
+      // Select final result
+      const res = icons[Math.floor(Math.random() * icons.length)];
+      r.textContent = res;
+      results.push(res);
+      
+      // Play final "thud" boop
+      playBoop();
+      
+      if (results.length === 3) checkWin(results);
+    }, i * 500); // Staggered stopping
+  });
+}
+
+function checkWin(res) {
+  isSpinning = false;
+  spinBtn.disabled = false;
+  let prize = 0;
+
+  if (res[0] === res[1] && res[1] === res[2]) {
+    prize = 500;
+    status.textContent = "JACKPOT! +500 🌟";
+  } else if (res[0] === res[1] || res[1] === res[2] || res[0] === res[2]) {
+    prize = 75;
+    status.textContent = "Winner! +75 ✨";
+  } else {
+    status.textContent = "Try again! 🦴";
+  }
+
+  if (prize > 0) {
+    let cookies = Number(localStorage.getItem("cookies") || 0);
+    updateGlobalCurrency(cookies + prize);
+  }
+}
+
+function updateGlobalCurrency(newVal) {
+  localStorage.setItem("cookies", newVal);
+  const countEl = document.getElementById("cookie-count");
+  if (countEl) countEl.textContent = newVal;
+}
+</script>

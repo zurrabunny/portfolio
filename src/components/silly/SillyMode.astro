@@ -1,0 +1,100 @@
+---
+import BubbyClicker from './BubbyClicker.astro';
+import Gambling from './Gambling.astro';
+import ADHD from './ADHD.astro';
+---
+
+<div class="menu-container">
+  <button id="menuToggle" class="menu-main-btn" title="Toggle Menu">
+    <span class="toggle-icon">:3</span>
+  </button>
+
+  <div id="buttonArray" class="button-array">
+    <div class="menu-child-wrapper" style="--i:1">
+       <ADHD />
+    </div>
+    <div class="menu-child-wrapper" style="--i:3">
+       <BubbyClicker />
+    </div>
+  </div>
+</div>
+
+<style>
+  .menu-container {
+    position: fixed;
+    top: 16px;
+    right: 70px; /* Aligned with the main button */
+    z-index: 9999;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .menu-main-btn {
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 12px;
+    background-color: var(--color-8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+  }
+
+  .menu-main-btn.open {
+    background: var(--color-9);
+    border: 2px solid var(--color-2);
+    transform: rotate(90deg);
+  }
+
+  .toggle-icon {
+    font-size: 1.8rem;
+    color: var(--text-dark);
+  }
+
+  .button-array {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 10px;
+    pointer-events: none;
+  }
+
+  .button-array.active {
+    pointer-events: auto;
+  }
+
+  .menu-child-wrapper {
+    width: 44px;
+    height: 44px;
+    opacity: 0;
+    transform: translateX(20px) scale(0.8);
+    transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    transition-delay: calc(var(--i) * 0.05s);
+  }
+
+  .button-array.active .menu-child-wrapper {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+
+  /* IMPORTANT: Override the fixed positioning inside your components */
+  :global(.cookie-toggle) {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+  }
+</style>
+
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const buttonArray = document.getElementById('buttonArray');
+
+  menuToggle.addEventListener('click', () => {
+    const isOpen = buttonArray.classList.toggle('active');
+    menuToggle.classList.toggle('open');
+  });
+</script>
