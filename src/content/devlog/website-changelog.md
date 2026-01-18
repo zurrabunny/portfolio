@@ -372,6 +372,7 @@ tags: ["Process"]
 			<li>New Style
 			<li>A Pause Button
 		</ul>
+	<li> redesigned Contacts Tab (made it look like a business card)
 	</ul>
 	
 </div>
