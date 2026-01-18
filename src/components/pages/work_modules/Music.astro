@@ -577,10 +577,5 @@ const musicItems = [
     });
 
     npContainer.addEventListener("click", handleScrub);
-
-    sidebarCP?.addEventListener("click", () => {
-      window.dispatchEvent(new CustomEvent("switchContent", { detail: { target: "work" } }));
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
   });
 </script>

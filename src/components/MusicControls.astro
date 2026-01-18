@@ -28,10 +28,16 @@
   <div class="visualizer-container">
     <img src="tuneup.gif" alt="visualizer" class="music-pic" id="music-gif" />
   </div>
+  
   <div class="track-meta">
     <span class="status-label">NOW PLAYING</span>
     <p class="track-info" id="track-name">Nothing</p>
   </div>
+
+  <button id="global-pause-btn" class="pause-btn" title="Toggle Playback">
+    <svg id="pause-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    <svg id="play-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="display:none;"><path d="M8 5v14l11-7z"/></svg>
+  </button>
 </div>
 
 <script>
@@ -41,7 +47,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const volSlider = document.getElementById('volume-slider');
   const trackDisplay = document.getElementById('track-display');
   const trackName = document.getElementById('track-name');
-  const musicGif = document.getElementById('music-gif');
+  const musicGif = document.getElementById('music-gif'); // This is your "currently-playing" gif
+  const pauseBtn = document.getElementById('global-pause-btn');
+  const pauseIcon = document.getElementById('pause-icon');
+  const playIcon = document.getElementById('play-icon');
 
   let currentSpeed = 1.0;
   let audioCtx;
@@ -50,13 +59,28 @@ document.addEventListener('DOMContentLoaded', () => {
   let animationId;
   const sourceMap = new WeakMap();
   let currentScale = 2;
+  let activeAudio = null;
+
+  /* ---------------- SIDEBAR CONTENT SWITCHER ---------------- */
+  // Applied specifically to the musicGif element
+  musicGif?.addEventListener("click", () => {
+    window.dispatchEvent(new CustomEvent("switchContent", {
+      detail: {
+        target: "work"
+      }
+    }));
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
 
   /* ---------------- SPEED UI ---------------- */
 
   function updateSpeedButtonStyle(selectedBtn) {
     document.querySelectorAll('.speed-opt').forEach(btn => {
       btn.style.background = 'transparent';
-      btn.style.color = 'var(--text-main)';
+      btn.style.color = '#ffffff';
       btn.style.fontWeight = 'normal';
       btn.style.boxShadow = 'none';
     });
@@ -70,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function initAudioContext(audio) {
     if (!audioCtx) {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      audioCtx = new(window.AudioContext || window.webkitAudioContext)();
       analyser = audioCtx.createAnalyser();
       analyser.fftSize = 256;
       dataArray = new Uint8Array(analyser.frequencyBinCount);
@@ -93,58 +117,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------------- TRACK DISPLAY ---------------- */
 
-function syncTrackDisplay(audio) {
-  if (!trackDisplay || !trackName || !audio) return;
+  function syncTrackDisplay(audio) {
+    if (!trackDisplay || !trackName || !audio) return;
+    activeAudio = audio;
+    trackDisplay.classList.add('active');
 
-  trackDisplay.classList.add('active');
-
-  function updateText() {
-    const title = audio.title?.trim();
-
-    // ✅ DO NOT overwrite a valid title
-    if (title) {
-      trackName.innerText = title;
-      return;
+    function updateText() {
+      const title = audio.title?.trim();
+      if (title) {
+        trackName.innerText = title;
+        return;
+      }
+      if (!trackName.innerText || trackName.innerText === 'Unknown Track') {
+        trackName.innerText = audio.readyState < HTMLMediaElement.HAVE_METADATA ? 'Loading Metadata...' : 'Unknown Track';
+      }
     }
 
-    // Only show fallback if nothing is set yet
-    if (!trackName.innerText || trackName.innerText === 'Unknown Track') {
-      trackName.innerText =
-        audio.readyState < HTMLMediaElement.HAVE_METADATA
-          ? 'Loading Metadata...'
-          : 'Unknown Track';
-    }
+    updateText();
+    audio.addEventListener('loadedmetadata', updateText);
   }
-
-  updateText();
-  audio.addEventListener('loadedmetadata', updateText);
-}
-
 
   /* ---------------- VISUALIZER ---------------- */
 
   function renderVisuals() {
     if (!analyser) return;
-
     analyser.getByteFrequencyData(dataArray);
-
     let sum = 0;
     for (let i = 0; i < dataArray.length; i++) {
       sum += dataArray[i] * dataArray[i];
     }
-
     const loudness = Math.sqrt(sum / dataArray.length);
-
     if (loudness > 0) {
       currentScale = 1 + (loudness / 300) * 0.85;
     } else {
       currentScale += (1 - currentScale) * 0.5;
     }
-
     if (musicGif) {
       musicGif.style.transform = `scale(${currentScale})`;
     }
-
     animationId = requestAnimationFrame(renderVisuals);
   }
 
@@ -156,51 +166,47 @@ function syncTrackDisplay(audio) {
     audio.volume = parseFloat(volSlider.value);
   }
 
-  /* ---------------- 🔥 SINGLE-CLICK FIX ---------------- */
+  /* ---------------- PLAY / PAUSE LOGIC ---------------- */
 
-  document.addEventListener(
-    'pointerdown',
-    (e) => {
-      const audio = e.target.closest?.('audio');
-      if (!audio) return;
+  pauseBtn?.addEventListener('click', () => {
+    if (!activeAudio) return;
+    if (activeAudio.paused) {
+      activeAudio.play();
+    } else {
+      activeAudio.pause();
+    }
+  });
 
-      // Force UI immediately on first click
-      syncTrackDisplay(audio);
-    },
-    true
-  );
+  document.addEventListener('pointerdown', (e) => {
+    const audio = e.target.closest?.('audio');
+    if (audio) syncTrackDisplay(audio);
+  }, true);
 
-  /* ---------------- PLAY / PAUSE ---------------- */
+  document.addEventListener('play', (e) => {
+    const audio = e.target;
+    if (audio.tagName !== 'AUDIO') return;
+    activeAudio = audio;
+    pauseIcon.style.display = 'block';
+    playIcon.style.display = 'none';
+    initAudioContext(audio);
+    syncTrackDisplay(audio);
+    if (animationId) cancelAnimationFrame(animationId);
+    renderVisuals();
+  }, true);
 
-  document.addEventListener(
-    'play',
-    (e) => {
-      const audio = e.target;
-      if (audio.tagName !== 'AUDIO') return;
-
-      initAudioContext(audio);
-      syncTrackDisplay(audio);
-
-      if (animationId) cancelAnimationFrame(animationId);
-      renderVisuals();
-    },
-    true
-  );
-
-  document.addEventListener(
-    'pause',
-    () => {
+  document.addEventListener('pause', (e) => {
+    if (e.target === activeAudio) {
+      pauseIcon.style.display = 'none';
+      playIcon.style.display = 'block';
       cancelAnimationFrame(animationId);
       if (musicGif) musicGif.style.transform = 'scale(1)';
-    },
-    true
-  );
+    }
+  }, true);
 
-  /* ---------------- SPEED CONTROLS ---------------- */
+  /* ---------------- SPEED & VOLUME ---------------- */
 
   document.querySelectorAll('.speed-opt').forEach(opt => {
     if (opt.dataset.speed === '1.0') updateSpeedButtonStyle(opt);
-
     opt.addEventListener('click', () => {
       currentSpeed = parseFloat(opt.dataset.speed || '1.0');
       updateSpeedButtonStyle(opt);
@@ -217,24 +223,21 @@ function syncTrackDisplay(audio) {
     speedMenu?.classList.remove('show');
   });
 
-  /* ---------------- VOLUME ---------------- */
-
   volSlider?.addEventListener('input', () => {
     document.querySelectorAll('audio').forEach(audio => {
       audio.volume = parseFloat(volSlider.value);
     });
   });
 
-  /* ---------------- AUTO APPLY ---------------- */
-
   const observer = new MutationObserver(() => {
     document.querySelectorAll('audio').forEach(applyAudioSettings);
   });
-
-  observer.observe(document.body, { childList: true, subtree: true });
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
 });
 </script>
-
 
 <style>
   .volume-container { position: fixed; top: 70px; right: 17px; z-index: 1000; }
@@ -259,17 +262,27 @@ function syncTrackDisplay(audio) {
   #volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: var(--color-6); border-radius: 50%; border: 2px solid var(--color-1); }
 
   .currently-playing {
-    position: fixed; bottom: 20px; right: 145px; background: var(--color-8); backdrop-filter: blur(8px);
+    position: fixed; bottom: 20px; right: 190px; background: var(--color-8); backdrop-filter: blur(8px);
     padding: 10px 15px; border-radius: 12px; display: flex; align-items: center; gap: 12px;
-    min-width: 220px; max-width: 320px; border: 1px solid var(--color-4); opacity: 0;
+    width: 320px; border: 1px solid var(--color-4); opacity: 0;
     transform: translateX(120%); transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.8s ease; z-index: 999;
   }
   .currently-playing.active { transform: translateX(50%); opacity: 1; }
-  .visualizer-container { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .visualizer-container { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .music-pic { width: 100%; height: 100%; object-fit: contain; filter: brightness(var(--invert)); will-change: transform; transition: transform 0.05s ease-out; }
-  .track-meta { text-align: left; overflow: hidden; }
-  .status-label { display: block; font-size: 11px; font-weight: 900; letter-spacing: 1.5px; color: var(--color-1); margin-bottom: 2px; }
+  
+  /* Text aligns to the left and grows to fill space */
+  .track-meta { flex-grow: 1; text-align: left; overflow: hidden; min-width: 0; }
+  .status-label { display: block; font-size: 10px; font-weight: 900; letter-spacing: 1.5px; color: var(--color-1); margin-bottom: 2px; }
   .track-info { font-weight: 600; font-size: 11px; color: var(--text-main); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* Pause Button Fixed to the Right */
+  .pause-btn {
+    flex-shrink: 0; background: var(--color-4); border: 1px solid var(--color-4); color: #ffffff;
+    width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s ease;
+  }
+  .pause-btn:hover { background: var(--color-4); }
 
   @media (max-width: 900px) { .currently-playing { display: none; } }
 </style>

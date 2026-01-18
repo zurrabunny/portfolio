@@ -366,7 +366,12 @@ tags: ["Process"]
 		<ul>
 			<li>added transitions
 		</ul>
-		<li>reworked Music Widget (it reacts to loudness now <:])
+		<li>reworked Music Widget
+		<ul>
+			<li>Reactive Audio Bopping !!!
+			<li>New Style
+			<li>A Pause Button
+		</ul>
 	</ul>
 	
 </div>
