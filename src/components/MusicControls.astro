@@ -6,7 +6,7 @@
   <div class="volume-control" data-tab="Music">
     <div class="volume-inner-layout">
       <div class="control-group">
-        <label>VOL</label>
+        <label class="vol-label">VOL</label>
         <input id="volume-slider" type="range" min="0" max="1" step="0.01" value="1" orient="vertical">
       </div>
       
@@ -18,200 +18,258 @@
           <button class="speed-opt" data-speed="1.1">1.1x</button>
           <button class="speed-opt" data-speed="1.25">1.25x</button>
         </div>
-        <button id="speed-toggle" class="control-btn" title="nightcore mode 1!1!!!! o-o">SPD</button>
+        <button id="speed-toggle" class="control-btn" title="nightcore mode">SPD</button>
       </div>
     </div>
   </div>
 </div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const speedBtn = document.getElementById('speed-toggle');
-    const speedMenu = document.getElementById('speed-menu');
-    const volSlider = document.getElementById('volume-slider') as HTMLInputElement;
-    let currentSpeed = 1.0;
+<div class="currently-playing" id="track-display">
+  <div class="visualizer-container">
+    <img src="tuneup.gif" alt="visualizer" class="music-pic" id="music-gif" />
+  </div>
+  <div class="track-meta">
+    <span class="status-label">NOW PLAYING</span>
+    <p class="track-info" id="track-name">Nothing</p>
+  </div>
+</div>
 
-    function applyAudioSettings(audio) {
-      audio.preservesPitch = (currentSpeed === 1.0); 
-      audio.playbackRate = currentSpeed;
-      audio.volume = parseFloat(volSlider.value);
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const speedBtn = document.getElementById('speed-toggle');
+  const speedMenu = document.getElementById('speed-menu');
+  const volSlider = document.getElementById('volume-slider');
+  const trackDisplay = document.getElementById('track-display');
+  const trackName = document.getElementById('track-name');
+  const musicGif = document.getElementById('music-gif');
+
+  let currentSpeed = 1.0;
+  let audioCtx;
+  let analyser;
+  let dataArray;
+  let animationId;
+  const sourceMap = new WeakMap();
+  let currentScale = 2;
+
+  /* ---------------- SPEED UI ---------------- */
+
+  function updateSpeedButtonStyle(selectedBtn) {
+    document.querySelectorAll('.speed-opt').forEach(btn => {
+      btn.style.background = 'transparent';
+      btn.style.color = 'var(--text-main)';
+      btn.style.fontWeight = 'normal';
+      btn.style.boxShadow = 'none';
+    });
+    selectedBtn.style.background = 'var(--color-1)';
+    selectedBtn.style.color = '#fff';
+    selectedBtn.style.fontWeight = 'bold';
+    selectedBtn.style.borderRadius = '4px';
+  }
+
+  /* ---------------- AUDIO CONTEXT ---------------- */
+
+  function initAudioContext(audio) {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 256;
+      dataArray = new Uint8Array(analyser.frequencyBinCount);
     }
 
-    speedBtn?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      speedMenu?.classList.toggle('show');
-    });
+    if (audioCtx.state === 'suspended') audioCtx.resume();
 
-    document.querySelectorAll('.speed-opt').forEach(opt => {
-      opt.addEventListener('click', (e) => {
-        const target = e.target as HTMLElement;
-        currentSpeed = parseFloat(target.dataset.speed || "1.0");
-        document.querySelectorAll('.speed-opt').forEach(b => b.classList.remove('active'));
-        target.classList.add('active');
-        speedBtn?.classList.toggle('active', currentSpeed !== 1.0);
-        document.querySelectorAll('audio').forEach(audio => applyAudioSettings(audio));
-        speedMenu?.classList.remove('show');
-      });
-    });
+    if (!sourceMap.has(audio)) {
+      try {
+        audio.crossOrigin ||= 'anonymous';
+        const source = audioCtx.createMediaElementSource(audio);
+        source.connect(analyser);
+        analyser.connect(audioCtx.destination);
+        sourceMap.set(audio, source);
+      } catch {
+        console.warn('Visualizer connection failed.');
+      }
+    }
+  }
 
-    document.addEventListener('click', () => speedMenu?.classList.remove('show'));
+  /* ---------------- TRACK DISPLAY ---------------- */
 
-    volSlider?.addEventListener('input', () => {
-      const vol = parseFloat(volSlider.value);
-      document.querySelectorAll('audio').forEach(audio => audio.volume = vol);
-    });
+function syncTrackDisplay(audio) {
+  if (!trackDisplay || !trackName || !audio) return;
 
-    const observer = new MutationObserver(() => {
-      document.querySelectorAll('audio').forEach(audio => applyAudioSettings(audio));
+  trackDisplay.classList.add('active');
+
+  function updateText() {
+    const title = audio.title?.trim();
+
+    // ✅ DO NOT overwrite a valid title
+    if (title) {
+      trackName.innerText = title;
+      return;
+    }
+
+    // Only show fallback if nothing is set yet
+    if (!trackName.innerText || trackName.innerText === 'Unknown Track') {
+      trackName.innerText =
+        audio.readyState < HTMLMediaElement.HAVE_METADATA
+          ? 'Loading Metadata...'
+          : 'Unknown Track';
+    }
+  }
+
+  updateText();
+  audio.addEventListener('loadedmetadata', updateText);
+}
+
+
+  /* ---------------- VISUALIZER ---------------- */
+
+  function renderVisuals() {
+    if (!analyser) return;
+
+    analyser.getByteFrequencyData(dataArray);
+
+    let sum = 0;
+    for (let i = 0; i < dataArray.length; i++) {
+      sum += dataArray[i] * dataArray[i];
+    }
+
+    const loudness = Math.sqrt(sum / dataArray.length);
+
+    if (loudness > 0) {
+      currentScale = 1 + (loudness / 300) * 0.85;
+    } else {
+      currentScale += (1 - currentScale) * 0.5;
+    }
+
+    if (musicGif) {
+      musicGif.style.transform = `scale(${currentScale})`;
+    }
+
+    animationId = requestAnimationFrame(renderVisuals);
+  }
+
+  /* ---------------- AUDIO SETTINGS ---------------- */
+
+  function applyAudioSettings(audio) {
+    audio.preservesPitch = currentSpeed === 1.0;
+    audio.playbackRate = currentSpeed;
+    audio.volume = parseFloat(volSlider.value);
+  }
+
+  /* ---------------- 🔥 SINGLE-CLICK FIX ---------------- */
+
+  document.addEventListener(
+    'pointerdown',
+    (e) => {
+      const audio = e.target.closest?.('audio');
+      if (!audio) return;
+
+      // Force UI immediately on first click
+      syncTrackDisplay(audio);
+    },
+    true
+  );
+
+  /* ---------------- PLAY / PAUSE ---------------- */
+
+  document.addEventListener(
+    'play',
+    (e) => {
+      const audio = e.target;
+      if (audio.tagName !== 'AUDIO') return;
+
+      initAudioContext(audio);
+      syncTrackDisplay(audio);
+
+      if (animationId) cancelAnimationFrame(animationId);
+      renderVisuals();
+    },
+    true
+  );
+
+  document.addEventListener(
+    'pause',
+    () => {
+      cancelAnimationFrame(animationId);
+      if (musicGif) musicGif.style.transform = 'scale(1)';
+    },
+    true
+  );
+
+  /* ---------------- SPEED CONTROLS ---------------- */
+
+  document.querySelectorAll('.speed-opt').forEach(opt => {
+    if (opt.dataset.speed === '1.0') updateSpeedButtonStyle(opt);
+
+    opt.addEventListener('click', () => {
+      currentSpeed = parseFloat(opt.dataset.speed || '1.0');
+      updateSpeedButtonStyle(opt);
+      document.querySelectorAll('audio').forEach(applyAudioSettings);
     });
-    observer.observe(document.body, { childList: true, subtree: true });
   });
+
+  speedBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    speedMenu?.classList.toggle('show');
+  });
+
+  document.addEventListener('click', () => {
+    speedMenu?.classList.remove('show');
+  });
+
+  /* ---------------- VOLUME ---------------- */
+
+  volSlider?.addEventListener('input', () => {
+    document.querySelectorAll('audio').forEach(audio => {
+      audio.volume = parseFloat(volSlider.value);
+    });
+  });
+
+  /* ---------------- AUTO APPLY ---------------- */
+
+  const observer = new MutationObserver(() => {
+    document.querySelectorAll('audio').forEach(applyAudioSettings);
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+});
 </script>
 
+
 <style>
-  .volume-container {
-    position: fixed;
-    top: 70px;
-    right: 17px;
-    z-index: 1000;
-  }
-
+  .volume-container { position: fixed; top: 70px; right: 17px; z-index: 1000; }
   .volume-control {
-    width: 35px;
-    height: 220px; /* Increased to fit both buttons comfortably */
-    transform: translateX(2px);
-    background: var(--color-8);
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 15px 5px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
+    width: 35px; height: 220px; background: var(--color-8); border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); display: flex; flex-direction: column;
+    align-items: center; padding: 15px 5px; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
   }
-
-  :global(.volume-control.active) {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .volume-inner-layout {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    height: 100%;
-  }
-
-  .control-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    position: relative;
-  }
-
-  .control-group label {
-    font-size: 8px;
-    font-weight: bold;
-    color: var(--text-main);
-    opacity: 0.7;
-    margin-bottom: 1rem;
-  }
-
-  /* Shared Button Style (Matches your original Speed Button) */
-  .control-btn {
-    background: var(--color-7);
-    color: var(--text-main);
-    border: 2px solid var(--color-4);
-    border-radius: 6px;
-    font-size: 8px;
-    width: 32px;
-    height: 24px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-top: 4px; /* Space between buttons */
-  }
-
-  .control-btn:hover {
-    background: var(--color-3);
-  }
-
-  .control-btn.active {
-    background: var(--color-1);
-    color: var(--text-main);
-    box-shadow: 0 0 8px var(--color-6);
-  }
-
-  /* --- SPEED MENU STYLES --- */
+  :global(.volume-control.active) { opacity: 1; pointer-events: auto; }
+  .volume-inner-layout { display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; width: 100%; }
+  .control-group { display: flex; flex-direction: column; align-items: center; width: 100%; }
+  .vol-label { font-size: 8px; font-weight: bold; color: var(--text-main); opacity: 0.7; margin-bottom: 20px; text-align: center; }
+  .control-btn { background: var(--color-7); color: var(--text-main); border: 2px solid var(--color-4); border-radius: 6px; font-size: 8px; width: 32px; height: 24px; cursor: pointer; }
   .speed-menu {
-    position: absolute;
-    bottom: 35px; /* Adjusted to pop up above the SPD button */
-    right: 45px;
-    background: var(--color-8);
-    border: 2px solid var(--color-4);
-    border-radius: 8px;
-    padding: 5px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateX(10px);
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: -4px 4px 12px rgba(0, 0, 0, 0.3);
+    position: absolute; bottom: 35px; right: 55px; background: var(--color-8); border: 2px solid var(--color-4);
+    border-radius: 8px; padding: 5px; display: flex; flex-direction: column; gap: 4px; opacity: 0; pointer-events: none;
+    transform: translateX(10px); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
+  .speed-menu.show { opacity: 1; pointer-events: auto; transform: translateX(0); }
+  .speed-opt { background: transparent; border: none; color: var(--text-main); font-size: 10px; padding: 4px 8px; cursor: pointer; transition: all 0.2s ease; }
+  #volume-slider { -webkit-appearance: none; width: 150px; height: 8px; transform: rotate(-90deg); background: linear-gradient(90deg, var(--color-3), var(--color-1)); border-radius: 4px; cursor: pointer; margin: 65px 0; }
+  #volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: var(--color-6); border-radius: 50%; border: 2px solid var(--color-1); }
 
-  .speed-menu.show {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateX(0);
+  .currently-playing {
+    position: fixed; bottom: 20px; right: 145px; background: var(--color-8); backdrop-filter: blur(8px);
+    padding: 10px 15px; border-radius: 12px; display: flex; align-items: center; gap: 12px;
+    min-width: 220px; max-width: 320px; border: 1px solid var(--color-4); opacity: 0;
+    transform: translateX(120%); transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.8s ease; z-index: 999;
   }
+  .currently-playing.active { transform: translateX(50%); opacity: 1; }
+  .visualizer-container { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .music-pic { width: 100%; height: 100%; object-fit: contain; filter: brightness(var(--invert)); will-change: transform; transition: transform 0.05s ease-out; }
+  .track-meta { text-align: left; overflow: hidden; }
+  .status-label { display: block; font-size: 11px; font-weight: 900; letter-spacing: 1.5px; color: var(--color-1); margin-bottom: 2px; }
+  .track-info { font-weight: 600; font-size: 11px; color: var(--text-main); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-  .speed-opt {
-    background: transparent;
-    border: none;
-    color: var(--text-main);
-    font-size: 10px;
-    padding: 4px 8px;
-    cursor: pointer;
-    border-radius: 4px;
-    text-align: center;
-    white-space: nowrap;
-    transition: background 0.2s;
-  }
-
-  .speed-opt:hover {
-    background: var(--color-3);
-  }
-
-  .speed-opt.active {
-    background: var(--color-6);
-    color: var(--color-2);
-    font-weight: bold;
-  }
-
-  /* --- VOLUME SLIDER --- */
-  #volume-slider {
-    -webkit-appearance: none;
-    width: 150px;
-    height: 8px;
-    transform: rotate(-90deg) translateY(1px) translateX(-20px);
-    transform-origin: 50% 50%;
-    background: linear-gradient(90deg, var(--color-3), var(--color-1));
-    border-radius: 4px;
-    cursor: pointer;
-    margin: 45px 0;
-  }
-
-  #volume-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
-    background: var(--color-6);
-    border-radius: 50%;
-    border: 3px solid var(--color-1);
-  }
+  @media (max-width: 900px) { .currently-playing { display: none; } }
 </style>

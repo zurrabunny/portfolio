@@ -22,12 +22,6 @@ const { class: extraClass } = Astro.props;
   </nav>
 
   <MusicControls />
-
-  <div class="currently-playing">
-    <img src="tuneup.gif" alt="zurras" class="music-pic" /><br>
-    <strong>Currently Playing:</strong>
-    <p class="track-info">Nothing</p>
-  </div>
 </aside>
 
 <style>
@@ -111,58 +105,8 @@ const { class: extraClass } = Astro.props;
     color: var(--text-main);
   }
 
-  /* ----------- CURRENTLY PLAYING SECTION ----------- */
-  .currently-playing {
-    position: fixed;        
-    bottom: 5px;           
-    right: 90px;           
-    text-align: center;     
-    font-size: 12px;
-    color: var(--text-main);
-    opacity: 0;
-    transform: translateX(150%); 
-    transition: transform 1s ease, opacity 1s ease;
-    z-index: 999;
-    max-width: 160px;         
-    word-break: break-word;    
-    overflow-wrap: anywhere;   
-  }
-
-  .currently-playing.active {
-    transform: translate(50%, 0); 
-    opacity: 1;
-  }
-
-  .currently-playing .track-info {
-    font-weight: 600;
-    margin-top: 5px;
-    font-size: 9px;
-  }
-
-  .music-pic {
-    width: 100px;
-    object-fit: scale-down;
-    margin-bottom: -5px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    filter: brightness(var(--invert));
-    cursor: pointer; 
-  }
-
-  .music-pic.bopping {
-    animation: bop-scale 0.6s infinite ease-in-out;
-  }
-
-  @keyframes bop-scale {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-2px) scale(1); }
-  }
-
   /* ----------- MOBILE RESPONSIVENESS ----------- */
   @media (max-width: 900px) {
-    .currently-playing {
-      display: none;
-    }
-    
     .sidebar {
       position: relative;
       width: 100%;
@@ -185,6 +129,7 @@ const { class: extraClass } = Astro.props;
       margin-bottom: 0;
     }
 
+    /* Hide elements not needed on mobile sidebar */
     .profile-pic, .info, .tabs, .line-separator {
       display: none;
     }

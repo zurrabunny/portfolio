@@ -366,6 +366,7 @@ tags: ["Process"]
 		<ul>
 			<li>added transitions
 		</ul>
+		<li>reworked Music Widget (it reacts to loudness now <:])
 	</ul>
 	
 </div>
