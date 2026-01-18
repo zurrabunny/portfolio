@@ -1,6 +1,5 @@
-<!-- Cookie Toggle -->
 <button class="cookie-toggle" id="fidget-toggle" aria-label="Fidget Toy">
-  <svg class="icon cookie" fill="#FFFFFF" height="150px" width="150px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 485 485" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M382.5,69.429c-7.441,0-14.5,1.646-20.852,4.573c-4.309-23.218-24.7-40.859-49.148-40.859 c-7.68,0-14.958,1.744-21.467,4.852C285.641,16.205,265.932,0,242.5,0c-23.432,0-43.141,16.206-48.533,37.995 c-6.508-3.107-13.787-4.852-21.467-4.852c-27.57,0-50,22.43-50,50v122.222c-6.129-2.686-12.891-4.187-20-4.187 c-27.57,0-50,22.43-50,50V354c0,72.233,58.766,131,131,131h118c72.233,0,131-58.767,131-131V119.429 C432.5,91.858,410.07,69.429,382.5,69.429z M402.5,354c0,55.691-45.309,101-101,101h-118c-55.691,0-101-45.309-101-101V251.178 c0-11.028,8.972-20,20-20s20,8.972,20,20v80h30V83.143c0-11.028,8.972-20,20-20s20,8.972,20,20v158.035h30V50 c0-11.028,8.972-20,20-20c11.028,0,20,8.972,20,20v191.178h30V83.143c0-11.028,8.972-20,20-20s20,8.972,20,20v158.035h30v-121.75 c0-11.028,8.972-20,20-20s20,8.972,20,20V354z"></path> </g> </g></svg>
+  <svg class="icon cookie" fill="#FFFFFF" height="150px" width="150px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 485 485" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M382.5,69.429c-7.441,0-14.5,1.646-20.852,4.573c-4.309-23.218-24.7-40.859-49.148-40.859 c-7.68,0-14.958,1.744-21.467,4.852C285.641,16.205,265.932,0,242.5,0c-23.432,0-43.141,16.206-48.533,37.995 c-6.508-3.107-13.787-4.852-21.467-4.852c-27.57,0-50,22.43-50,50v122.222c-6.129-2.686-12.891-4.187-20-4.187 c-27.57,0-50,22.43-50,50V354c0,72.233,58.766,131,131,131h118c72.233,0,131-58.767,131-131V119.429 C432.5,91.858,410.07,69.429,382.5,69.429z M402.5,354c0,55.691-45.309,101-101,101h-118c-55.691,0-101-45.309-101-101V251.178 c0-11.028,8.972-20,20-20s20,8.972,20,20v80h30V83.143c0-11.028,8.972-20,20-20s20,8.972,20,20v158.035h30V50 c0-11.028,20-20,20-20c11.028,0,20,8.972,20,20v191.178h30V83.143c0-11.028,8.972-20,20-20s20,8.972,20,20v158.035h30v-121.75 c0-11.028,20-20,20-20s20,8.972,20,20V354z"></path> </g> </g></svg>
   <svg class="icon close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
     <line x1="18" y1="6" x2="6" y2="18"/>
     <line x1="6" y1="6" x2="18" y2="18"/>
@@ -39,46 +38,41 @@
 </div>
 
 <style>
+  /* Basic smooth transition for the hue shift */
+  html {
+    transition: filter 0.5s ease;
+  }
 
-	.cookie-toggle {
-  position: fixed;
-  z-index: 9999;
-  width: 44px;
-  height: 44px;
-  border: none;
-  border-radius: 12px;
-  background-color: var(--color-8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-.cookie-toggle:hover {
-  background-color: var(--color-2);
-}
+  .cookie-toggle {
+    position: fixed;
+    z-index: 9999;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 12px;
+    background-color: var(--color-8, #333);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    right: 20px;
+  }
+  
+  .cookie-toggle:hover { background-color: var(--color-2, #555); }
 
-.icon {
-  position: absolute;
-  width: 25px;
-  height: 25px;
-  stroke: var(--text-main);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  pointer-events: none;
-}
+  .icon {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    stroke: var(--text-main, #fff);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+  }
 
-/* Nudge cookie slightly lower and right */
-.cookie { 
-  opacity: 1; 
-  filter: brightness(var(--invert));
-}
-
-.close {
-  opacity: 0;
-  transform: rotate(-90deg);
-}
-	
-  /* --- PANEL & SCROLLBAR --- */
+  .cookie { opacity: 1; filter: brightness(var(--invert, 1)); }
+  .close { opacity: 0; transform: rotate(-90deg); }
+  
   #fidget-panel {
     max-height: 85vh;
     overflow-y: auto;
@@ -86,11 +80,11 @@
     scrollbar-color: var(--color-1) var(--bg-sidebar);
     position: fixed;
     top: 70px;
-    right: 0px; 
+    right: 20px; 
     width: 260px;
     background: var(--bg-sidebar, #1a1a1a) !important; 
     opacity: 0;
-    border: 4px solid var(--color-6);
+    border: 4px solid var(--color-6, #444);
     border-radius: 14px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     z-index: 10000;
@@ -100,43 +94,27 @@
   }
 
   #fidget-panel::-webkit-scrollbar { width: 6px; }
-  #fidget-panel::-webkit-scrollbar-thumb { background-color: var(--color-1); border-radius: 10px; }
-
+  #fidget-panel::-webkit-scrollbar-thumb { background-color: var(--color-1, #666); border-radius: 10px; }
   .fidget-solid-wrapper { padding: 20px; width: 100%; box-sizing: border-box; }
   #fidget-panel.show { opacity: 1 !important; transform: translateY(0); pointer-events: auto; }
-
-  /* --- GRID & KEYS --- */
   .fidget-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 10px 0; }
   .fidget-key {
-    background: var(--color-7); border: 3px solid var(--color-7); border-bottom-width: 6px;
+    background: var(--color-7, #444); border: 3px solid var(--color-7, #444); border-bottom-width: 6px;
     border-radius: 12px; height: 55px; cursor: pointer; transition: 0.1s ease;
   }
   .fidget-key:active, .fidget-key.kb-pressed {
-    border-bottom-width: 2px; transform: translateY(4px); background: var(--color-1); transition: none !important;
+    border-bottom-width: 2px; transform: translateY(4px); background: var(--color-1, #888); transition: none !important;
   }
-
-  /* --- SLIDER AREA --- */
-  .slider-container {
-    padding: 10px;
-    border-radius: 8px;
-    background: transparent;
-    transition: background 0.2s;
-  }
-  .slider-container:hover { background: var(--color-); }
-  .fidget-slider { flex: 1; accent-color: var(--color-1); cursor: pointer; height: 12px; }
-
-  /* --- OTHERS --- */
-  .fidget-counter-display { font-size: 2rem; font-weight: bold; color: var(--text-main); text-align: center; font-family: monospace; letter-spacing: 2px; }
+  .fidget-slider { flex: 1; accent-color: var(--color-1, #888); cursor: pointer; height: 12px; width: 100%; }
+  .fidget-counter-display { font-size: 2rem; font-weight: bold; color: var(--text-main, #fff); text-align: center; font-family: monospace; letter-spacing: 2px; }
   .fidget-row { display: flex; align-items: center; gap: 10px; }
   .snap-switch { position: relative; width: 44px; height: 24px; }
   .toy-input { opacity: 0; width: 0; height: 0; }
-  .toy-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: var(--color-3); border: 2px solid var(--color-6); border-radius: 20px; transition: 0.2s; }
-  .toy-slider:before { content: ""; position: absolute; height: 16px; width: 16px; top: 2px; left: 2px; background: var(--color-5); border-radius: 50%; transition: 0.2s; }
-  .toy-input:checked + .toy-slider { background: var(--color-2); }
+  .toy-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: var(--color-3, #555); border: 2px solid var(--color-6, #777); border-radius: 20px; transition: 0.2s; }
+  .toy-slider:before { content: ""; position: absolute; height: 16px; width: 16px; top: 2px; left: 2px; background: var(--color-5, #eee); border-radius: 50%; transition: 0.2s; }
+  .toy-input:checked + .toy-slider { background: var(--color-2, #4caf50); }
   .toy-input:checked + .toy-slider:before { transform: translateX(20px); }
-  .divider { margin: 10px 0; height: 2px; background: var(--color-6); opacity: 0.4; }
-  .fidget-icon-text { font-size: 1.4rem; transition: 0.3s; }
-  .icon.close { opacity: 0; position: absolute; transition: 0.3s; pointer-events: none; }
+  .divider { margin: 10px 0; height: 2px; background: var(--color-6, #444); opacity: 0.4; }
 </style>
 
 <script type="module">
@@ -150,24 +128,28 @@
   clickDisplay.textContent = count;
   let isOpen = false;
 
-  // --- AUDIO ---
-  let audioBuffer = null;
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  let snapBuffer = null;
+  let upgradeBuffer = null;
 
-  async function initAudioCache() {
+  async function loadSound(url) {
     try {
-      const response = await fetch('./sounds/snap.ogg', { cache: "reload" });
+      const response = await fetch(url);
       const arrayBuffer = await response.arrayBuffer();
-      audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-    } catch (e) { console.error("Audio fail:", e); }
+      return await audioCtx.decodeAudioData(arrayBuffer);
+    } catch (e) { console.error("Audio fail:", url, e); return null; }
   }
-  initAudioCache();
 
-  function playSnap(pitch = 1) {
-    if (!audioBuffer) return;
+  (async () => {
+    snapBuffer = await loadSound('./sounds/snap.ogg');
+    upgradeBuffer = await loadSound('./bubby/fat.ogg');
+  })();
+
+  function playSound(buffer, pitch = 1) {
+    if (!buffer) return;
     if (audioCtx.state === 'suspended') audioCtx.resume();
     const source = audioCtx.createBufferSource();
-    source.buffer = audioBuffer;
+    source.buffer = buffer;
     source.playbackRate.value = pitch;
     const gainNode = audioCtx.createGain();
     gainNode.gain.value = 0.6; 
@@ -177,42 +159,59 @@
   }
 
   function handleInteraction(pitch) {
+    if (!isOpen) return; // Prevent incrementing when closed
     count++;
     clickDisplay.textContent = count;
     localStorage.setItem("fidgetTotalClicks", count);
-    playSnap(pitch);
+    playSound(snapBuffer, pitch);
   }
 
-  // --- SCROLL WHEEL SLIDER LOGIC ---
-  sliderArea.addEventListener('wheel', (e) => {
-    // Prevent the main website/panel from scrolling
-    e.preventDefault();
+  const konamiCode = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+  let konamiIndex = 0;
 
-    const step = 1;
-    // deltaY is positive when scrolling down, negative when up
-    // We invert it so scrolling UP increases the slider
-    let newValue = parseInt(slider.value) + (e.deltaY > 0 ? -step : step);
-    
-    // Clamp values between min and max
-    newValue = Math.max(slider.min, Math.min(slider.max, newValue));
+  function triggerKonami() {
+    playSound(upgradeBuffer);
+    const randomHue = Math.floor(Math.random() * 360);
+    document.documentElement.style.filter = `hue-rotate(${randomHue}deg)`;
+    clickDisplay.style.color = `hsl(${randomHue}, 70%, 60%)`;
+    setTimeout(() => { clickDisplay.style.color = ""; }, 2000);
+  }
 
-    if (slider.value != newValue) {
-      slider.value = newValue;
-      // Trigger the sound and logic manualy since slider.value change doesn't trigger 'input'
-      playSnap(0.6 + (newValue / 20));
-      lastSliderVal = newValue;
-    }
-  }, { passive: false });
-
-  // --- KEYBOARD & MOUSE ---
   window.addEventListener("keydown", (e) => {
-    if (!isOpen) return;
+    if (!isOpen) {
+        konamiIndex = 0; // Reset sequence if panel is closed
+        return;
+    }
+
+    if (e.key === konamiCode[konamiIndex]) {
+      konamiIndex++;
+      if (konamiIndex === konamiCode.length) {
+        triggerKonami();
+        konamiIndex = 0;
+      }
+    } else {
+      konamiIndex = 0;
+    }
+
     const btn = document.getElementById(`key-${e.key}`);
     if (btn) {
       e.preventDefault();
       if (!btn.classList.contains("kb-pressed")) {
         btn.classList.add("kb-pressed");
         handleInteraction(0.8 + Math.random() * 0.4);
+      }
+    }
+
+    const key = e.key.toLowerCase();
+    const toggleKeys = ['a', 'b', 'c'];
+    if (toggleKeys.includes(key)) {
+      e.preventDefault();
+      const switches = document.querySelectorAll(".toy-input");
+      const targetIndex = toggleKeys.indexOf(key);
+      const targetSwitch = switches[targetIndex];
+      if (targetSwitch) {
+        targetSwitch.checked = !targetSwitch.checked;
+        handleInteraction(targetSwitch.checked ? 1.3 : 0.8);
       }
     }
   });
@@ -235,19 +234,24 @@
     }
   });
 
+  sliderArea.addEventListener('wheel', (e) => {
+    if (!isOpen) return;
+    e.preventDefault();
+    let newValue = parseInt(slider.value) + (e.deltaY > 0 ? -1 : 1);
+    newValue = Math.max(slider.min, Math.min(slider.max, newValue));
+    if (slider.value != newValue) {
+      slider.value = newValue;
+      playSound(snapBuffer, 0.6 + (newValue / 20));
+    }
+  }, { passive: false });
+
   document.querySelectorAll(".fidget-key").forEach(k => {
-    k.onmousedown = () => handleInteraction(0.8 + Math.random() * 0.4);
+    k.onmousedown = () => { if(isOpen) handleInteraction(0.8 + Math.random() * 0.4); };
   });
 
-  let lastSliderVal = 10;
-  slider.oninput = (e) => {
-    if(e.target.value !== lastSliderVal) {
-      playSnap(0.6 + (e.target.value / 20));
-      lastSliderVal = e.target.value;
-    }
-  };
+  slider.oninput = (e) => { if(isOpen) playSound(snapBuffer, 0.6 + (e.target.value / 20)); };
 
   document.querySelectorAll(".toy-input").forEach(s => {
-    s.onchange = () => handleInteraction(s.checked ? 1.3 : 0.8);
+    s.onchange = () => { if(isOpen) handleInteraction(s.checked ? 1.3 : 0.8); };
   });
 </script>

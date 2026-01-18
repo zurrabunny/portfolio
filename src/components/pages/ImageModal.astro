@@ -24,10 +24,12 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentIndex = -1;
   let currentGallery = [];
 
+  // Helper to check if modal is actually open
+  const isModalOpen = () => modal.classList.contains("visible");
+
   document.body.appendChild(modal);
 
   function openModal(el) {
-    // get only visible gallery items from the same section
     const section = el.closest(".bento-gallery, .bento-grid");
     currentGallery = Array.from(section.querySelectorAll(".previewable")).filter(i => {
       return i.closest(".bento-item").style.display !== "none";
@@ -37,7 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (index === -1) return;
     currentIndex = index;
 
-    // Immediately stop any playing video
     vidEl.pause();
     vidEl.src = "";
 
@@ -69,22 +70,24 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.addEventListener(
       "transitionend",
       () => {
-        modal.classList.remove("show");
-        modal.setAttribute("aria-hidden", "true");
+        if (!modal.classList.contains("visible")) {
+          modal.classList.remove("show");
+          modal.setAttribute("aria-hidden", "true");
+        }
       },
       { once: true }
     );
   }
 
   function showNext() {
-    if (!currentGallery.length) return;
+    if (!isModalOpen() || !currentGallery.length) return;
     if (currentIndex < currentGallery.length - 1) {
       openModal(currentGallery[currentIndex + 1]);
     }
   }
 
   function showPrev() {
-    if (!currentGallery.length) return;
+    if (!isModalOpen() || !currentGallery.length) return;
     if (currentIndex > 0) {
       openModal(currentGallery[currentIndex - 1]);
     }
@@ -97,10 +100,19 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   overlay.addEventListener("click", closeModal);
-  prevBtn.addEventListener("click", showPrev);
-  nextBtn.addEventListener("click", showNext);
+  prevBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    showPrev();
+  });
+  nextBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    showNext();
+  });
 
   document.addEventListener("keydown", (e) => {
+    // Only respond to keys if the modal is open
+    if (!isModalOpen()) return;
+
     if (e.key === "Escape") closeModal();
     if (e.key === "ArrowRight") showNext();
     if (e.key === "ArrowLeft") showPrev();
