@@ -137,27 +137,41 @@ document.addEventListener('DOMContentLoaded', () => {
     audio.addEventListener('loadedmetadata', updateText);
   }
 
-  /* ---------------- VISUALIZER ---------------- */
+/* ---------------- VISUALIZER (EXAGGERATED) ---------------- */
 
-  function renderVisuals() {
-    if (!analyser) return;
-    analyser.getByteFrequencyData(dataArray);
-    let sum = 0;
-    for (let i = 0; i < dataArray.length; i++) {
-      sum += dataArray[i] * dataArray[i];
-    }
-    const loudness = Math.sqrt(sum / dataArray.length);
-    if (loudness > 0) {
-      currentScale = 1 + (loudness / 300) * 0.85;
-    } else {
-      currentScale += (1 - currentScale) * 0.5;
-    }
-    if (musicGif) {
-      musicGif.style.transform = `scale(${currentScale})`;
-    }
-    animationId = requestAnimationFrame(renderVisuals);
+function renderVisuals() {
+  if (!analyser) return;
+  analyser.getByteFrequencyData(dataArray);
+  
+  let sum = 0;
+  // Focus more on the lower frequencies (bass) for a better "bop"
+  // dataArray.length / 4 usually captures the punchy low-end
+  const sampleCount = dataArray.length / 2; 
+  for (let i = 0; i < sampleCount; i++) {
+    sum += dataArray[i];
+  }
+  
+  const average = sum / sampleCount;
+  // Normalize (0.0 to 1.0) based on typical max volume (255)
+  const normalizedLoudness = average / 128; 
+
+  if (normalizedLoudness > 0.1) {
+    // Math.pow(x, 8) makes high peaks MUCH higher than low valleys
+    // 1.5 is the "strength" of the bop
+    currentScale = 0.9 + (Math.pow(normalizedLoudness, 1.5) * 1.2);
+  } else {
+    // Smoother return to idle
+    currentScale += (1 - currentScale) * 0.3;
   }
 
+  if (musicGif) {
+    // Clamp the scale so it doesn't get TOO big and break the layout
+    const finalScale = Math.min(currentScale, 2.5);
+    musicGif.style.transform = `scale(${finalScale})`;
+  }
+  
+  animationId = requestAnimationFrame(renderVisuals);
+}
   /* ---------------- AUDIO SETTINGS ---------------- */
 
   function applyAudioSettings(audio) {
@@ -262,12 +276,12 @@ document.addEventListener('DOMContentLoaded', () => {
   #volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: var(--color-6); border-radius: 50%; border: 2px solid var(--color-1); }
 
   .currently-playing {
-    position: fixed; bottom: 20px; right: 190px; background: var(--color-8); backdrop-filter: blur(8px);
+    position: fixed; bottom: 20px; right: 70px; background: var(--color-8); backdrop-filter: blur(8px);
     padding: 10px 15px; border-radius: 12px; display: flex; align-items: center; gap: 12px;
     width: 320px; border: 1px solid var(--color-4); opacity: 0;
     transform: translateX(120%); transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.8s ease; z-index: 999;
   }
-  .currently-playing.active { transform: translateX(50%); opacity: 1; }
+  .currently-playing.active { transform: translateX(15%); opacity: 1; }
   .visualizer-container { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .music-pic { width: 100%; height: 100%; object-fit: contain; filter: brightness(var(--invert)); will-change: transform; transition: transform 0.05s ease-out; }
   

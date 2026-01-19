@@ -8,6 +8,21 @@ tags: ["Process"]
 
 <div class="changelog">
     <div class="log-entry">
+        <h3>January 20 2026</h3>
+        <ul>
+			<li>reworked Music Widget
+				<ul>
+					<li>recalibrated Reactive Audio Bopping
+				</ul>
+			<li>Visitor's Lounge Tab :
+                <ul>
+                    <li>remade Message Board Layout</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+	
+	<div class="log-entry">
         <h3>January 19 2026</h3>
         <ul>
             <li>remade Website Changelog Layout
