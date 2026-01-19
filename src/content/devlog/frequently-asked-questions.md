@@ -6,6 +6,8 @@ pinned: true
 tags: ["Important"]
 ---
 
+<div class="faq-container">
+
 <details>
   <summary>1. What tools do you usually use?</summary>
   <pfaq>I mostly use Clip Studio Paint when drawing, making graphics, and animating. Its my go-to program to do everything illustration related :]</pfaq>
@@ -41,60 +43,61 @@ tags: ["Important"]
   <pfaq>My main plans focus on Animation and Illustration, since thats what I want to do for my career. But Im really adaptable and can handle tasks outside my main skills too. kinda like a "jack-of-all-trades" :]</pfaq>
 </details>
 
-<details>
+<details class="workflow-main">
   <summary>8. What’s your workflow like?</summary>
   <pfaq>Since I do a lot of things, I've categorized them into their own tab below :o)</pfaq>
   
-  <details>
-  <summary>Illustration</summary>
-  <pfaq>For illustration, i type out my ideas first in a temporary .txt file.<br><br>
-  Then i go to Pinterest to find pose references, color palettes, and everything else i need to visualize it better.<br><br>
-  I sketch things out in Clip Studio Paint, I do the linework (either on bitmap or vector layers), then i color with
-  my brush :o)<br><br>
-  Thats about it</pfaq>
-  </details>
-  
-  <details>
-  <summary>Animation</summary>
-  <pfaq>For animation, i type out my ideas first in a temporary .txt file.<br><br>
-  Then i go to Pinterest to find pose references, color palettes, and everything else i need to visualize it better.<br><br>
-  I sketch out the rough poses, sketch out the inbetweens, correct the frame timing, and i refine it all by drawing slightly cleaner frames layered ontop of the sketch<br><br>
-  Then i do the linework in a vector layer, then i color it in a different layer. I also draw color lines in a vector layer to make sure the shadows and highlights move smoothly.<br><br>
-  If i want to make an animated video, i export the animation as a PNG sequence, drag it all to Davinci Resolve, tweak the animation speed, and export it as a video.<br><br>
-  Then i drag the video to FL Studio and do the sound editing there. after that, i drag the audio to Davinci Resolve and export it again as a video<br><br>
-  Thats about it</pfaq>
-  </details>
-  
-  <details>
-  <summary>3D</summary>
-  <pfaq>For 3D, i type out my ideas first in a temporary .txt file.<br><br>
-  Then i go to Pinterest to find pose references, color palettes, and everything else i need to visualize it better.<br><br>
-  I make a rough sketch of an object from all lateral perspectives, i color it in, then drag it to Blender.<br><br>
-  I trace the sketch using vertices from all angles, then i add faces on it afterwards, i tweak the shape to better match the reference sketch i made<br><br>
-  Then i set up the color materials, shaders, etc.<br><br>
-  </details>
-  
-  <details>
-  <summary>Storyboard</summary>
-  <pfaq>For Storyboard, i draw tiny squares on a canvas and sketch out the scenes like a little comic strip, then i make a palette for each scene and color it in<br><br>
-  For a 2D storyboard, i mainly use Clip Studio Paint. i usually just make a cleaner sketch of all the scenes and time them properly, I export it from Clip Studio Paint as a video and drag it to FL Studio for sound editing.<br><br>
-  For a 2.5D storyboard (its usually 3D background with 2D elements), i utilize blender's grease pencil. I model the key background features, then i make objects that i can use to move each grease pencil element along the background.</pfaq>
-  </details>
-  
-  <details>
-  <summary>Music</summary>
-  <pfaq>There's no specific workflow i follow to make music, I kinda just go with the flow.<br><br>
-  I do take a lot of inspiration from the music i listen to, as well as download project files that suit my needs + get the samples from.
-  </pfaq>
-  </details>
-  
-  <details>
-  <summary>Website Coding</summary>
-  <pfaq>Whenever i code a website, i usually add colored squares to a screen, sometimes with placeholder text until im contented with the layout<br><br>
-  Then i decorate it with fonts, animations, visual candy (buttons highlighting when you hover over them)<br><br>
-  Thats about it for the important stuff, JavaScript is kinda its own thing to explain, Im not smart enough to explain it.</pfaq>
-  </details>
-
+  <div class="nested-group">
+    <details>
+      <summary>Illustration</summary>
+      <pfaq>For illustration, i type out my ideas first in a temporary .txt file.<br><br>
+      Then i go to Pinterest to find pose references, color palettes, and everything else i need to visualize it better.<br><br>
+      I sketch things out in Clip Studio Paint, I do the linework (either on bitmap or vector layers), then i color with
+      my brush :o)<br><br>
+      Thats about it</pfaq>
+    </details>
+    
+    <details>
+      <summary>Animation</summary>
+      <pfaq>For animation, i type out my ideas first in a temporary .txt file.<br><br>
+      Then i go to Pinterest to find pose references, color palettes, and everything else i need to visualize it better.<br><br>
+      I sketch out the rough poses, sketch out the inbetweens, correct the frame timing, and i refine it all by drawing slightly cleaner frames layered ontop of the sketch<br><br>
+      Then i do the linework in a vector layer, then i color it in a different layer. I also draw color lines in a vector layer to make sure the shadows and highlights move smoothly.<br><br>
+      If i want to make an animated video, i export the animation as a PNG sequence, drag it all to Davinci Resolve, tweak the animation speed, and export it as a video.<br><br>
+      Then i drag the video to FL Studio and do the sound editing there. after that, i drag the audio to Davinci Resolve and export it again as a video<br><br>
+      Thats about it</pfaq>
+    </details>
+    
+    <details>
+      <summary>3D</summary>
+      <pfaq>For 3D, i type out my ideas first in a temporary .txt file.<br><br>
+      Then i go to Pinterest to find pose references, color palettes, and everything else i need to visualize it better.<br><br>
+      I make a rough sketch of an object from all lateral perspectives, i color it in, then drag it to Blender.<br><br>
+      I trace the sketch using vertices from all angles, then i add faces on it afterwards, i tweak the shape to better match the reference sketch i made<br><br>
+      Then i set up the color materials, shaders, etc.<br><br></pfaq>
+    </details>
+    
+    <details>
+      <summary>Storyboard</summary>
+      <pfaq>For Storyboard, i draw tiny squares on a canvas and sketch out the scenes like a little comic strip, then i make a palette for each scene and color it in<br><br>
+      For a 2D storyboard, i mainly use Clip Studio Paint. i usually just make a cleaner sketch of all the scenes and time them properly, I export it from Clip Studio Paint as a video and drag it to FL Studio for sound editing.<br><br>
+      For a 2.5D storyboard (its usually 3D background with 2D elements), i utilize blender's grease pencil. I model the key background features, then i make objects that i can use to move each grease pencil element along the background.</pfaq>
+    </details>
+    
+    <details>
+      <summary>Music</summary>
+      <pfaq>There's no specific workflow i follow to make music, I kinda just go with the flow.<br><br>
+      I do take a lot of inspiration from the music i listen to, as well as download project files that suit my needs + get the samples from.
+      </pfaq>
+    </details>
+    
+    <details>
+      <summary>Website Coding</summary>
+      <pfaq>Whenever i code a website, i usually add colored squares to a screen, sometimes with placeholder text until im contented with the layout<br><br>
+      Then i decorate it with fonts, animations, visual candy (buttons highlighting when you hover over them)<br><br>
+      Thats about it for the important stuff, JavaScript is kinda its own thing to explain, Im not smart enough to explain it.</pfaq>
+    </details>
+  </div>
 </details>
 
 <details>
@@ -133,107 +136,110 @@ tags: ["Important"]
   to all audiences, I want the vibe to lean towards having good morals as a human being instead of being another "reinterpreted religious story".</pfaq>
 </details>
 
-<script>
-document.querySelectorAll("details").forEach(d => {
-  d.addEventListener("click", (e) => {
-    // Prevent double–toggling when clicking the summary text
-    if (e.target.tagName !== "SUMMARY") {
-      e.preventDefault();
-      d.open = !d.open;
-    }
-  });
-});
-</script>
+</div>
 
 <style>
+/* Base Styles */
+.faq-container {
+  max-width: 800px;
+  margin: auto;
+}
+
 a {
-  color: var(--line-highlight);
+  color: var(--line-highlight, #7c4dff);
+  text-decoration: underline;
 }
 
 details {
   margin-bottom: 1rem;
-  border: 2px solid var(--border-sidebar);
-  padding: 0.8rem 1rem;
+  border: 2px solid var(--border-sidebar, #e0e0e0);
+  padding: 0;
   border-radius: 12px;
-  background: var(--color-6);
-  cursor: pointer;
-
-  transition:
-    background 0.25s ease,
-    border-color 0.25s ease,
-    transform 0.2s ease,
-    box-shadow 0.25s ease;
-  
+  background: var(--color-6, #f9f9f9);
+  transition: all 0.25s ease;
   overflow: hidden;
 }
 
-/* Hover highlight + slight animation */
 details:hover {
-  border-color: var(--line-highlight);
+  border-color: var(--line-highlight, #7c4dff);
 }
 
-/* When opened, glow slightly */
 details[open] {
-  border-color: var(--line-highlight);
-  background: var(--line-dormant);
+  background: var(--line-dormant, #ffffff);
+  border-color: var(--line-highlight, #7c4dff);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-/* Summary text */
+/* Summary Styles */
 summary {
-  position: relative;
-  padding-bottom: 0.6rem;
-  color: var(--text-dark); 
-  font-size: 1rem; font-weight: 600; 
+  padding: 1rem 1.2rem;
+  color: var(--text-dark, #333); 
+  font-size: 1.05rem; 
+  font-weight: 600; 
   cursor: pointer; 
   list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
+summary::-webkit-details-marker { display: none; }
 
 summary::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -0.3rem;
-  height: 0px;
-  background: var(--border-sidebar);
-  border-radius: 999px;
-  opacity: 0.6;
-  pointer-events: none;
+  content: "▼";
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+  opacity: 0.5;
 }
 
-details[open] summary::after {
-  background: var(--color-5);
-  opacity: 1;
-  height: 2px;
+details[open] > summary::after {
+  transform: rotate(180deg);
 }
 
+/* Content Styles */
 pfaq {
   display: block;
-  margin: 1rem;
-  margin-bottom: 0.5rem;
+  padding: 0 1.2rem 1.2rem 1.2rem;
   line-height: 1.6;
-  color: var(--text-dark);
+  color: var(--text-dark, #444);
   font-size: 1rem;
-  transition: opacity 0.2s ease;
 }
 
-summary::-webkit-details-marker {
-  display: none;
+/* Nested Grouping Logic */
+.nested-group {
+  margin: 0 1.2rem 1.2rem 1.2rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--line-highlight, #7c4dff);
 }
 
-/* Smooth slide open animation */
+.nested-group details {
+  margin-bottom: 0.5rem;
+  border-width: 1px;
+}
+
+.nested-group summary {
+  padding: 0.8rem;
+  font-size: 0.95rem;
+}
+
+/* Animations */
 details[open] pfaq {
-  animation: slideDown 0.25s ease;
+  animation: slideDown 0.3s ease-out;
 }
 
 @keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>
+
+<script>
+document.querySelectorAll("details").forEach(d => {
+  d.addEventListener("click", (e) => {
+    // Allows toggling smoothly only when clicking summary
+    if (e.target.tagName === "SUMMARY") {
+      // Logic for accordion can go here if needed
+    }
+  });
+});
+</script>
