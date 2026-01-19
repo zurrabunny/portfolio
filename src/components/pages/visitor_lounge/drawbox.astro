@@ -311,7 +311,7 @@ function Clear(isUndo = false) {
 
 /* -------------------- STUDIO CONFETTI -------------------- */
 // Renamed variables and function to prevent conflict with clicker
-function spawnStudioConfetti(x, y, count = 15) {
+function spawnStudioConfetti(x, y, count = 8) {
   for (let i = 0; i < count; i++) {
     const confettiPiece = document.createElement("div");
     confettiPiece.className = "studio-confetti";
