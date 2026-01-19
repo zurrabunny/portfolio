@@ -23,13 +23,22 @@ import ADHD from './ADHD.astro';
   .menu-container {
     position: fixed;
     top: 16px;
-    right: 70px; /* Aligned with the main button */
+    right: 70px;
     z-index: 9999;
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
     gap: 12px;
   }
+
+  /* --- Added Media Query --- */
+  @media (max-width: 900px) {
+    .menu-container {
+      display: none !important;
+	  right: 700px;
+    }
+  }
+  /* -------------------------- */
 
   .menu-main-btn {
     width: 44px;
@@ -81,7 +90,6 @@ import ADHD from './ADHD.astro';
     transform: translateX(0) scale(1);
   }
 
-  /* IMPORTANT: Override the fixed positioning inside your components */
   :global(.cookie-toggle) {
     position: relative !important;
     top: auto !important;

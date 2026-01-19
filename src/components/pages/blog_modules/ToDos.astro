@@ -4,19 +4,19 @@
       <h2>Pending Tasks</h2>
       <span class="badge count-pending" id="pendingCount">0</span>
     </div>
-    <div class="card">
+    <div class="card fixed-height">
       <table class="todo-table" id="todoPending">
         <thead>
           <tr>
-            <th>Task</th>
-            <th class="center">Status</th>
-            <th>Deadline</th>
+            <th style="width: 50%;">Task</th>
+            <th class="center" style="width: 20%;">Status</th>
+            <th style="width: 30%;">Deadline</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
-      <div class="pagination" id="pendingPagination"></div>
     </div>
+    <div class="pagination" id="pendingPagination"></div>
   </div>
 
   <div class="todo-section">
@@ -24,19 +24,19 @@
       <h2>Completed Tasks</h2>
       <span class="badge count-completed" id="completedCount">0</span>
     </div>
-    <div class="card">
+    <div class="card fixed-height">
       <table class="todo-table" id="todoCompleted">
         <thead>
           <tr>
-            <th>Task</th>
-            <th class="center">Status</th>
-            <th>Deadline</th>
+            <th style="width: 50%;">Task</th>
+            <th class="center" style="width: 20%;">Status</th>
+            <th style="width: 30%;">Deadline</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
-      <div class="pagination" id="completedPagination"></div>
     </div>
+    <div class="pagination" id="completedPagination"></div>
   </div>
 </div>
 
@@ -69,6 +69,14 @@
   padding: 1rem;
   box-shadow: 0 4px 20px rgba(0,0,0,0.05);
   border: 1px solid rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Fixed height constraint */
+.fixed-height {
+  height: 500px; 
+  overflow-y: auto;
 }
 
 /* Table Refinement */
@@ -76,6 +84,8 @@
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 8px;
+  /* Added: Force fixed column widths */
+  table-layout: fixed; 
 }
 
 .todo-table th {
@@ -90,9 +100,12 @@
 .todo-table td {
   padding: 1rem;
   background: var(--color-6, #f9f9f9);
+  /* Added: Ensure long text wraps or truncates instead of pushing width */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* Adjusted Rounded corners since first cell is now 'Task' */
 .todo-table tr td:first-child { border-radius: 8px 0 0 8px; }
 .todo-table tr td:last-child { border-radius: 0 8px 8px 0; }
 
@@ -124,9 +137,9 @@ let completedPage = 1;
 let itemsPerPage = 6;
 
 function calculateDynamicItems() {
-  const rowHeight = 150;
-  const overhead = 300;
-  const availableHeight = window.innerHeight - overhead;
+  const rowHeight = 75; 
+  const overhead = 100;
+  const availableHeight = 500 - overhead;
   itemsPerPage = Math.max(Math.floor(availableHeight / rowHeight), 3);
 }
 
@@ -134,7 +147,7 @@ async function loadToDoData() {
   try {
     const response = await fetch(sheetUrl);
     const csvText = await response.text();
-    const rows = csvText.split('\n').slice(4); 
+    const rows = csvText.split('\n').slice(3); 
 
     pendingTasks = [];
     completedTasks = [];
@@ -157,7 +170,7 @@ async function loadToDoData() {
     calculateDynamicItems();
     renderTables();
   } catch (err) {
-    console.error("Error loading To Do table:", err);
+    console.error("Error loading To Do data:", err);
   }
 }
 
@@ -180,15 +193,15 @@ function renderTable(tableId, list, page, type) {
     const tr = document.createElement("tr");
     tr.style.backgroundColor = index % 2 === 0 ? "var(--color-6)" : "var(--color-7)";
 
-    // Task cell (Now the first cell)
     const tdTask = document.createElement("td");
     tdTask.textContent = item.task;
     tdTask.style.padding = "0.8rem 1rem";
     tdTask.style.color = "var(--text-dark)";
+    // Added: Allow title hover for truncated text
+    tdTask.title = item.task; 
     if (item.checked) tdTask.style.textDecoration = "line-through";
     tr.appendChild(tdTask);
 
-    // Status cell
     const tdStatus = document.createElement("td");
     tdStatus.style.textAlign = "center";
     tdStatus.style.padding = "0.8rem 1rem";
@@ -201,7 +214,6 @@ function renderTable(tableId, list, page, type) {
     tdStatus.appendChild(icon);
     tr.appendChild(tdStatus);
 
-    // Deadline cell
     const tdDeadline = document.createElement("td");
     tdDeadline.textContent = item.deadline;
     tdDeadline.style.padding = "0.8rem 1rem";

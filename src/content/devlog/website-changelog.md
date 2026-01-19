@@ -14,10 +14,24 @@ tags: ["Process"]
 				<ul>
 					<li>recalibrated Reactive Audio Bopping
 				</ul>
+			<li>Study Zone Tab :
+                <ul>
+                    <li>remade To-Do Layout</li>
+                </ul>
+            </li>
 			<li>Visitor's Lounge Tab :
                 <ul>
-                    <li>remade Message Board Layout</li>
+                    <li>remade Drawing Board Functionality</li>
+                        <ul>
+                            <li>It now reloads the gallery instead of reloading the entire website</li>
+                            <li>It now has confetti when you submit a drawing!!!</li>
+                        </ul>
+                    </li>
                 </ul>
+			<li>reworked Mobile Layout.
+				<ul>
+					<li>i hate it i hate it i hate it !!
+				</ul>
             </li>
         </ul>
     </div>
@@ -36,7 +50,7 @@ tags: ["Process"]
             <li>added ADHD</li>
             <li>Study Zone Tab :
                 <ul>
-                    <li>added transitions</li>
+                    <li>added subtle transitions</li>
                 </ul>
             </li>
             <li>reworked Music Widget
@@ -107,9 +121,8 @@ tags: ["Process"]
     <div class="log-entry">
         <h3>January 2 2026</h3>
         <ul>
-            <li>Volume Slider :
+            <li>reworked Volume Slider
                 <ul>
-                    <li>reworked Volume Slider</li>
                     <li>added NIGHTCORE MODE !1!!!!1!!1</li>
                 </ul>
             </li>
