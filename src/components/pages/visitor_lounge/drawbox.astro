@@ -74,6 +74,8 @@ input[type="range"] {
   cursor: crosshair;
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><line x1="8" y1="0" x2="8" y2="16" stroke="black" stroke-width="2"/><line x1="0" y1="8" x2="16" y2="8" stroke="black" stroke-width="2"/></svg>') 8 8, crosshair;
   flex-grow: 1;
+  /* Ensure aspect ratio stays square on smaller screens */
+  aspect-ratio: 1 / 1; 
   max-width: 100%;
   height: auto;
   touch-action: none; 
@@ -161,7 +163,7 @@ button#submit {
       <p id="status"></p>
     </div>
 
-    <canvas id="drawboxcanvas" width="600" height="500"></canvas>
+    <canvas id="drawboxcanvas" width="600" height="600"></canvas>
   </div>
 
   <div class="submitted-header">
@@ -310,7 +312,6 @@ function Clear(isUndo = false) {
 }
 
 /* -------------------- STUDIO CONFETTI -------------------- */
-// Renamed variables and function to prevent conflict with clicker
 function spawnStudioConfetti(x, y, count = 8) {
   for (let i = 0; i < count; i++) {
     const confettiPiece = document.createElement("div");
@@ -319,7 +320,6 @@ function spawnStudioConfetti(x, y, count = 8) {
     const lightColors = ["#FFB3BA","#FFDFBA","#FFFFBA","#BAFFC9","#BAE1FF","#E0BAFF","#FFFFFF"];
     const darkColors = ["#FF6B6B","#FFA86B","#FFF56B","#6BFF8F","#6BD0FF","#B36BFF","#FF6BE3"];
 
-    // Fallback if isDarkMode() is not defined globally
     const isDark = typeof isDarkMode === 'function' ? isDarkMode() : false;
     
     confettiPiece.style.backgroundColor = (isDark ? lightColors : darkColors)[Math.floor(Math.random() * 7)];
@@ -335,7 +335,7 @@ function spawnStudioConfetti(x, y, count = 8) {
     document.body.appendChild(confettiPiece);
 
     let pX = 0, pY = 0;
-    const vX = (Math.random() - 0.5) * 15; // Faster spread for submission
+    const vX = (Math.random() - 0.5) * 15;
     let vY = Math.random() * -15 - 5; 
     const gravityForce = 0.5;
     const rSpeed = (Math.random() - 0.5) * 20;
@@ -380,15 +380,10 @@ document.querySelector('#submit')?.addEventListener('click', async function (e) 
     await fetch(GOOGLE_FORM_URL, { method: "POST", body: googleFormData, mode: "no-cors" });
     
     status.textContent = "Submitted!";
-    
-    // NEW: Launch Confetti from the button position
     spawnStudioConfetti(e.clientX, e.clientY, 30);
-    
-    // NEW: Clear canvas and refresh gallery instead of reloading page
     Clear(true); 
     fetchImages();
     
-    // Re-enable button after a delay
     setTimeout(() => {
         btn.disabled = false;
         status.textContent = "";
