@@ -276,17 +276,17 @@ function renderVisuals() {
   #volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: var(--color-6); border-radius: 50%; border: 2px solid var(--color-1); }
 
   .currently-playing {
-    position: fixed; bottom: 20px; right: 10px; background: var(--color-8); backdrop-filter: blur(8px);
-    padding: 10px 15px; border-radius: 12px; display: flex; align-items: center; gap: 12px;
-    width: 320px; border: 1px solid var(--color-4); opacity: 0;
+    position: fixed; bottom: 25px; right: 10px; background: var(--color-8); backdrop-filter: blur(8px);
+    padding: 10px 15px; border-radius: 12px; display: flex; align-items: center; gap: 12px; height: 50px;
+    width: 370px; border: 1px solid var(--color-4); opacity: 0;
     transform: translateY(120%); transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.8s ease; z-index: 999;
   }
   .currently-playing.active { transform: translateY(15%); opacity: 1; }
   .visualizer-container { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .music-pic { width: 100%; height: 100%; object-fit: contain; filter: brightness(var(--invert)); will-change: transform; transition: transform 0.05s ease-out; }
+  /* REMOVED: Long transition that was fighting the JS rotation */
+  .music-pic { width: 130%; height: 130%; object-fit: contain; filter: brightness(var(--invert)); will-change: transform; margin-left: 20px;}
   
-  /* Text aligns to the left and grows to fill space */
-  .track-meta { flex-grow: 1; text-align: left; overflow: hidden; min-width: 0; }
+  .track-meta { flex-grow: 1; text-align: left; overflow: hidden; min-width: 0; margin-left: 20px;}
   .status-label { display: block; font-size: 10px; font-weight: 900; letter-spacing: 1.5px; color: var(--color-1); margin-bottom: 2px; }
   .track-info { font-weight: 600; font-size: 11px; color: var(--text-main); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
