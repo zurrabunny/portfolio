@@ -25,19 +25,33 @@
 </div>
 
 <div class="currently-playing" id="track-display">
+  <div class="progress-bar-container" id="progress-container">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+
   <div class="visualizer-container">
     <img src="tuneup.gif" alt="visualizer" class="music-pic" id="music-gif" />
   </div>
   
   <div class="track-meta">
     <span class="status-label">NOW PLAYING</span>
-    <p class="track-info" id="track-name">Nothing</p>
+    <div class="track-info-container">
+      <p class="track-info" id="track-name">Nothing</p>
+    </div>
   </div>
 
-  <button id="global-pause-btn" class="pause-btn" title="Toggle Playback">
-    <svg id="pause-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-    <svg id="play-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="display:none;"><path d="M8 5v14l11-7z"/></svg>
-  </button>
+  <div class="controls-wrapper">
+    <button id="global-loop-btn" class="loop-btn" title="Toggle Loop">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+        <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/>
+      </svg>
+    </button>
+
+    <button id="global-pause-btn" class="pause-btn" title="Toggle Playback">
+      <svg id="pause-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+      <svg id="play-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="display:none;"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+  </div>
 </div>
 
 <script>
@@ -47,10 +61,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const volSlider = document.getElementById('volume-slider');
   const trackDisplay = document.getElementById('track-display');
   const trackName = document.getElementById('track-name');
-  const musicGif = document.getElementById('music-gif'); // This is your "currently-playing" gif
+  const musicGif = document.getElementById('music-gif'); 
   const pauseBtn = document.getElementById('global-pause-btn');
   const pauseIcon = document.getElementById('pause-icon');
   const playIcon = document.getElementById('play-icon');
+  const loopBtn = document.getElementById('global-loop-btn');
+  const progressContainer = document.getElementById('progress-container');
+  const progressFill = document.getElementById('progress-fill');
+  const volumeControl = document.querySelector('.volume-control');
+  const statusLabel = document.querySelector('.status-label');
 
   let currentSpeed = 1.0;
   let audioCtx;
@@ -60,37 +79,122 @@ document.addEventListener('DOMContentLoaded', () => {
   const sourceMap = new WeakMap();
   let currentScale = 2;
   let activeAudio = null;
+  let isLooping = false;
 
-  /* ---------------- SIDEBAR CONTENT SWITCHER ---------------- */
-  // Applied specifically to the musicGif element
-  musicGif?.addEventListener("click", () => {
-    window.dispatchEvent(new CustomEvent("switchContent", {
-      detail: {
-        target: "work"
+  /* ---------------- TRACK SCROLLING LOGIC ---------------- */
+  function updateTrackScrolling() {
+    if (!trackName) return;
+    
+    // Reset state
+    trackName.classList.remove('scrolling');
+    trackName.style.animationDuration = '0s';
+    const parent = trackName.parentElement;
+    
+    setTimeout(() => {
+      const isOverflowing = trackName.scrollWidth > parent.offsetWidth;
+      
+      if (isOverflowing) {
+        // Add extra spaces and a separator for clarity
+        const text = trackName.innerText + "\u00A0\u00A0\u00A0\u00A0"; 
+        trackName.innerHTML = `<span>${text}</span><span>${text}</span>`;
+        trackName.classList.add('scrolling');
+        
+        // Adjust speed based on length (approx 50px per second)
+        const duration = trackName.scrollWidth / 50;
+        trackName.style.animationDuration = `${duration}s`;
+      } else {
+        trackName.innerHTML = trackName.innerText;
       }
-    }));
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  });
-
-  /* ---------------- SPEED UI ---------------- */
-
-  function updateSpeedButtonStyle(selectedBtn) {
-    document.querySelectorAll('.speed-opt').forEach(btn => {
-      btn.style.background = 'transparent';
-      btn.style.color = '#ffffff';
-      btn.style.fontWeight = 'normal';
-      btn.style.boxShadow = 'none';
-    });
-    selectedBtn.style.background = 'var(--color-1)';
-    selectedBtn.style.color = '#fff';
-    selectedBtn.style.fontWeight = 'bold';
-    selectedBtn.style.borderRadius = '4px';
+    }, 50);
   }
 
-  /* ---------------- AUDIO CONTEXT ---------------- */
+  /* ---------------- INITIAL STATE ---------------- */
+  
+  if (loopBtn) {
+    loopBtn.style.display = 'none';
+    loopBtn.style.pointerEvents = 'none';
+  }
+
+  /* ---------------- PROGRESS & SCRUBBING ---------------- */
+
+  function updateProgressBar() {
+    if (!activeAudio || activeAudio.paused) return;
+    const percent = (activeAudio.currentTime / activeAudio.duration) * 100;
+    if (progressFill) progressFill.style.width = `${percent}%`;
+    requestAnimationFrame(updateProgressBar);
+  }
+
+  function handleScrub(e) {
+    if (!activeAudio || !activeAudio.duration) return;
+    const rect = progressContainer.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percent = Math.min(Math.max(x / rect.width, 0), 1);
+    activeAudio.currentTime = percent * activeAudio.duration;
+  }
+
+  progressContainer?.addEventListener('mousedown', (e) => {
+    handleScrub(e);
+    const onMove = (moveEvent) => handleScrub(moveEvent);
+    const onUp = () => {
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+    };
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  });
+
+  /* ---------------- LOOPING ---------------- */
+
+  loopBtn?.addEventListener('click', () => {
+    isLooping = !isLooping;
+    loopBtn.classList.toggle('active-loop', isLooping);
+    if (activeAudio) activeAudio.loop = isLooping;
+  });
+
+  /* ---------------- DRAG AND DROP LOGIC ---------------- */
+
+  window.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  });
+
+  window.addEventListener("drop", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const files = e.dataTransfer.files;
+    if (files.length > 0 && files[0].type.startsWith('audio/')) {
+        handleDroppedFile(files[0]);
+    }
+  });
+
+  function handleDroppedFile(file) {
+    let player = document.getElementById('drop-audio-player');
+    if (!player) {
+      player = document.createElement('audio');
+      player.id = 'drop-audio-player';
+      player.style.display = 'none';
+      document.body.appendChild(player);
+    }
+    const fileURL = URL.createObjectURL(file);
+    const cleanName = file.name.replace(/\.[^/.]+$/, "");
+    
+    player.src = fileURL;
+    player.title = cleanName; 
+    
+    // Show the volume control UI
+    if (volumeControl) {
+      volumeControl.classList.add('active');
+    }
+
+    if (loopBtn) {
+      loopBtn.style.display = 'flex';
+      loopBtn.style.pointerEvents = 'auto';
+    }
+    
+    player.play().catch(err => console.warn("Playback blocked."));
+  }
+
+  /* ---------------- AUDIO CONTEXT & VISUALS ---------------- */
 
   function initAudioContext(audio) {
     if (!audioCtx) {
@@ -99,9 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
       analyser.fftSize = 256;
       dataArray = new Uint8Array(analyser.frequencyBinCount);
     }
-
     if (audioCtx.state === 'suspended') audioCtx.resume();
-
     if (!sourceMap.has(audio)) {
       try {
         audio.crossOrigin ||= 'anonymous';
@@ -109,101 +211,108 @@ document.addEventListener('DOMContentLoaded', () => {
         source.connect(analyser);
         analyser.connect(audioCtx.destination);
         sourceMap.set(audio, source);
-      } catch {
-        console.warn('Visualizer connection failed.');
-      }
+      } catch { console.warn('Visualizer connection failed.'); }
     }
   }
 
-  /* ---------------- TRACK DISPLAY ---------------- */
+  function renderVisuals() {
+    if (!analyser) return;
+    analyser.getByteFrequencyData(dataArray);
+    let sum = 0;
+    const sampleCount = dataArray.length / 2; 
+    for (let i = 0; i < sampleCount; i++) sum += dataArray[i];
+    const average = sum / sampleCount;
+    const normalizedLoudness = average / 128; 
 
-  function syncTrackDisplay(audio) {
-    if (!trackDisplay || !trackName || !audio) return;
-    activeAudio = audio;
-    trackDisplay.classList.add('active');
-
-    function updateText() {
-      const title = audio.title?.trim();
-      if (title) {
-        trackName.innerText = title;
-        return;
-      }
-      if (!trackName.innerText || trackName.innerText === 'Unknown Track') {
-        trackName.innerText = audio.readyState < HTMLMediaElement.HAVE_METADATA ? 'Loading Metadata...' : 'Unknown Track';
-      }
+    if (normalizedLoudness > 0.1) {
+      currentScale = 0.9 + (Math.pow(normalizedLoudness, 1.5) * 1.2);
+    } else {
+      currentScale += (1 - currentScale) * 0.3;
     }
 
-    updateText();
-    audio.addEventListener('loadedmetadata', updateText);
+    if (musicGif) {
+      const finalScale = Math.min(currentScale, 2.5);
+      musicGif.style.transform = `scale(${finalScale})`;
+    }
+    animationId = requestAnimationFrame(renderVisuals);
   }
 
-/* ---------------- VISUALIZER (EXAGGERATED) ---------------- */
-
-function renderVisuals() {
-  if (!analyser) return;
-  analyser.getByteFrequencyData(dataArray);
-  
-  let sum = 0;
-  // Focus more on the lower frequencies (bass) for a better "bop"
-  // dataArray.length / 4 usually captures the punchy low-end
-  const sampleCount = dataArray.length / 2; 
-  for (let i = 0; i < sampleCount; i++) {
-    sum += dataArray[i];
-  }
-  
-  const average = sum / sampleCount;
-  // Normalize (0.0 to 1.0) based on typical max volume (255)
-  const normalizedLoudness = average / 128; 
-
-  if (normalizedLoudness > 0.1) {
-    // Math.pow(x, 8) makes high peaks MUCH higher than low valleys
-    // 1.5 is the "strength" of the bop
-    currentScale = 0.9 + (Math.pow(normalizedLoudness, 1.5) * 1.2);
-  } else {
-    // Smoother return to idle
-    currentScale += (1 - currentScale) * 0.3;
-  }
-
-  if (musicGif) {
-    // Clamp the scale so it doesn't get TOO big and break the layout
-    const finalScale = Math.min(currentScale, 2.5);
-    musicGif.style.transform = `scale(${finalScale})`;
-  }
-  
-  animationId = requestAnimationFrame(renderVisuals);
-}
-  /* ---------------- AUDIO SETTINGS ---------------- */
+  /* ---------------- SYNC & SETTINGS ---------------- */
 
   function applyAudioSettings(audio) {
     audio.preservesPitch = currentSpeed === 1.0;
     audio.playbackRate = currentSpeed;
     audio.volume = parseFloat(volSlider.value);
+    audio.loop = isLooping;
   }
 
-  /* ---------------- PLAY / PAUSE LOGIC ---------------- */
+  function syncTrackDisplay(audio) {
+    if (!trackDisplay || !trackName || !audio) return;
+    activeAudio = audio;
+    trackDisplay.classList.add('active');
+    
+    const updateText = () => {
+      const title = audio.title?.trim();
+      if (title) {
+        trackName.innerText = title;
+        updateTrackScrolling();
+      }
+    };
+
+    updateText();
+    audio.addEventListener('loadedmetadata', updateText);
+    updateProgressBar();
+  }
+
+  function updateActiveSpeedVisuals() {
+    document.querySelectorAll('.speed-opt').forEach(opt => {
+      if (parseFloat(opt.dataset.speed) === currentSpeed) {
+        opt.style.background = 'var(--color-1)';
+        opt.style.fontWeight = 'bold';
+        opt.style.borderRadius = '4px';
+      } else {
+        opt.style.background = 'transparent';
+        opt.style.fontWeight = 'normal';
+        opt.style.borderRadius = '4px';
+      }
+    });
+  }
+
+  /* ---------------- EVENT LISTENERS ---------------- */
 
   pauseBtn?.addEventListener('click', () => {
     if (!activeAudio) return;
-    if (activeAudio.paused) {
-      activeAudio.play();
-    } else {
-      activeAudio.pause();
-    }
+    activeAudio.paused ? activeAudio.play() : activeAudio.pause();
   });
-
-  document.addEventListener('pointerdown', (e) => {
-    const audio = e.target.closest?.('audio');
-    if (audio) syncTrackDisplay(audio);
-  }, true);
 
   document.addEventListener('play', (e) => {
     const audio = e.target;
     if (audio.tagName !== 'AUDIO') return;
+    
+    if (activeAudio && activeAudio !== audio) activeAudio.pause();
+
+    if (audio.id !== 'drop-audio-player') {
+      isLooping = false;
+      if (statusLabel) statusLabel.innerText = "NOW PLAYING";
+      if (loopBtn) {
+        loopBtn.classList.remove('active-loop');
+        loopBtn.style.display = 'none';
+        loopBtn.style.pointerEvents = 'none';
+      }
+    } else {
+      if (statusLabel) statusLabel.innerText = "NOW PLAYING - LOCAL FILE";
+      if (loopBtn) {
+        loopBtn.style.display = 'flex';
+        loopBtn.style.pointerEvents = 'auto';
+      }
+    }
+
     activeAudio = audio;
     pauseIcon.style.display = 'block';
     playIcon.style.display = 'none';
     initAudioContext(audio);
     syncTrackDisplay(audio);
+    applyAudioSettings(audio);
     if (animationId) cancelAnimationFrame(animationId);
     renderVisuals();
   }, true);
@@ -212,43 +321,26 @@ function renderVisuals() {
     if (e.target === activeAudio) {
       pauseIcon.style.display = 'none';
       playIcon.style.display = 'block';
-      cancelAnimationFrame(animationId);
-      if (musicGif) musicGif.style.transform = 'scale(1)';
     }
   }, true);
 
-  /* ---------------- SPEED & VOLUME ---------------- */
+  volSlider?.addEventListener('input', () => {
+    const val = parseFloat(volSlider.value);
+    document.querySelectorAll('audio').forEach(a => a.volume = val);
+  });
 
   document.querySelectorAll('.speed-opt').forEach(opt => {
-    if (opt.dataset.speed === '1.0') updateSpeedButtonStyle(opt);
     opt.addEventListener('click', () => {
       currentSpeed = parseFloat(opt.dataset.speed || '1.0');
-      updateSpeedButtonStyle(opt);
+      updateActiveSpeedVisuals();
       document.querySelectorAll('audio').forEach(applyAudioSettings);
     });
   });
 
   speedBtn?.addEventListener('click', (e) => {
     e.stopPropagation();
+    updateActiveSpeedVisuals();
     speedMenu?.classList.toggle('show');
-  });
-
-  document.addEventListener('click', () => {
-    speedMenu?.classList.remove('show');
-  });
-
-  volSlider?.addEventListener('input', () => {
-    document.querySelectorAll('audio').forEach(audio => {
-      audio.volume = parseFloat(volSlider.value);
-    });
-  });
-
-  const observer = new MutationObserver(() => {
-    document.querySelectorAll('audio').forEach(applyAudioSettings);
-  });
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true
   });
 });
 </script>
@@ -265,6 +357,7 @@ function renderVisuals() {
   .control-group { display: flex; flex-direction: column; align-items: center; width: 100%; }
   .vol-label { font-size: 8px; font-weight: bold; color: var(--text-main); opacity: 0.7; margin-bottom: 20px; text-align: center; }
   .control-btn { background: var(--color-7); color: var(--text-main); border: 2px solid var(--color-4); border-radius: 6px; font-size: 8px; width: 32px; height: 24px; cursor: pointer; }
+  
   .speed-menu {
     position: absolute; bottom: 35px; right: 55px; background: var(--color-8); border: 2px solid var(--color-4);
     border-radius: 8px; padding: 5px; display: flex; flex-direction: column; gap: 4px; opacity: 0; pointer-events: none;
@@ -272,6 +365,7 @@ function renderVisuals() {
   }
   .speed-menu.show { opacity: 1; pointer-events: auto; transform: translateX(0); }
   .speed-opt { background: transparent; border: none; color: var(--text-main); font-size: 10px; padding: 4px 8px; cursor: pointer; transition: all 0.2s ease; }
+  
   #volume-slider { -webkit-appearance: none; width: 150px; height: 8px; transform: rotate(-90deg); background: linear-gradient(90deg, var(--color-3), var(--color-1)); border-radius: 4px; cursor: pointer; margin: 65px 0; }
   #volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: var(--color-6); border-radius: 50%; border: 2px solid var(--color-1); }
 
@@ -280,23 +374,48 @@ function renderVisuals() {
     padding: 10px 15px; border-radius: 12px; display: flex; align-items: center; gap: 12px; height: 50px;
     width: 370px; border: 1px solid var(--color-4); opacity: 0;
     transform: translateY(120%); transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.8s ease; z-index: 999;
+    overflow: hidden; 
   }
   .currently-playing.active { transform: translateY(15%); opacity: 1; }
+
+  .progress-bar-container {
+    position: absolute; bottom: 0; left: 0; width: 100%; height: 4px;
+    background: rgba(255, 255, 255, 0.1); cursor: pointer; transition: height 0.2s;
+  }
+  .progress-bar-container:hover { height: 6px; }
+  .progress-fill { height: 100%; background: var(--color-1); width: 0%; transition: width 0.1s linear; }
+
   .visualizer-container { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  /* REMOVED: Long transition that was fighting the JS rotation */
   .music-pic { width: 130%; height: 130%; object-fit: contain; filter: brightness(var(--invert)); will-change: transform; margin-left: 20px;}
   
   .track-meta { flex-grow: 1; text-align: left; overflow: hidden; min-width: 0; margin-left: 20px;}
   .status-label { display: block; font-size: 10px; font-weight: 900; letter-spacing: 1.5px; color: var(--color-1); margin-bottom: 2px; }
-  .track-info { font-weight: 600; font-size: 11px; color: var(--text-main); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  
+  /* Marquee Logic */
+  .track-info-container { overflow: hidden; white-space: nowrap; width: 100%; position: relative; }
+  .track-info { display: inline-block; font-weight: 600; font-size: 11px; color: var(--text-main); margin: 0; }
+  .track-info.scrolling { animation: marquee linear infinite; }
+  .track-info span { padding-right: 50px; display: inline-block; }
 
-  /* Pause Button Fixed to the Right */
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .controls-wrapper { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  
   .pause-btn {
-    flex-shrink: 0; background: var(--color-4); border: 1px solid var(--color-4); color: #ffffff;
+    flex-shrink: 0; background: var(--color-4); border: 1px solid var(--color-4); color: var(--text-main);
     width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
     cursor: pointer; transition: all 0.2s ease;
   }
-  .pause-btn:hover { background: var(--color-4); }
+  
+  .loop-btn {
+    flex-shrink: 0; background: var(--color-4); border: 1px solid var(--color-4); color: var(--text-main);
+    width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s ease; opacity: 0.4;
+  }
+  .active-loop { color: var(--text-main); opacity: 1; border-color: var(--color-4); background: var(--color-4);}
 
-  @media (max-width: 900px) { .currently-playing { display: none; } .volume-container { display: none; right: 700px;}}
+  @media (max-width: 900px) { .currently-playing { display: none; } .volume-container { display: none; }}
 </style>

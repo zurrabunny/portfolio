@@ -7,6 +7,20 @@ tags: ["Process"]
 ---
 
 <div class="changelog">
+	<div class="log-entry">
+        <h3>January 21 2026</h3>
+        <ul>
+			<li>reworked Music Widget
+				<ul>
+					<li>enables you to play local music files by dragging and dropping it from the website
+					<ul>
+						<li>you can use the speed up function, adjust the volume and make it loop :o)
+					</ul>
+				</ul>
+            </li>
+        </ul>
+    </div>
+	
     <div class="log-entry">
         <h3>January 20 2026</h3>
         <ul>
