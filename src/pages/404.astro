@@ -9,6 +9,16 @@ import DarkModeToggle from '../components/DarkModeToggle.astro';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>404 - Whimsy Not Found</title>
+	
+	<script is:inline>
+		(function() {
+		  const savedTheme = localStorage.getItem('darkMode');
+		  if (savedTheme === 'enabled' || 
+			  (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+			document.documentElement.classList.add('dark-mode');
+		  }
+		})();
+	  </script>
   </head>
 
   <body>

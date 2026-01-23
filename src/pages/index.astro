@@ -20,14 +20,14 @@ import DevlogModal from '../components/pages/devlog/DevlogModal.astro';
     </script>
 	
 	<script is:inline>
-    (function() {
-      const savedTheme = localStorage.getItem('darkMode');
-      if (savedTheme === 'enabled' || 
-          (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark-mode');
-      }
-    })();
-  </script>
+		(function() {
+		  const savedTheme = localStorage.getItem('darkMode');
+		  if (savedTheme === 'enabled' || 
+			  (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+			document.documentElement.classList.add('dark-mode');
+		  }
+		})();
+	  </script>
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
