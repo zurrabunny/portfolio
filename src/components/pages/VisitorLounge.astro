@@ -83,15 +83,26 @@ main.content {
 /* -------- TAB PANELS -------- */
 .tab-panel {
   display: none;
+  /* Ensure the animation doesn't cause layout jumps */
+  opacity: 0; 
 }
 
 .tab-panel.active {
   display: block;
+  /* Apply the animation here */
+  animation: circUp 0.5s cubic-bezier(0, 0.55, 0.45, 1) forwards;
 }
 
-/* GENERAL STYLING (your existing styles unchanged) */
-p, ul, li {
-  color: var(--text-dark);
+/* -------- ANIMATION DEFINITION -------- */
+@keyframes circUp {
+  from {
+    opacity: 0;
+    transform: translateY(5px); /* Starts 20px lower */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);    /* Ends at original position */
+  }
 }
 
 
@@ -143,6 +154,21 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
     // set new active
     btn.classList.add("active");
     document.getElementById(btn.dataset.tab).classList.add("active");
+  });
+});
+
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    // remove old actives
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+
+    // set new active
+    btn.classList.add("active");
+    const target = document.getElementById(btn.dataset.tab);
+    if (target) {
+      target.classList.add("active");
+    }
   });
 });
 </script>

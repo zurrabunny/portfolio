@@ -8,6 +8,19 @@ tags: ["Process"]
 
 <div class="changelog">
 	<div class="log-entry">
+        <h3>January 24 2026</h3>
+        <ul>
+			<li>Almost all UI elements have animations! (disabled on mobile cuz it LAGS)
+			<li>FINALLY FIXED THAT STUPID FLASH !!!
+				<ul>
+					<li>apparently its called "FART" (Flash of Already Rendered Theme). that thing where it loads the light theme for a brief moment before transitioning to the darker theme, i always hated it and i wish i fixed it sooner. my eyes would thank me. BUT ITS FIXED NOW!! no more flashbangs whenever i load my website >:[
+					<li>also happy birthday to me :o)
+				</ul>
+            </li>
+        </ul>
+    </div>
+	
+	<div class="log-entry">
         <h3>January 21 2026</h3>
         <ul>
 			<li>reworked Music Widget

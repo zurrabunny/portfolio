@@ -178,13 +178,13 @@ h3 {
 
 .goal-content .goal-panel.active { 
   display: block; 
-  animation: fadeUp 0.2s ease-out forwards;
+  animation: fadeUp 0.5s cubic-bezier(0, 0.55, 0.45, 1) forwards;
 }
 
 @keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(1px);
+    transform: translateY(5px);
   }
   to {
     opacity: 1;

@@ -148,7 +148,7 @@
 
   <div id="text-gallery-wrapper">
     <div style="font-weight: bold; margin-bottom: 1rem; color: var(--color-2); font-size: 1.2rem; display: flex; align-items: center; gap: 10px;">
-      Community Board <span id="boardCount" style="font-size: 0.8rem; background: var(--color-5); color: white; padding: 2px 8px; border-radius: 10px;">0</span>
+      Community Board <span id="boardCount" style="font-size: 0.8rem; background: var(--color-5); color: var(--text-dark); padding: 2px 8px; border-radius: 10px;">0</span>
     </div>
     <div id="text-gallery">Loading...</div>
   </div>
@@ -228,7 +228,10 @@ function createTextElement(name, text, timestamp, liked, bgColor, replyText) {
     replyBox.style.fontSize = "0.85rem";
     replyBox.style.background = "transparent";
     replyBox.style.borderRadius = "8px";
-    replyBox.style.borderLeft = "4px solid var(--color-5)";
+    replyBox.style.borderLeft = "8px solid var(--color-5)";
+    replyBox.style.borderTop = "1px solid var(--color-5)";
+    replyBox.style.borderBottom = "1px solid var(--color-5)";
+    replyBox.style.borderRight = "1px solid var(--color-5)";
     
     container.appendChild(replyBox);
   }

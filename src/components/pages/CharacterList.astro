@@ -49,9 +49,7 @@ const allTags = [
 	</p>
 
     <div class="compendium-wrapper">
-      <!-- Left sidebar -->
       <aside class="char-list">
-        <!-- Animated dropdown -->
         <div class="tag-dropdown" id="char-tag-dropdown">
           <button class="tag-toggle">
             <span class="label">Filter by Tag</span>
@@ -88,7 +86,6 @@ const allTags = [
         </ul>
       </aside>
 
-      <!-- Right info panel -->
       <section class="char-info">
         <div class="text-area">
 		  {characters.map((char, i) => (
@@ -223,7 +220,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ===== Dynamic styling for character description boxes =====
-  // Title line container
   document.querySelectorAll('.char-description-title-line').forEach(el => {
     el.style.display = 'flex';
     el.style.alignItems = 'center';
@@ -232,14 +228,12 @@ document.addEventListener("DOMContentLoaded", () => {
     el.style.marginBottom = '-0.5rem';
   });
 
-  // Line inside title
   document.querySelectorAll('.char-description-line').forEach(el => {
     el.style.flex = '1';
     el.style.height = '2px';
     el.style.backgroundColor = 'var(--color-5)';
   });
 
-  // Title text
   document.querySelectorAll('.char-description-title').forEach(el => {
     el.style.margin = '0';
     el.style.color = 'var(--color-10)';
@@ -247,19 +241,16 @@ document.addEventListener("DOMContentLoaded", () => {
     el.style.fontWeight = '700';
   });
 
-  // Box container
   document.querySelectorAll('.basic-info-block').forEach(el => {
     el.style.width = '100%';
     el.style.marginTop = '1rem';
   });
 
-  // Inner info content
   document.querySelectorAll('.info-stuffs').forEach(el => {
     el.style.padding = '1rem';
     el.style.color = 'var(--text-dark)';
   });
 
-  // Paragraphs inside info-stuffs
   document.querySelectorAll('.info-stuffs p').forEach(el => {
     el.style.margin = '0';
     el.style.lineHeight = '1.5rem';
@@ -270,12 +261,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <style>
 
-/* IMAGE INFO (UPDATED STYLE) */
+/* -------- CIRC UP ANIMATION -------- */
+@keyframes circUp {
+  from {
+    opacity: 0;
+    transform: translateY(0px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.char-desc[style*="display: block"] {
+  animation: circUp 0.5s cubic-bezier(0, 0.55, 0.45, 1) forwards;
+}
+
+.char-image-wrapper[style*="display: flex"] {
+  animation: circUp 0.5s cubic-bezier(0, 0.55, 0.45, 1) forwards;
+  opacity: 0; 
+}
+
+/* IMAGE INFO */
 .char-image-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 320px; /* match the image width */
+  width: 320px;
   background-color: var(--color-9);
   border-radius: 1rem;
   border: 2px solid var(--color-2);
@@ -286,21 +298,20 @@ document.addEventListener("DOMContentLoaded", () => {
   margin-top: 0.6rem;
   font-size: 0.9rem;
   color: var(--text-dark);
-  width: 100%;   /* fill the wrapper */
+  width: 100%;
   text-align: left;
 }
 
 .char-info-text h2 {
   margin-top: 0.6rem;
   color: var(--text-dark);
-  width: 100%;      /* fill the wrapper */
-  text-align: center; /* center only the h2 */
+  width: 100%;
+  text-align: center;
 }
 
 .char-info-text p {
   margin: 2px 0;
   padding-left: 1.2rem;
-  
 }
 
 h1 { font-size: 1.8rem; color: var(--color-1); margin-bottom: 1rem; }
@@ -309,7 +320,6 @@ p, ul, li {
 color: var(--text-dark);
 }
 
-/* character title line styling */
 .character-title-line {
   display: flex;
   align-items: center;
@@ -321,12 +331,11 @@ color: var(--text-dark);
 .character-line {
   flex: 1;
   height: 2px;
-  background-color: var(--color-6); /* adjust to visible color */
+  background-color: var(--color-6);
   opacity: 1;
   transform: scaleX(1);
 }
 
-/* Title styling */
 #character-title {
   font-size: 2rem;
   font-weight: 700;
@@ -350,7 +359,6 @@ main.content {
   margin-top: 2rem;
 }
 
-/* Character List */
 .char-list {
   width: 240px;
   flex-shrink: 0;
@@ -362,27 +370,25 @@ main.content {
   list-style: none;
   padding: 0;
   margin: 0;
-  max-height: 700px; /* adjust as needed */
-  overflow-y: auto;  /* enables vertical scrolling */
+  max-height: 700px;
+  overflow-y: auto;
   padding-right: 0.5rem;
 }
 
-/* Scrollbar styling for Webkit (Chrome, Edge, Safari) */
 .char-list ul::-webkit-scrollbar {
   width: 8px;
 }
 
 .char-list ul::-webkit-scrollbar-thumb {
-  background-color: var(--color-1); /* visible color */
+  background-color: var(--color-1);
   border-radius: 4px;
 }
 
 .char-list ul::-webkit-scrollbar-track {
-  background: var(--color-6); /* match sidebar bg */
+  background: var(--color-6);
   border-radius: 4px;
 }
 
-/* Firefox scrollbar */
 .char-list ul {
   scrollbar-width: thin;
   scrollbar-color: var(--color-1) transparent;
@@ -408,7 +414,6 @@ main.content {
   border-left: 3px solid var(--color-1);
 }
 
-/* Tag Dropdown */
 .tag-dropdown {
   width: 100%;
   position: relative;
@@ -505,7 +510,6 @@ main.content {
   color: var(--color-1);
 }
 
-/* Character Info */
 .char-info {
   flex: 1;
   display: flex;
@@ -522,9 +526,9 @@ main.content {
 }
 
 .char-info img {
-  width: 100%;      /* or 320px if you want fixed width */
-  height: auto;     /* auto keeps aspect ratio */
-  object-fit: contain; /* ensure it fits inside wrapper */
+  width: 100%;
+  height: auto;
+  object-fit: contain;
   border-radius: 1rem 1rem 0 0;
   border-bottom: 2px solid var(--color-2);
 }
@@ -550,16 +554,16 @@ main.content {
 
 .name-row {
   display: flex;
-  align-items: baseline; /* align tags to text baseline instead of center */
+  align-items: baseline;
   gap: 1rem;
   flex-wrap: wrap;
   color: var(--text-dark);
 }
 
 .inline-tags .modal-tag {
-  display: inline-flex;       /* keep it nicely aligned */
+  display: inline-flex;
   align-items: center;
-  transform: translateY(-4px); /* adjust value: -2px..-6px */
+  transform: translateY(-4px);
 }
 
 .modal-tag {
@@ -573,7 +577,6 @@ main.content {
   display: inline-block;
 }
 
-/* Responsive */
 @media (max-width: 900px) {
   .compendium-wrapper {
     flex-direction: column;
@@ -595,35 +598,10 @@ main.content {
     border-right: none;
     padding-right: 0;
     margin-bottom: 1rem;
-  }
-}
-
-@media (max-width: 900px) {
-  .compendium-wrapper {
-    flex-direction: column;
-  }
-  
-  .char-info {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-  
-  .char-info img {
-    width: 100%;
-    height: auto;
-  }
-  
-  .char-list {
-    width: 100%;
-    border-right: none;
-    padding-right: 0;
-    margin-bottom: 1rem;
-    max-height: 300px; /* adjust as needed */
-    overflow-y: auto;  /* enable scrolling */
+    max-height: 300px;
+    overflow-y: auto;
   }
 
-  /* optional: make scrollbar visible on mobile */
   .char-list::-webkit-scrollbar {
     width: 6px;
   }
@@ -637,7 +615,6 @@ main.content {
     background: var(--color-6);
   }
   
-  /* Firefox */
   .char-list {
     scrollbar-width: thin;
     scrollbar-color: var(--color-1) var(--color-6);
@@ -650,5 +627,4 @@ main.content {
   color: var(--text-dark);
   }
 }
-
 </style>

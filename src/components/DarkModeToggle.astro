@@ -67,30 +67,28 @@ const root = document.documentElement;
 const moon = toggle.querySelector('.moon');
 const sun = toggle.querySelector('.sun');
 
-const savedTheme = localStorage.getItem('darkMode');
-if (savedTheme === 'enabled') {
-  root.classList.add('dark-mode');
-  moon.style.opacity = '0';
-  moon.style.transform = 'translate(-50%, -50%) rotate(90deg)';
-  sun.style.opacity = '1';
-  sun.style.transform = 'translate(-50%, -50%) rotate(0deg)';
-}
-
-toggle.addEventListener('click', () => {
-  const isDark = root.classList.toggle('dark-mode');
-
+// Function to sync the icons with the current state of the <html> class
+function syncIcons() {
+  const isDark = root.classList.contains('dark-mode');
   if (isDark) {
-    localStorage.setItem('darkMode', 'enabled');
     moon.style.opacity = '0';
     moon.style.transform = 'translate(-50%, -50%) rotate(90deg)';
     sun.style.opacity = '1';
     sun.style.transform = 'translate(-50%, -50%) rotate(0deg)';
   } else {
-    localStorage.setItem('darkMode', 'disabled');
     sun.style.opacity = '0';
     sun.style.transform = 'translate(-50%, -50%) rotate(-90deg)';
     moon.style.opacity = '1';
     moon.style.transform = 'translate(-50%, -50%) rotate(0deg)';
   }
+}
+
+// Run immediately on load to set icon positions
+syncIcons();
+
+toggle.addEventListener('click', () => {
+  const isDark = root.classList.toggle('dark-mode');
+  localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+  syncIcons();
 });
 </script>
