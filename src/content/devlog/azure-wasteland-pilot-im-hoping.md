@@ -2,7 +2,7 @@
 title: "Azure Wasteland Pilot Concept #1"
 date: "2025-11-16"
 description: "A short explanation of what it is + an opening track i made for it :]"
-tags: ["Concepts","Lore Yap","Azure Wasteland"]
+tags: ["Concepts","Lore Yap"]
 ---
 
 <h3>lore yap..</h3>

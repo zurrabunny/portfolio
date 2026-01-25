@@ -2,7 +2,7 @@
 title: "Azure Wasteland Yap #1"
 date: "2025-12-19"
 description: "Azure Wasteland Introduction"
-tags: ["Lore Yap","Azure Wasteland"]
+tags: ["Lore Yap"]
 ---
 
 <h4>"one can find beauty even in a world full of chaos"</h4>
