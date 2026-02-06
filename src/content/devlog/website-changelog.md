@@ -8,9 +8,13 @@ tags: ["Process"]
 
 <div class="changelog">
 	<div class="log-entry">
-        <h3>January 30 2026</h3>
+        <h3>Feburary 6 2026</h3>
         <ul>
-			<li>added a silly font switcher :]
+			<li>Works Tab :
+                <ul>
+                    <li>added Music Quotes</li>
+                    <li>moved Music Player to the bottom</li>
+                </ul>
             </li>
         </ul>
     </div>
