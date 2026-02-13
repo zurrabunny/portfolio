@@ -1,58 +1,21 @@
 ---
 import "../styles/global.css";
-import Music from "../components/pages/work_modules/Music.astro";
 import DarkModeToggle from '../components/DarkModeToggle.astro';
-import MusicControls from '../components/MusicControls.astro';
 ---
 
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>zurra's site of fun and whimsy</title>
+    <title>zurra's online wallpaper</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TJDSJZMJTR"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-TJDSJZMJTR');
-
-      (function() {
-        const savedTheme = localStorage.getItem('darkMode');
-        if (savedTheme === 'enabled' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          document.documentElement.classList.add('dark-mode');
-        }
-      })();
-    </script>
+ 
   </head>
-
+	<DarkModeToggle />
   <body>
     <div class="bg-grid-root">
       <canvas id="bg-grid-canvas" aria-hidden="true"></canvas>
     </div>
-
-	<MusicControls />
-
-    <div id="page-wrapper">
-      <nav class="ui-layer">
-        <div class="top-controls">
-          <DarkModeToggle />
-        </div>
-      </nav>
-
-      <aside class="music-container">
-        <div class="glass-morph">
-          <Music />
-        </div>
-      </aside>
-
-      <main id="main-content" class="content">
-        <slot /> 
-      </main>
-    </div>
-
     <style>
 
       #page-wrapper {
@@ -74,52 +37,6 @@ import MusicControls from '../components/MusicControls.astro';
         width: 100%;
         height: 100%;
         display: block;
-      }
-
-      /* Centered Container Styles */
-      .music-container {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 50%;
-        z-index: 100;
-        color: var(--text-dark);
-      }
-
-      .glass-morph {
-        background: var(--container);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 30px;
-        padding: 24px;
-        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        backdrop-filter: blur(10px); /* Optional: adds to the 'glass' feel */
-      }
-
-      /* UI Controls */
-      .ui-layer {
-        display: flex;
-        justify-content: flex-end; /* Moves toggle to the right */
-        padding: 1.5rem;
-        pointer-events: none;
-      }
-
-      .ui-layer > * {
-        pointer-events: auto;
-      }
-
-      /* Mobile Adjustments */
-      @media (max-width: 900px) {
-        .music-container {
-          width: 85%;
-        }
-        .glass-morph {
-          padding: 16px;
-          border-radius: 20px;
-        }
       }
     </style>
 
