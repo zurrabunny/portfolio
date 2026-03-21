@@ -1,0 +1,313 @@
+---
+import "../styles/global.css";
+import DarkModeToggle from '../components/DarkModeToggle.astro';
+
+const fontUrl = "https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap";
+
+const descriptions = {
+  "solitude composition": "limited palette digital illustration. golden retriever. cel-shading.",
+  "National Bookstore": "limited palette digital illustration. golden retriever. cel-shading.",
+  "Abstract Face": "limited palette digital illustration. golden retriever. cel-shading.",
+  "beastars minimalist book cover": "limited palette digital illustration. golden retriever. cel-shading.",
+  "design in daily life": "limited palette digital illustration. golden retriever. cel-shading.",
+  "iron lung minimalist poster": "limited palette digital illustration. golden retriever. cel-shading.",
+  "Minecraft Magazine Cover": "limited palette digital illustration. golden retriever. cel-shading.",
+  "National Bookstore": "limited palette digital illustration. golden retriever. cel-shading.",
+};
+
+const allImages = await Astro.glob('/public/graphicdesign/*.{jpg,jpeg,png,webp,gif}');
+const primaryImages = allImages.filter(img => !img.default.src.includes('_process'));
+const serializedImages = allImages.map(img => img.default.src);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>zurra | work</title>
+    <link rel="stylesheet" href={fontUrl}>
+    <style is:global>
+      * { box-sizing: border-box; }
+      body { 
+        margin: 0; 
+        background: #fff; 
+        color: #111; 
+        font-family: 'Fredoka', sans-serif; 
+        display: flex;
+      }
+
+      /* TYPOGRAPHY */
+      h1, h2, h3, h4 { font-weight: 700; text-transform: lowercase; margin: 0; }
+      h1 { font-size: 1.8rem; letter-spacing: -0.02em; }
+      h2 { font-size: 2.8rem; line-height: 1; margin-bottom: 1rem; }
+      h4 { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: #aaa; }
+      p { line-height: 1.6; color: #444; font-size: 1.1rem; }
+
+      /* SIDEBAR */
+      #left-sidebar {
+        width: 280px; height: 100vh; position: fixed; left: 0; top: 0;
+        padding: 3rem 2.5rem; border-right: 2px solid #f0f0f0;
+        display: flex; flex-direction: column; justify-content: space-between;
+        z-index: 10; background: #fff;
+      }
+      
+      .nav-links { list-style: none; padding: 0; margin-top: 2rem; }
+      .nav-links li { 
+        margin-bottom: 0.8rem; 
+        font-size: 1.1rem; 
+        color: #000; 
+        font-weight: 500;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+      .nav-links li:hover { opacity: 0.5; }
+
+      #about-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-out, margin-top 0.3s ease;
+        font-size: 0.9rem;
+        color: #666;
+      }
+      #about-content.is-visible {
+        max-height: 500px;
+        margin-top: 1rem;
+        border-top: 1px solid #f0f0f0;
+        padding-top: 1rem;
+      }
+
+      .back-link {
+        display: block;
+        text-decoration: none;
+        color: #bbb;
+        font-size: 0.85rem;
+        padding: 10px 15px;
+        border: 1px solid #eee;
+        border-radius: 30px;
+        text-align: center;
+        transition: all 0.2s;
+      }
+      .back-link:hover {
+        background: #000;
+        color: #fff;
+        border-color: #000;
+      }
+
+      /* MAIN CONTENT */
+      #main-content {
+        margin-left: 280px; width: calc(100% - 280px);
+        padding: 4rem; min-height: 100vh;
+      }
+
+      .gallery-masonry {
+        column-count: 3;
+        column-gap: 2.5rem;
+      }
+
+      .gallery-item {
+        display: inline-block;
+        width: 100%; margin-bottom: 2.5rem;
+        background: #fff; 
+        border: 2px solid #000;
+        border-radius: 16px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .gallery-item img { width: 100%; height: auto; display: block; }
+
+      .gallery-item:hover {
+        transform: scale(1.003);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+      }
+
+      @media (max-width: 1200px) { .gallery-masonry { column-count: 2; } }
+      @media (max-width: 1000px) {
+        #left-sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 2px solid #f0f0f0; padding: 2rem; }
+        #main-content { margin-left: 0; width: 100%; padding: 2rem; }
+        body { flex-direction: column; }
+        .gallery-masonry { column-count: 1; }
+      }
+    </style>
+  </head>
+  
+  <body>    
+    <aside id="left-sidebar">
+      <div>
+        <header>
+          <h1>zurrabunny</h1>
+          <p style="color: #666; font-size: 0.9rem; margin-top: 0.2rem; font-weight: 400;">graphic design</p>
+        </header>
+
+        <nav>
+          <ul class="nav-links">
+            <li id="about-toggle">about</li>
+          </ul>
+        </nav>
+
+        <div id="about-content">
+          <p>i'm a designer focused on brand identity and digital illustration. i like clean lines, bold colors, and things that feel "just right."</p>
+          <p>currently exploring the intersection of brutalist web design and friendly geometry.</p>
+        </div>
+      </div>
+
+      <div>
+        <a href="/portfolio/" class="back-link">back to main website</a>
+        <footer style="font-size: 0.8rem; color: #ddd; font-weight: 500; margin-top: 1.5rem;">&copy; 2026</footer>
+      </div>
+    </aside>
+
+    <div id="modal-overlay">
+      <div id="modal-content">
+        <span id="close-trigger">&times;</span>
+        <div id="modal-grid">
+          <div id="modal-left">
+            <img id="modal-img-display" src="" alt="view" />
+          </div>
+          <div id="modal-sidebar">
+            <h2 id="modal-title"></h2>
+            <p id="modal-description"></p>
+            <div id="process-section">
+              <h4 id="process-header">the process</h4>
+              <div id="process-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main id="main-content">
+      <section class="gallery-masonry">
+        {primaryImages.map((img) => {
+          const fileName = img.default.src.split('/').pop().split('.')[0];
+          const desc = descriptions[fileName] || "visual composition study.";
+          return (
+            <div class="gallery-item" data-fullsrc={img.default.src} data-base={fileName} data-desc={desc}>
+              <img src={img.default.src} alt={fileName} loading="lazy" />
+            </div>
+          )
+        })}
+      </section>
+    </main>
+
+    <script is:inline define:vars={{ serializedImages }}>
+      const aboutToggle = document.getElementById('about-toggle');
+      const aboutContent = document.getElementById('about-content');
+
+      aboutToggle.addEventListener('click', () => {
+        aboutContent.classList.toggle('is-visible');
+      });
+
+      const modal = document.getElementById('modal-overlay');
+      const modalContent = document.getElementById('modal-content');
+      const modalGrid = document.getElementById('modal-grid');
+      const modalLeft = document.getElementById('modal-left');
+      const modalImg = document.getElementById('modal-img-display');
+      const modalSidebar = document.getElementById('modal-sidebar');
+      const modalTitle = document.getElementById('modal-title');
+      const modalDesc = document.getElementById('modal-description');
+      const processList = document.getElementById('process-list');
+      const closeTrigger = document.getElementById('close-trigger');
+
+      const styleModal = () => {
+        const isMobile = window.innerWidth <= 1000;
+
+        Object.assign(modal.style, {
+          position: 'fixed', inset: '0', backgroundColor: 'rgba(255,255,255,0.95)',
+          display: 'none', justifyContent: 'center', alignItems: 'center',
+          zIndex: '9999', padding: isMobile ? '0' : '40px', backdropFilter: 'blur(10px)',
+          opacity: '0', transition: 'opacity 0.4s ease' // Added Transition
+        });
+
+        Object.assign(modalContent.style, {
+          backgroundColor: '#ffffff', width: '60%', height: isMobile ? '100vh' : '90vh', 
+          border: '3px solid #000', borderRadius: isMobile ? '0' : '24px',
+          display: 'flex', overflow: 'hidden', position: 'relative',
+          transform: 'scale(0.95)', transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)' // Added Transition
+        });
+
+        Object.assign(modalGrid.style, {
+          display: 'grid', width: '100%', height: '100%',
+          gridTemplateColumns: isMobile ? '1fr' : '1fr 450px'
+        });
+
+        Object.assign(modalLeft.style, {
+          padding: '2rem', display: 'flex', alignItems: 'center',
+          justifyContent: 'center', backgroundColor: '#fafafa', overflow: 'hidden'
+        });
+
+        Object.assign(modalImg.style, { maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' });
+
+        Object.assign(modalSidebar.style, {
+          backgroundColor: '#fff', padding: '4rem 3rem', overflowY: 'auto',
+          borderLeft: isMobile ? 'none' : '2px solid #f0f0f0',
+          display: 'flex', flexDirection: 'column', boxSizing: 'border-box'
+        });
+
+        Object.assign(closeTrigger.style, {
+          position: 'absolute', top: '1.5rem', right: '2rem',
+          fontSize: '3rem', color: '#000', zIndex: '100', cursor: 'pointer', fontWeight: '400'
+        });
+      };
+
+      styleModal();
+      window.addEventListener('resize', styleModal);
+
+      document.querySelectorAll('.gallery-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const baseName = item.getAttribute('data-base');
+          modalImg.src = item.getAttribute('data-fullsrc');
+          modalTitle.textContent = baseName.replace(/-/g, ' ');
+          modalDesc.textContent = item.getAttribute('data-desc');
+          modalSidebar.scrollTop = 0;
+          processList.innerHTML = '';
+          const related = serializedImages.filter(src => src.split('/').pop().startsWith(baseName + '_process')).sort();
+
+          if (related.length > 0) {
+            document.getElementById('process-section').style.display = 'block';
+            related.forEach((src) => {
+              const container = document.createElement('div');
+              container.style.marginBottom = '2rem';
+              const img = document.createElement('img');
+              img.src = src;
+              Object.assign(img.style, {
+                width: '100%', height: 'auto', display: 'block', border: '2px solid #000',
+                borderRadius: '12px', transition: 'transform 0.2s', cursor: 'pointer'
+              });
+              img.onclick = () => { modalImg.src = src; };
+              img.onmouseover = () => { img.style.transform = 'scale(1.02)'; };
+              img.onmouseout = () => { img.style.transform = 'scale(1)'; };
+              container.appendChild(img);
+              processList.appendChild(container);
+            });
+          } else {
+            document.getElementById('process-section').style.display = 'none';
+          }
+
+          // TRIGGER TRANSITION
+          modal.style.display = 'flex';
+          // Force reflow
+          void modal.offsetWidth;
+          modal.style.opacity = '1';
+          modalContent.style.transform = 'scale(1)';
+          
+          document.body.style.overflow = 'hidden';
+        });
+      });
+
+      const hideModal = () => {
+        modal.style.opacity = '0';
+        modalContent.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          modal.style.display = 'none';
+          document.body.style.overflow = 'auto';
+        }, 400); // Matches transition duration
+      };
+
+      closeTrigger.onclick = hideModal;
+      window.onclick = (e) => { if (e.target == modal) hideModal(); };
+      window.addEventListener('keydown', (e) => { if (e.key === 'Escape') hideModal(); });
+    </script>
+  </body>
+</html>
