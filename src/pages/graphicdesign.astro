@@ -5,14 +5,14 @@ import DarkModeToggle from '../components/DarkModeToggle.astro';
 const fontUrl = "https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap";
 
 const descriptions = {
-  "solitude composition": "a literal mood board, i felt really isolated during these times, so i decided to make an output out of it",
-  "National Bookstore": "logo inspired by binder, national bookstore is more known for its art and office supplies rather than books",
-  "Abstract Face": "this specific salesman scene has the right amount of colors and the right configuration of lighting to make this abstract piece more abstract",
-  "beastars minimalist book cover": "i made the cover focus more on the relationship and dynamic of Legoshi and Haru, both size and behaviour",
+  "solitude composition": "I created this mood board to process my experience with isolation. I chose these images to define solitude as a deliberate separation from noise. You find clarity when you remove external distractions. This composition represents my shift from feeling lonely to finding strength in my own company.",
+  "National Bookstore": "I designed this logo to emphasize the role of National Book Store as a primary source for art and office supplies. The central icon features a spiral binder to reflect functional tools for creators and students.",
+  "Abstract Face": "I used the salesman scene to capture a specific configuration of lighting and color. The harsh shadows and split tones increase the abstract quality of the face. You see how the geometric shapes replace soft features to create tension. This piece demonstrates how high contrast lighting simplifies a complex subject into its most basic forms.",
+  "beastars minimalist book cover": "I designed this cover to highlight the physical and behavioral contrast between Legoshi and Haru. The large silhouette of the wolf provides a frame for the smaller rabbit to emphasize their scale difference. You see their complex dynamic through this minimalist use of space and overlapping shapes. This composition focuses on the friction between predator and prey within their relationship",
   "design in daily life": "first piece, my baby cousin threw a crayon at me, so i decided to make something out of it",
-  "iron lung minimalist poster": "The Iron Lung (the submarine) has a very simplistic shape, which makes it easy to represent it in a minimalistic form",
-  "Minecraft Magazine Cover": "limited palette digital illustration. golden retriever. cel-shading.",
-  "grow together": "limited palette digital illustration. golden retriever. cel-shading.",
+  "iron lung minimalist poster": "I designed this poster to capitalize on the simplistic shape of the Iron Lung submarine. The central silhouette uses basic geometry to represent the vessel within a dense, monochromatic environment. You achieve a sense of claustrophobia by surrounding the small submarine with heavy chains and deep red tones. This minimalist approach communicates the isolation and mechanical nature of the film.",
+  "Minecraft Magazine Cover": "I designed this magazine cover to emphasize the silly aesthetic of the new baby animal updates. You focus the visual hierarchy on the large central character to appeal to a younger audience. The pixelated typography reinforces the established brand identity of the game. This layout uses bright colors and simple framing to highlight the friendly nature of the latest content drop.",
+  "grow together": "                I chose Modak for my project. Its curved outlines resemble lily pads. My design focuses on dense foliage and biodiversity. This creates a direct connection with nature. Vibrant green colors dominate the scene. Organic, rounded shapes in the pond and leaves mimic natural environments. Strong contrast exists between the glowing water and the deep green foliage. Overlapping layers and value shifts define the form. These elements create depth.",
 };
 
 const allImages = await Astro.glob('/public/graphicdesign/*.{jpg,jpeg,png,webp,gif}');
@@ -48,10 +48,10 @@ const serializedImages = allImages.map(img => img.default.src);
 			<p>I mainly use Adobe Illustrator, Adobe Photoshop, and Clip Studio Paint for drawing and designing</p>
             
             <div class="software-shelf">
-              <img src="illustrator.png" alt="Adobe Illustrator" title="Adobe Illustrator" />
-              <img src="photoshop.png" alt="Adobe Photoshop" title="Adobe Photoshop" />
-              <img src="csp.png" alt="Clip Studio Paint" title="Clip Studio Paint" />
-            </div>
+			  <img src="illustrator.png" alt="Adobe Illustrator" title="Adobe Illustrator" width="64" height="64" loading="lazy">
+			  <img src="photoshop.png" alt="Adobe Photoshop" title="Adobe Photoshop" width="64" height="64" loading="lazy">
+			  <img src="csp.png" alt="Clip Studio Paint" title="Clip Studio Paint" width="64" height="64" loading="lazy">
+			</div>
           </div>
         </div>
       </div>
